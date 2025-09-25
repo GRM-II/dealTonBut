@@ -64,7 +64,7 @@ final class Controller
             $this->_A_splitUrl['method']), array($this->_A_urlParams, $this->_A_postParams ));
 
         if (false === $B_called) {
-            throw new ControllerException("L'action " . $this->_A_splitUrl['method'] .
+            throw new ControllerException("The method " . $this->_A_splitUrl['method'] .
                 " of controller " . $this->_A_splitUrl['controller'] . " encountered an error.");
         }
     }
