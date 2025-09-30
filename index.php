@@ -2,7 +2,7 @@
 
 // Ce fichier est le point d'entrée de votre application
 
-require 'Core/AutoLoading.php';
+require 'Core/AutoLoader.php';
 /*
  url pour notre premier test MVC Hello World,
  nous n'avons pas d'action précisée on visera celle par défaut
