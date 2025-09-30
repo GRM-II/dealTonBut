@@ -18,7 +18,7 @@ final class AutoLoader
 
     public static function loadClassModel ($S_className)
     {
-        $S_file = Constants::repertoireModele() . "$S_className";
+        $S_file = Constants::modelsRepository() . "$S_className";
 
         return static::_load($S_file);
     }
