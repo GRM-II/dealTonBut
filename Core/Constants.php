@@ -7,7 +7,7 @@ final class Constants
 
     const MODELS_REPOSITORY      = '/Models/';
 
-    const CORE_REPOSITORY      = '/Core/';
+    const CORE_REPOSITORY        = '/Core/';
 
     const EXCEPTIONS_REPOSITORY  = '/Core/Exceptions/';
 

@@ -3,6 +3,7 @@
 // Ce fichier est le point d'entrée de votre application
 
 require 'Core/AutoLoader.php';
+require 'Controllers/View.php';
 /*
  url pour notre premier test MVC Hello World,
  nous n'avons pas d'action précisée on visera celle par défaut
@@ -36,4 +37,4 @@ try {
 $contentToPrint = View::getBufferContent();
 
 // On affiche le contenu dans la partie body du gabarit général
-View::show('struct', array('body' => $contentToPrint));
+View::show('Layout', array('body' => $contentToPrint));

@@ -11,7 +11,7 @@ final class AutoLoader
 
     public static function loadClassException ($S_className)
     {
-        $S_file = Constants::exceptionRepository() . "$S_className";
+        $S_file = Constants::exceptionsRepository() . "$S_className";
 
         return static::_load($S_file);
     }
@@ -32,7 +32,7 @@ final class AutoLoader
 
     public static function loadClassController ($S_className)
     {
-        $S_file = Constants::controllerRepository() . "$S_className.php";
+        $S_file = Constants::controllersRepository() . "$S_className.php";
 
         return static::_load($S_file);
     }
