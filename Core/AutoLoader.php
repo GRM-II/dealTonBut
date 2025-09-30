@@ -25,7 +25,7 @@ final class AutoLoader
 
     public static function loadClassView ($S_className)
     {
-        $S_file = Constants::viewRepository() . "$S_className";
+        $S_file = Constants::viewsRepository() . "$S_className";
 
         return static::_load($S_file);
     }
