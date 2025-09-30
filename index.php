@@ -33,7 +33,7 @@ try {
 
 
 // Les différentes sous-vues ont été "crachées" dans le tampon d'affichage, on les récupère
-$contentToPrint = View::getBufferContent();
+$contentToPrint = Views::getBufferContent();
 
 // On affiche le contenu dans la partie body du gabarit général
 View::show('struct', array('body' => $contentToPrint));

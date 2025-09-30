@@ -49,7 +49,7 @@ final class Controller
 
     // On exécute notre triplet
 
-    public function executer()
+    public function execute()
     {
         if (!class_exists($this->_A_splitUrl['controller'])) {
             throw new ControllerException($this->_A_splitUrl['controller'] . " doesn't exist.");
