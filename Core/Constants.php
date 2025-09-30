@@ -9,7 +9,7 @@ final class Constants
 
     const CORE_REPOSITORY      = '/Core/';
 
-    const EXCEPTIONS_REPOSITORY  = '/Core/Exceptions/';
+    const EXCEPTIONS_REPOSITORY  = '/Controllers/Exceptions/';
 
     const CONTROLLERS_REPOSITORY = '/Controllers/';
 
