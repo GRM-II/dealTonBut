@@ -3,7 +3,7 @@
 // Ce fichier est le point d'entrée de votre application
 
 require 'Core/AutoLoader.php';
-require 'Controllers/View.php';
+require 'Core/View.php';
 /*
  url pour notre premier test MVC Hello World,
  nous n'avons pas d'action précisée on visera celle par défaut
