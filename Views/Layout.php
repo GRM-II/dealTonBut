@@ -5,8 +5,8 @@
     <title>My big black MVC</title>
 </head>
 <body>
-<?php View::show('standard/entete'); ?>
+<?php View::show('standard/header'); ?>
 <?php echo $A_view['body'] ?>
-<?php View::show('standard/pied'); ?>
+<?php View::show('standard/footer'); ?>
 </body>
 </html>

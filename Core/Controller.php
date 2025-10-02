@@ -18,7 +18,7 @@ final class Controller
         $A_splitUrl = explode('/', $S_url);
 
         if (empty($A_splitUrl[0])) {
-            // Nous avons pris le parti de préfixer tous les controleurs par "Controleur"
+            // Nous avons pris le parti de suffixer tous les controleurs par "_controleur"
             $A_splitUrl[0] = 'defaultController';
         } else {
             $A_splitUrl[0] = ucfirst($A_splitUrl[0]). '_controller';
