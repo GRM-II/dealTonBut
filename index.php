@@ -4,6 +4,8 @@
 
 require 'Core/AutoLoader.php';
 require 'Core/View.php';
+require 'Core/Controller.php';
+require 'Core/Exception/ControllerException.php';
 /*
  url pour notre premier test MVC Hello World,
  nous n'avons pas d'action précisée on visera celle par défaut
