@@ -6,37 +6,37 @@ require 'Core/AutoLoader.php';
 require 'Core/View.php';
 require 'Core/Controller.php';
 require 'Core/Exception/ControllerException.php';
-/*
- url pour notre premier test MVC Hello World,
- nous n'avons pas d'action précisée on visera celle par défaut
- /index.php?ctrl=helloworld
- /helloworld
- /controleur/nom_action/whatever/whatever2/
 
-*/
-/*
-    $S_controleur = isset($_GET['ctrl']) ? $_GET['ctrl'] : null;
-    $S_action = isset($_GET['action']) ? $_GET['action'] : null;
-
-    Vue::ouvrirTampon(); //  /Noyau/Vue.php : on ouvre le tampon d'affichage, les contrôleurs qui appellent des vues les mettront dedans
-    $O_controleur = new Controleur($S_controleur, $S_action);
-*/
-
-$S_splitUrl = isset($_GET['url']) ? $_GET['url'] : null;
-$A_postParams = isset($_POST) ? $_POST : null;
-
-View::openBuffer(); // on ouvre le tampon d'affichage, les contrôleurs qui appellent des vues les mettront dedans
-
-try {
-    $O_controller = new Controller($S_splitUrl, $A_postParams);
-    $O_controller->execute();
-} catch (ControllerException $O_exception) {
-    echo('An error occured : ' . $O_exception->getMessage());
+//////////////////////////////////////////////////////////////////////////
+if (session_status() === PHP_SESSION_NONE) {
+    // Démarre la session uniquement si elle n'est pas déjà démarrée
+    session_start([
+        'use_strict_mode' => true,
+        'cookie_httponly' => true,
+        'cookie_secure' => true,
+        'cookie_samesite' => 'None'
+    ]);
 }
 
+// Récupérer l'URI demandée
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-// Les différentes sous-vues ont été "crachées" dans le tampon d'affichage, on les récupère
-$contentToPrint = View::getBufferContent();
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$uri = '/' . trim($uri, '/');
 
-// On affiche le contenu dans la partie body du gabarit général
-View::show('Layout', array('body' => $contentToPrint));
+$S_controller = $_GET['controller'] ?? 'homepage';
+$S_action = $_GET['action'] ?? 'login';
+
+View::openBuffer();
+// Exécution du contrôleur et de l'action
+$C_controller = new Controller($S_controller, $S_action);
+$C_controller->execute();
+
+// Récupère le contenu tamponné
+$displayContent = View::getBufferContent();
+$A_params = $C_controller->getParams();
+
+
+echo $displayContent;

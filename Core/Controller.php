@@ -1,71 +1,69 @@
 <?php
 final class Controller
 {
-    private $_A_splitUrl;
+    private array $url;
+    private array $params = [];
 
-    private $_A_urlParams;
-
-    private $_A_postParams;
-
-    public function __construct ($S_url, $A_postParams)
+    public function __construct(?string $S_controller, ?string $S_action)
     {
-        // On élimine l'éventuel slash en fin d'URL sinon notre explode renverra une dernière entrée vide
-        if ('/' == substr($S_url, -1, 1)) {
-            $S_url = substr($S_url, 0, strlen($S_url) - 1);
-        }
-
-        // On éclate l'URL, elle va prendre place dans un tableau
-        $A_splitUrl = explode('/', $S_url);
-
-        if (empty($A_splitUrl[0])) {
-            // Nous avons pris le parti de suffixer tous les controleurs par "_controleur"
-            $A_splitUrl[0] = 'defaultController';
-        } else {
-            $A_splitUrl[0] = ucfirst($A_splitUrl[0]). '_controller';
-        }
-
-        if (empty($A_splitUrl[1])) {
-            // L'action est vide ! On la valorise par défaut
-            $A_splitUrl[1] = 'defaultAction';
-        } else {
-            // On part du principe que toutes nos actions sont suffixées par 'Action'...à nous de le rajouter
-            $A_splitUrl[1] = 'M_' . $A_splitUrl[1];
-        }
-
-
-        // on dépile 2 fois de suite depuis le début, c'est à dire qu'on enlève de notre tableau le contrôleur et l'action
-        // il ne reste donc que les éventuels parametres (si nous en avons)...
-        $this->_A_splitUrl['controller'] = array_shift($A_splitUrl); // on recupere le contrôleur
-        $this->_A_splitUrl['method']     = array_shift($A_splitUrl); // puis l'action
-
-        // ...on stocke ces éventuels parametres dans la variable d'instance qui leur est réservée
-        $this->_A_urlParams = $A_splitUrl;
-
-        // On  s'occupe du tableau $A_postParams
-        $this->_A_postParams = $A_postParams;
-
-
+        $this->url['controller'] = $this->controllerName($S_controller);
+        $this->url['action'] = $this->actionName($S_action);
     }
 
-    // On exécute notre triplet
-
-    public function execute()
+    private function controllerName(?string $controller): string
     {
-        if (!class_exists($this->_A_splitUrl['controller'])) {
-            throw new ControllerException($this->_A_splitUrl['controller'] . " doesn't exist.");
+
+        $controller = ($controller) . 'Controller';
+
+        return htmlspecialchars($controller, ENT_QUOTES, 'UTF-8');
+    }
+
+    private function actionName(?string $action): string
+    {
+        if (empty($action)) {
+            return 'login';
         }
 
-        if (!method_exists($this->_A_splitUrl['controller'], $this->_A_splitUrl['method'])) {
-            throw new ControllerException($this->_A_splitUrl['method'] . " of controller " .
-                $this->_A_splitUrl['controller'] . " doesn't exist.");
+        $action = $action;
+
+
+        return htmlspecialchars($action, ENT_QUOTES, 'UTF-8');
+    }
+
+    public function getUrl(): array
+    {
+        return $this->url;
+    }
+
+
+    public function execute(): void
+    {
+        $controller = $this->url['controller'];
+        $action = $this->url['action'];
+
+        if (!class_exists($controller)) {
+            throw new RuntimeException("'$controller' est introuvable.");
         }
 
-        $B_called = call_user_func_array(array(new $this->_A_splitUrl['controller'],
-            $this->_A_splitUrl['method']), array($this->_A_urlParams, $this->_A_postParams ));
+        $controllerInstance = new $controller();
 
-        if (false === $B_called) {
-            throw new ControllerException("The method " . $this->_A_splitUrl['method'] .
-                " of controller " . $this->_A_splitUrl['controller'] . " encountered an error.");
+        if (!method_exists($controllerInstance, $action)) {
+            throw new RuntimeException("L'action '$action' est introuvable dans le contrôleur '$controller'.");
         }
+
+        try {
+            call_user_func_array([$controllerInstance, $action], []);
+        } catch (Exception $e) {
+            throw new RuntimeException("Erreur lors de l'exécution de l'action '$action' : " . $e->getMessage());
+        }
+
+        if (method_exists($controllerInstance, 'getParams')) {
+            $this->params = $controllerInstance->getParams();
+        }
+    }
+
+    public function getParams(): array
+    {
+        return $this->params;
     }
 }

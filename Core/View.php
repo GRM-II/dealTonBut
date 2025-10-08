@@ -2,19 +2,19 @@
 
 final class View
 {
-    public static function openBuffer()
+    public static function openBuffer(): void
     {
         // On démarre le tampon de sortie, on va l'appeler "tampon principal"
         ob_start();
     }
 
-    public static function getBufferContent()
+    public static function getBufferContent(): string
     {
         // On retourne le contenu du tampon principal
         return ob_get_clean();
     }
 
-    public static function show ($S_localisation, $A_parameters = array())
+    public static function show ($S_localisation, $A_parameters = array()) : void
     {
         $S_file = Constants::viewsRepository() . $S_localisation . '.php';
 

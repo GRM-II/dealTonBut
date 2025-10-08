@@ -14,27 +14,27 @@ final class Constants
     const CONTROLLERS_REPOSITORY = '/Controllers/';
 
 
-    public static function rootRepository() {
+    public static function rootRepository(): string {
         return realpath(__DIR__ . '/../');
     }
 
-    public static function coreRepository() {
+    public static function coreRepository(): string {
         return self::rootRepository() . self::CORE_REPOSITORY;
     }
 
-    public static function exceptionsRepository() {
+    public static function exceptionsRepository(): string {
         return self::rootRepository() . self::EXCEPTIONS_REPOSITORY;
     }
 
-    public static function viewsRepository() {
+    public static function viewsRepository(): string {
         return self::rootRepository() . self::VIEWS_REPOSITORY;
     }
 
-    public static function modelsRepository() {
+    public static function modelsRepository(): string {
         return self::rootRepository() . self::MODELS_REPOSITORY;
     }
 
-    public static function controllersRepository() {
+    public static function controllersRepository(): string {
         return self::rootRepository() . self::CONTROLLERS_REPOSITORY;
     }
 
