@@ -1,25 +1,16 @@
 <?php if (session_status() === PHP_SESSION_NONE) session_start(); ?>
 
 <!DOCTYPE html>
-<!DOCTYPE html>
-<html lang="fr">
-<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Créer un compte</title>
-    <link rel="stylesheet" href="/public/_assets/includes/styles//style.css">
+    <link rel="stylesheet" href="/public/assets/includes/styles/style.css">
 </head>
 <body>
-<header>
-    <div class="header-left">
-        <img src="assets/img/placeholder-meme.jpeg" alt="[PLACEHOLDER] Amou" class="header-logo">
-    </div>
-    <button id="theme-toggle" onclick="toggleTheme()" aria-label="Change theme"></button>
-</header>
 <div class="content">
     <div class="login-rectangle">
-        <img src="assets/img/placeholder-meme.jpeg" alt="[PLACEHOLDER]Image de connexion" class="log-img">
+        <img src="/public/assets/img/placeholder-meme.jpeg" alt="[PLACEHOLDER]Image de connexion" class="log-img">
         <div class="rectangle-title">Créer un compte</div>
         <form class="input-rectangles" id="register-form">
             <label for="username"></label>
@@ -32,12 +23,10 @@
             <input type="password" id="confirm-password" placeholder="Confirmer" class="input-rectangle" required>
             <button type="submit" class="input-rectangle" style="background:#1360AA;color:#fff;cursor:pointer;font-size:1.2em;">Créer le compte</button>
         </form>
-        <a href="login.html" class="text-link">Vous possédez déjà un compte ?</a>
+        <a href="login.php" class="text-link">Vous possédez déjà un compte ?</a>
     </div>
 </div>
-<footer>
-    <p>Si tu vois ça je suis un mauvais dev JE SUIS UN FOOTER</p>
-</footer>
+
 <script>
     function setThemeIcon() {
         const btn = document.getElementById('theme-toggle');
