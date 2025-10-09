@@ -4,9 +4,48 @@ final class User_controller
 {
     public function defaultAction()
     {
-        $O_user =  new User_model();
-        View::show('user/Login', array('user' =>  $O_user->donneMessage()));
+        $model = new User_model();
+        $status = method_exists($model, 'getDbStatus') ? $model->getDbStatus() : ['available' => true, 'message' => ''];
+        View::show('user/Login', ['db_status' => $status]);
     }
+
+    public function login(): void
+    {
+        $model = new User_model();
+        $status = method_exists($model, 'getDbStatus') ? $model->getDbStatus() : ['available' => true, 'message' => ''];
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            View::show('user/Login', ['db_status' => $status]);
+            return;
+        }
+
+        $login = $_POST['login'] ?? '';
+        $password = $_POST['password'] ?? '';
+
+        $result = method_exists($model, 'authenticate')
+            ? $model->authenticate($login, $password)
+            : ['success' => false, 'message' => 'Authentification indisponible.'];
+
+        if (!empty($result['success'])) {
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+            $_SESSION['user'] = $result['user'] ?? [];
+
+            echo "<script>
+                alert('Connexion réussie');
+                window.location.href = '/profilepageView.php';
+              </script>";
+            exit;
+        }
+
+        echo "<script>
+            alert('Identifiants invalides');
+            window.location.href = '?controller=user&action=login';
+          </script>";
+        exit;
+    }
+
 
     public function register(): void
     {

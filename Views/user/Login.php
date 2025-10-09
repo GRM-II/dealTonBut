@@ -1,18 +1,19 @@
     <div class="content">
         <div class="login-rectangle">
-            <img src="/public/assets/img/placeholder-meme.jpeg" alt="[PLACEHOLDER]Image de connexion" class="log-img">
+            <img src="/public/assets/img/placeholder-meme.jpeg" alt="Image de connexion" class="log-img">
             <div class="rectangle-title">Connexion</div>
-            <form class="input-rectangles">
+            <form class="input-rectangles" method="POST" action="?controller=user&action=login">
                 <label for="username"></label>
-                <input type="text" id="username" placeholder="Nom d'utilisateur" class="input-rectangle">
+                <input type="text" id="username" name="login" placeholder="Nom d'utilisateur ou email" class="input-rectangle" required>
 
                 <label for="password"></label>
-                <input type="password" id="password" placeholder="Mot de passe" class="input-rectangle">
+                <input type="password" id="password" name="password" placeholder="Mot de passe" class="input-rectangle" required>
 
-                <button type="submit" class="input-rectangle" style="background:#1360AA;color:#fff;cursor:pointer;font-size:1.2em;">Connexion</button>
+                <button type="submit" name="submit" class="input-rectangle" style="background:#1360AA;color:#fff;cursor:pointer;font-size:1.2em;">Connexion</button>
             </form>
+
             <a href="#" class="text-link">Mot de passe oublié ?</a>
-            <a href="register.html" class="text-link">Vous ne possédez pas de compte ?</a>
+            <a href="index.php?controller=homepage&action=login" class="text-link">Vous ne possédez pas de compte ?</a>
         </div>
     </div>
     <script>
