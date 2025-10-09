@@ -11,10 +11,9 @@
     <?php View::show('standard/header'); ?>
 
     <main>
-        echo $A_view['body']; ?>
+        <?php echo $A_view['body']; ?>
     </main>
 
     <?php View::show('standard/footer'); ?>
 </body>
 </html>
-

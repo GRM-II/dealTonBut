@@ -38,6 +38,5 @@ $C_controller->execute();
 $displayContent = View::getBufferContent();
 $A_params = $C_controller->getParams();
 
-View::show('standard/header');
-echo $displayContent;
-View::show('standard/footer');
+// Utilise le layout avec le contenu
+View::show('Layout', ['body' => $displayContent]);
