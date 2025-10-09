@@ -351,6 +351,14 @@ body.dark-theme .text-link {
         font-size: 0.95em;
         padding: 0 12px;
     }
+    .footer-logo {
+        width: 30px;
+        height: 30px;
+        object-fit: contain;
+        background: #fff;
+        box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.5);
+        border-radius: 20px;
+    }
     h1 {
         font-size: 1.5em;
     }
@@ -427,6 +435,14 @@ body.dark-theme .text-link {
         height: 36px;
         font-size: 0.9em;
         padding: 0 6px;
+    }
+    .footer-logo {
+        width: 26px;
+        height: 26px;
+        object-fit: contain;
+        background: #fff;
+        box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.5);
+        border-radius: 20px;
     }
     h1 {
         font-size: 1.2em;
