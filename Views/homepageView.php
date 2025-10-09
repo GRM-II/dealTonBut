@@ -22,7 +22,7 @@
 </header>
 <div class="content">
     <div class="login-rectangle">
-        <img src="assets/img/placeholder-meme.jpeg" alt="[PLACEHOLDER]Image de connexion" class="log-img">
+        <img src="/public/assets/img/placeholder-meme.jpeg" alt="Image de connexion" class="log-img">
         <div class="rectangle-title">Créer un compte</div>
 
         <?php if ($dbUnavailable): ?>
