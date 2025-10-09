@@ -16,7 +16,7 @@
 <body>
 <header>
     <div class="header-left">
-        <img src="assets/img/placeholder-meme.jpeg" alt="[PLACEHOLDER] Amou" class="header-logo">
+        <img src="/public/assets/img/placeholder-meme.jpeg" alt="Amou" class="header-logo">
     </div>
     <button id="theme-toggle" onclick="toggleTheme()" aria-label="Change theme"></button>
 </header>
