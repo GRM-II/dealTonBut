@@ -12,10 +12,29 @@ final class Controller
 
     private function controllerName(?string $controller): string
     {
+        $name = (string)$controller;
+        $name = trim($name);
+        if ($name === '') {
+            $candidate = 'homepageController';
+            return htmlspecialchars($candidate, ENT_QUOTES, 'UTF-8');
+        }
 
-        $controller = ($controller) . 'Controller';
+        $candidates = [
+            $name . 'Controller',               // e.g., userController
+            ucfirst($name) . '_controller',     // e.g., User_controller (legacy style)
+            ucfirst($name) . 'Controller',      // e.g., UserController
+        ];
 
-        return htmlspecialchars($controller, ENT_QUOTES, 'UTF-8');
+        foreach ($candidates as $candidate) {
+            $path = Constants::controllersRepository() . $candidate . '.php';
+            if (is_readable($path)) {
+                return htmlspecialchars($candidate, ENT_QUOTES, 'UTF-8');
+            }
+        }
+
+        // Default to original behavior if none found
+        $candidate = $name . 'Controller';
+        return htmlspecialchars($candidate, ENT_QUOTES, 'UTF-8');
     }
 
     private function actionName(?string $action): string
@@ -53,7 +72,7 @@ final class Controller
 
         try {
             call_user_func_array([$controllerInstance, $action], []);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             throw new RuntimeException("Erreur lors de l'exécution de l'action '$action' : " . $e->getMessage());
         }
 
