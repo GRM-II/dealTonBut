@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Créer un compte</title>
-    <link rel="icon" type="image/x-icon" href="/public/assets/img/favgolem.ico">
+    <link rel="icon" type="image/x-icon" href="/public/assets/img/favicon.ico">
     <link rel="stylesheet" href="/public/assets/includes/styles/style.css">
 </head>
 <body>
