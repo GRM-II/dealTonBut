@@ -3,6 +3,6 @@
 <!DOCTYPE html>
 <html lang="fr">
     <footer>
-        <p>Si tu vois ça je suis un mauvais dev JE SUIS UN FOOTER</p>
+        <p>Si tu vois ça je suis un mauvais dev; JE SUIS UN FOOTER</p>
     </footer>
 </html>
