@@ -6,10 +6,12 @@
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <title>Créer un compte</title>
-    <link rel="stylesheet" href="/public/_assets/includes/styles/style.css">
+    <link rel="icon" type="image/x-icon" href="/public/assets/img/favgolem.ico">
+    <link rel="stylesheet" href="/public/assets/includes/styles/style.css">
 </head>
 <body>
 <header>
