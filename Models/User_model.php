@@ -259,7 +259,7 @@ final class User_model
             return [];
         }
 
-        // Essaye PDO
+
         if ($this->canUsePdoMySql()) {
             try {
                 $pdo = $this->getPdo();
@@ -311,7 +311,7 @@ final class User_model
 
         $user = $this->findUserByLogin($login);
 
-        // Ajoute cette ligne pour voir ce que la base retourne
+
         error_log("Résultat findUserByLogin : " . print_r($user, true));
 
         if (!$user) {

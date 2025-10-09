@@ -69,7 +69,6 @@ class profilepageController
     }
 
     //recpère le status de la BDD
-    // À adapter si changement de BDD
     private function getDbStatus()
     {
         require_once 'Models/User_model.php';
