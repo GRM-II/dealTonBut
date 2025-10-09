@@ -3,7 +3,6 @@
     $dbMessage = $dbUnavailable ? ($A_view['db_status']['message'] . (isset($A_view['db_status']['details']) ? ' — ' . $A_view['db_status']['details'] : '')) : '';
     $disabledAttr = $dbUnavailable ? 'disabled' : '';
 ?>
-
         <div class="content">
             <div class="login-rectangle">
                 <img src="/public/assets/img/placeholder-meme.jpeg" alt="Image de connexion" class="log-img">
