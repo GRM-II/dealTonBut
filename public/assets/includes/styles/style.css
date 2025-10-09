@@ -145,6 +145,20 @@ footer p {
     margin-left: 50px;
 }
 
+.footer-left {
+    display: flex;
+    align-items: center;
+}
+
+.footer-logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    background: #fff;
+    box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.5);
+    border-radius: 20px;
+}
+
 body.dark-theme footer {
     background: #646464;
     color: #E4E4E4;

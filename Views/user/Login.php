@@ -1,6 +1,6 @@
     <div class="content">
         <div class="login-rectangle">
-            <img src="assets/img/placeholder-meme.jpeg" alt="[PLACEHOLDER]Image de connexion" class="log-img">
+            <img src="/public/assets/img/placeholder-meme.jpeg" alt="[PLACEHOLDER]Image de connexion" class="log-img">
             <div class="rectangle-title">Connexion</div>
             <form class="input-rectangles">
                 <label for="username"></label>
