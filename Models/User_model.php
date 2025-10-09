@@ -248,4 +248,89 @@ final class User_model
             'details' => implode(' | ', $details),
         ];
     }
+
+    /**
+     * Récupère un utilisateur par nom d'utilisateur OU email
+     */
+    public function findUserByLogin(string $login): array
+    {
+        $login = trim($login);
+        if ($login === '') {
+            return [];
+        }
+
+        // Essaye PDO
+        if ($this->canUsePdoMySql()) {
+            try {
+                $pdo = $this->getPdo();
+                $stmt = $pdo->prepare('SELECT Username, Email, Mdp, Bio FROM User WHERE Username = :l OR Email = :l LIMIT 1');
+                $stmt->bindValue(':l', $login, \PDO::PARAM_STR);
+                $stmt->execute();
+                $row = $stmt->fetch();
+                return is_array($row) ? $row : [];
+            } catch (\Throwable $e) {
+                error_log('findUserByLogin PDO: ' . $e->getMessage());
+                return [];
+            }
+        }
+
+        // Sinon MySQLi
+        if ($this->hasMysqli()) {
+            try {
+                $mysqli = $this->getMysqli();
+                $stmt = $mysqli->prepare('SELECT Username, Email, Mdp, Bio FROM User WHERE Username = ? OR Email = ? LIMIT 1');
+                if ($stmt === false) {
+                    $mysqli->close();
+                    return [];
+                }
+                $stmt->bind_param('ss', $login, $login);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $row = $result ? $result->fetch_assoc() : null;
+                $stmt->close();
+                $mysqli->close();
+                return is_array($row) ? $row : [];
+            } catch (\Throwable $e) {
+                error_log('findUserByLogin MySQLi: ' . $e->getMessage());
+                return [];
+            }
+        }
+
+        return [];
+    }
+
+    /**
+     * Authentifie un utilisateur avec un login (username/email) et mot de passe
+     */
+    public function authenticate(string $login, string $password): array
+    {
+        $login = trim($login);
+        if ($login === '' || $password === '') {
+            return ['success' => false, 'message' => 'Identifiants manquants.'];
+        }
+
+        $user = $this->findUserByLogin($login);
+
+        // Ajoute cette ligne pour voir ce que la base retourne
+        error_log("Résultat findUserByLogin : " . print_r($user, true));
+
+        if (!$user) {
+            return ['success' => false, 'message' => 'Identifiant ou mot de passe incorrect.'];
+        }
+
+        $hash = $user['Mdp'] ?? '';
+        if (!is_string($hash) || $hash === '' || !password_verify($password, $hash)) {
+            return ['success' => false, 'message' => 'Identifiant ou mot de passe incorrect.'];
+        }
+
+        return [
+            'success' => true,
+            'message' => 'Connexion réussie.',
+            'user' => [
+                'username' => $user['Username'] ?? '',
+                'email' => $user['Email'] ?? '',
+                'bio' => $user['Bio'] ?? ''
+            ]
+        ];
+    }
 }

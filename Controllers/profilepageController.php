@@ -4,18 +4,21 @@ class profilepageController
 {
     public function index()
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: ?controller=homepage&action=index');
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (empty($_SESSION['user']) || !is_array($_SESSION['user'])) {
+            header('Location: ?controller=homepage&action=login');
             exit;
         }
-        $user = UserModel::findById($_SESSION['user_id']);
-        $A_view = [
-            'user' => $user,
-            'flash' => $_SESSION['flash'] ?? null,
-            'db_status' => $this->getDbStatus()
-        ];
+        $status = $this->getDbStatus();
+        $flash = $_SESSION['flash'] ?? null;
         unset($_SESSION['flash']);
-        require 'Views/profilepageView.php';
+        View::show('profilepageView', [
+            'user' => $_SESSION['user'],
+            'db_status' => $status,
+            'flash' => $flash
+        ]);
     }
 
     public function updateUsername()
