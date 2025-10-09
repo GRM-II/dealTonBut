@@ -12,12 +12,6 @@
     <link rel="stylesheet" href="/public/assets/includes/styles/style.css">
 </head>
 <body>
-    <header>
-        <div class="header-left">
-            <img src="/public/assets/img/placeholder-meme.jpeg" alt="Amou" class="header-logo">
-        </div>
-        <button id="theme-toggle" onclick="toggleTheme()" aria-label="Change theme"></button>
-    </header>
     <div class="content">
         <div class="login-rectangle">
             <img src="/public/assets/img/placeholder-meme.jpeg" alt="Image de connexion" class="log-img">
