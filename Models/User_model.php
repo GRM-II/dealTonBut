@@ -5,17 +5,17 @@ final class User_model
     private $_S_message = "Si tu vois ça, c'est que ça marche ! :D";
 
     // Configuration de la base de données MySQL
-    private string $host = 'yms-10.h.filess.io';        // ex: localhost ou mysql.votre-hebergeur.com
+    private string $host = 'yms-10.h.filess.io';
     private string $dbname = 'bdDealTonBut_triangleup';
-    private string $username = 'bdDealTonBut_triangleup';    // ex: root
+    private string $username = 'bdDealTonBut_triangleup';
     private string $password = 'a2aca2a35f059450391954de64d656284de558d1';
-    private int $port = 61032;                                // changez si différent
+    private int $port = 61032;
 
     public function __construct()
     {
         // Ne lance pas d'exception ici: l'absence de pilote doit être gérée proprement
         try {
-            $this->initializeDatabase();
+            $this->verifyConnection();
         } catch (\Throwable $e) {
             // Ignoré pour éviter un crash au chargement. Les erreurs seront renvoyées lors des actions.
         }
@@ -23,7 +23,7 @@ final class User_model
 
     public function donneMessage()
     {
-        return $this->_S_message ;
+        return $this->_S_message;
     }
 
     private function canUsePdoMySql(): bool
@@ -81,38 +81,32 @@ final class User_model
         return $mysqli;
     }
 
-    private function initializeDatabase(): void
+    /**
+     * Vérifie que la connexion à la base de données fonctionne
+     * et que la table 'User' existe
+     */
+    private function verifyConnection(): void
     {
-        $sql = 'CREATE TABLE IF NOT EXISTS users (
-                id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                username VARCHAR(100) NOT NULL UNIQUE,
-                email VARCHAR(255) NOT NULL UNIQUE,
-                password_hash VARCHAR(255) NOT NULL,
-                created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci';
-
         if ($this->canUsePdoMySql()) {
             $pdo = $this->getPdo();
-            try {
-                $pdo->exec($sql);
-            } finally {
-                // rien de spécial à fermer pour PDO
+            // Vérifie que la table existe
+            $stmt = $pdo->query("SHOW TABLES LIKE 'User'");
+            if ($stmt->rowCount() === 0) {
+                throw new \RuntimeException("La table 'User' n'existe pas dans la base de données.");
             }
             return;
         }
 
         if ($this->hasMysqli()) {
             $mysqli = $this->getMysqli();
-            if (!$mysqli->query($sql)) {
-                $err = $mysqli->error;
+            $result = $mysqli->query("SHOW TABLES LIKE 'User'");
+            if ($result->num_rows === 0) {
                 $mysqli->close();
-                throw new \RuntimeException('Échec lors de la création de la table: ' . $err);
+                throw new \RuntimeException("La table 'User' n'existe pas dans la base de données.");
             }
             $mysqli->close();
             return;
         }
-
-        // Aucun pilote disponible: ne rien faire ici, sera géré lors de l'action
     }
 
     public function createUser(string $username, string $email, string $password): array
@@ -127,33 +121,43 @@ final class User_model
             return ['success' => false, 'message' => 'Email invalide.'];
         }
 
+        // Hash du mot de passe
         $hash = password_hash($password, PASSWORD_DEFAULT);
+
+        // DEBUG: Log les valeurs
+        error_log("Tentative création user - Username: $username, Email: $email");
 
         // Essaye d'abord PDO MySQL si disponible
         if ($this->canUsePdoMySql()) {
             try {
                 $pdo = $this->getPdo();
-                $stmt = $pdo->prepare('INSERT INTO users (username, email, password_hash, created_at) VALUES (:u, :e, :p, NOW())');
+                error_log("PDO: Connexion OK, préparation de la requête");
+                $stmt = $pdo->prepare('INSERT INTO User (Username, Email, Mdp) VALUES (:u, :e, :p)');
                 $stmt->bindValue(':u', $username, \PDO::PARAM_STR);
                 $stmt->bindValue(':e', $email, \PDO::PARAM_STR);
                 $stmt->bindValue(':p', $hash, \PDO::PARAM_STR);
+                error_log("PDO: Exécution de la requête");
                 $stmt->execute();
-                return ['success' => true, 'message' => 'Compte créé avec succès.'];
+                $lastId = $pdo->lastInsertId();
+                error_log("PDO: Utilisateur créé avec ID: $lastId");
+                return ['success' => true, 'message' => 'Compte créé avec succès.', 'id' => $lastId];
             } catch (\PDOException $e) {
-                $code = $e->getCode(); // SQLSTATE or driver code
+                $code = $e->getCode();
                 $msg = $e->getMessage();
+                error_log("PDO Exception: Code=$code, Message=$msg");
                 // 23000 = integrity constraint violation (incl. duplicates)
                 if ($code === '23000' || strpos($msg, '1062') !== false) {
-                    if (stripos($msg, 'username') !== false) {
+                    if (stripos($msg, 'Username') !== false) {
                         return ['success' => false, 'message' => "Le nom d'utilisateur est déjà utilisé."];
                     }
-                    if (stripos($msg, 'email') !== false) {
+                    if (stripos($msg, 'Email') !== false) {
                         return ['success' => false, 'message' => 'Cet email est déjà utilisé.'];
                     }
                     return ['success' => false, 'message' => 'Donnée en double.'];
                 }
                 return ['success' => false, 'message' => 'Erreur: ' . $msg];
             } catch (\Throwable $e) {
+                error_log("PDO Throwable: " . $e->getMessage());
                 return ['success' => false, 'message' => 'Erreur: ' . $e->getMessage()];
             }
         }
@@ -162,32 +166,38 @@ final class User_model
         if ($this->hasMysqli()) {
             try {
                 $mysqli = $this->getMysqli();
-                $stmt = $mysqli->prepare('INSERT INTO users (username, email, password_hash, created_at) VALUES (?, ?, ?, NOW())');
+                error_log("MySQLi: Connexion OK, préparation de la requête");
+                $stmt = $mysqli->prepare('INSERT INTO User (Username, Email, Mdp) VALUES (?, ?, ?)');
                 if ($stmt === false) {
                     $err = $mysqli->error;
+                    error_log("MySQLi: Erreur préparation - $err");
                     $mysqli->close();
                     return ['success' => false, 'message' => 'Erreur préparation de requête: ' . $err];
                 }
 
                 $stmt->bind_param('sss', $username, $email, $hash);
+                error_log("MySQLi: Exécution de la requête");
                 $ok = $stmt->execute();
 
                 if ($ok) {
+                    $lastId = $mysqli->insert_id;
+                    error_log("MySQLi: Utilisateur créé avec ID: $lastId");
                     $stmt->close();
                     $mysqli->close();
-                    return ['success' => true, 'message' => 'Compte créé avec succès.'];
+                    return ['success' => true, 'message' => 'Compte créé avec succès.', 'id' => $lastId];
                 }
 
                 $errno = $stmt->errno ?: $mysqli->errno;
                 $error = $stmt->error ?: $mysqli->error;
+                error_log("MySQLi: Erreur execution - errno=$errno, error=$error");
                 $stmt->close();
                 $mysqli->close();
 
-                if ($errno === 1062) { // entrée en double
-                    if (stripos($error, 'username') !== false) {
+                if ($errno === 1062) {
+                    if (stripos($error, 'Username') !== false) {
                         return ['success' => false, 'message' => "Le nom d'utilisateur est déjà utilisé."];
                     }
-                    if (stripos($error, 'email') !== false) {
+                    if (stripos($error, 'Email') !== false) {
                         return ['success' => false, 'message' => 'Cet email est déjà utilisé.'];
                     }
                     return ['success' => false, 'message' => 'Donnée en double.'];
@@ -195,6 +205,7 @@ final class User_model
 
                 return ['success' => false, 'message' => 'Erreur lors de la création du compte.'];
             } catch (\Throwable $e) {
+                error_log("MySQLi Throwable: " . $e->getMessage());
                 return ['success' => false, 'message' => 'Erreur: ' . $e->getMessage()];
             }
         }
@@ -211,9 +222,26 @@ final class User_model
         $details = [];
         $details[] = $pdo ? 'pdo_mysql: OK' : 'pdo_mysql: indisponible';
         $details[] = $mysqli ? 'mysqli: OK' : 'mysqli: indisponible';
+
+        // Vérifie aussi si la table existe
+        $tableExists = false;
+        try {
+            if ($available) {
+                $this->verifyConnection();
+                $tableExists = true;
+            }
+        } catch (\Throwable $e) {
+            $details[] = "Table 'User': " . $e->getMessage();
+        }
+
+        if ($tableExists) {
+            $details[] = "Table 'User': existe";
+        }
+
         $message = $available
             ? 'La connexion à la base MySQL est possible.'
             : "Aucun pilote MySQL n'est disponible sur le serveur. Veuillez activer pdo_mysql ou mysqli.";
+
         return [
             'available' => $available,
             'message' => $message,
