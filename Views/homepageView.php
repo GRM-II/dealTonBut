@@ -60,9 +60,6 @@
         <a href="login.html" class="text-link">Vous possédez déjà un compte ?</a>
     </div>
 </div>
-<footer>
-    <p>Si tu vois ça je suis un mauvais dev JE SUIS UN FOOTER</p>
-</footer>
 <script>
     function setThemeIcon() {
         const btn = document.getElementById('theme-toggle');
