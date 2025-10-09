@@ -40,7 +40,7 @@
                     <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirmer" class="input-rectangle" required <?php echo $disabledAttr; ?> title="<?php echo $dbUnavailable ? htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8') : ''; ?>">
                     <button type="submit" class="input-rectangle" style="background:#1360AA;color:#fff;cursor:pointer;font-size:1.2em;" <?php echo $disabledAttr; ?>>Créer le compte</button>
                 </form>
-                <a href="login.html" class="text-link">Vous possédez déjà un compte ?</a>
+                <a href="index.php?controller=user&action=defaultAction" class="text-link">Vous possédez déjà un compte ?</a>
             </div>
         </div>
 
