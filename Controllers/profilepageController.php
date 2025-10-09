@@ -65,9 +65,12 @@ class profilepageController
         exit;
     }
 
-    // À adapter selon vérification de la BDD pour plus tard
+    //recpère le status de la BDD
+    // À adapter si changement de BDD
     private function getDbStatus()
     {
-        return ['available' => true];
+        require_once 'Models/User_model.php';
+        $userModel = new User_model();
+        return $userModel->getDbStatus();
     }
 }
