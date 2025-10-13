@@ -10,7 +10,7 @@ class homePageController
         } else {
             $status = ['available' => true, 'message' => ''];
         }
-        View::show("homepageView", ['db_status' => $status]);
+        view::show("homepageView", ['db_status' => $status]);
     }
 
     // Page de diagnostic simple pour aider à activer les pilotes MySQL
