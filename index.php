@@ -29,14 +29,14 @@ $uri = '/' . trim($uri, '/');
 $S_controller = $_GET['controller'] ?? 'homepage';
 $S_action = $_GET['action'] ?? 'login';
 
-View::openBuffer();
+view::openBuffer();
 // Exécution du contrôleur et de l'action
 $C_controller = new Controller($S_controller, $S_action);
 $C_controller->execute();
 
 // Récupère le contenu tamponné
-$displayContent = View::getBufferContent();
+$displayContent = view::getBufferContent();
 $A_params = $C_controller->getParams();
 
 // Utilise le layout avec le contenu
-View::show('Layout', ['body' => $displayContent]);
+view::show('layout', ['body' => $displayContent]);
