@@ -26,12 +26,6 @@ final class controller
         return htmlspecialchars($action, ENT_QUOTES, 'UTF-8');
     }
 
-    public function getUrl(): array
-    {
-        return $this->url;
-    }
-
-
     public function execute(): void
     {
         $controller = $this->url['controller'];
