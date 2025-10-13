@@ -6,7 +6,7 @@ final class userController
     {
         $model = new userModel();
         $status = method_exists($model, 'getDbStatus') ? $model->getDbStatus() : ['available' => true, 'message' => ''];
-        View::show('user/login', ['db_status' => $status]);
+        view::show('user/login', ['db_status' => $status]);
     }
 
     public function login(): void
@@ -15,7 +15,7 @@ final class userController
         $status = method_exists($model, 'getDbStatus') ? $model->getDbStatus() : ['available' => true, 'message' => ''];
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            View::show('user/login', ['db_status' => $status]);
+            view::show('user/login', ['db_status' => $status]);
             return;
         }
 
@@ -74,6 +74,6 @@ final class userController
 
     private function renderResult(bool $success, string $message): void
     {
-        View::show('homepageView', ['flash' => ['success' => $success, 'message' => $message]]);
+        view::show('homepageView', ['flash' => ['success' => $success, 'message' => $message]]);
     }
 }

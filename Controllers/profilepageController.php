@@ -31,7 +31,7 @@ class profilepageController
         if ($username === '') {
             $_SESSION['flash'] = ['success' => false, 'message' => 'Le nom d\'utilisateur ne peut pas être vide.'];
         } else {
-            UserModel::updateUsername($_SESSION['user_id'], $username);
+            userModel::updateUsername($_SESSION['user_id'], $username);
             $_SESSION['flash'] = ['success' => true, 'message' => 'Nom d\'utilisateur mis à jour.'];
         }
         header('Location: ?controller=profilepage&action=index');
@@ -48,7 +48,7 @@ class profilepageController
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $_SESSION['flash'] = ['success' => false, 'message' => 'Email invalide.'];
         } else {
-            UserModel::updateEmail($_SESSION['user_id'], $email);
+            userModel::updateEmail($_SESSION['user_id'], $email);
             $_SESSION['flash'] = ['success' => true, 'message' => 'Email mis à jour.'];
         }
         header('Location: ?controller=profilepage&action=index');
@@ -62,7 +62,7 @@ class profilepageController
             exit;
         }
         $bio = trim($_POST['bio'] ?? '');
-        UserModel::updateBio($_SESSION['user_id'], $bio);
+        userModel::updateBio($_SESSION['user_id'], $bio);
         $_SESSION['flash'] = ['success' => true, 'message' => 'Bio mise à jour.'];
         header('Location: ?controller=profilepage&action=index');
         exit;

@@ -1,6 +1,6 @@
 <?php
 
-final class View
+final class view
 {
     public static function openBuffer(): void
     {

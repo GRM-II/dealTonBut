@@ -5,7 +5,7 @@ final class autoLoader
 {
     public static function loadClassCore ($S_className)
     {
-        $S_file = Constants::coreRepository() . "$S_className";
+        $S_file = constants::coreRepository() . "$S_className";
         return static::_load($S_file);
     }
 

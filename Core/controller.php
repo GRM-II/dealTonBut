@@ -1,5 +1,5 @@
 <?php
-final class Controller
+final class controller
 {
     private array $url;
     private array $params = [];
