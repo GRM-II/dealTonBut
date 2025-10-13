@@ -1,17 +1,17 @@
 <?php
 
-final class User_controller
+final class userController
 {
     public function defaultAction()
     {
-        $model = new User_model();
+        $model = new userModel();
         $status = method_exists($model, 'getDbStatus') ? $model->getDbStatus() : ['available' => true, 'message' => ''];
         View::show('user/Login', ['db_status' => $status]);
     }
 
     public function login(): void
     {
-        $model = new User_model();
+        $model = new userModel();
         $status = method_exists($model, 'getDbStatus') ? $model->getDbStatus() : ['available' => true, 'message' => ''];
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -66,7 +66,7 @@ final class User_controller
             return;
         }
 
-        $userModel = new User_model();
+        $userModel = new userModel();
         $result = $userModel->createUser($username, $email, $password);
 
         $this->renderResult($result['success'], $result['message']);

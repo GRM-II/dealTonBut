@@ -1,6 +1,6 @@
 <?php
 
-final class User_model
+final class userModel
 {
     private $_S_message = "Si tu vois ça, c'est que ça marche ! :D";
 

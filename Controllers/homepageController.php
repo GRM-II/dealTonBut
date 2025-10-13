@@ -4,7 +4,7 @@ class homePageController
 {
     public function login()
     {
-        $model = new User_model();
+        $model = new userModel();
         if (method_exists($model, 'getDbStatus')) {
             $status = $model->getDbStatus();
         } else {
