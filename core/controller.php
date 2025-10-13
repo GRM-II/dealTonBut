@@ -14,27 +14,7 @@ final class controller
     {
         $name = (string)$controller;
         $name = trim($name);
-        if ($name === '') {
-            $candidate = 'homepageController';
-            return htmlspecialchars($candidate, ENT_QUOTES, 'UTF-8');
-        }
-
-        $candidates = [
-            $name . 'Controller',               // e.g., userController
-            ucfirst($name) . 'Controller',     // e.g., User_controller (legacy style)
-            ucfirst($name) . 'Controller',      // e.g., UserController
-        ];
-
-        foreach ($candidates as $candidate) {
-            $path = constants::controllersRepository() . $candidate . '.php';
-            if (is_readable($path)) {
-                return htmlspecialchars($candidate, ENT_QUOTES, 'UTF-8');
-            }
-        }
-
-        // Default to original behavior if none found
-        $candidate = $name . 'Controller';
-        return htmlspecialchars($candidate, ENT_QUOTES, 'UTF-8');
+        return htmlspecialchars($name . 'Controller', ENT_QUOTES, 'UTF-8');
     }
 
     private function actionName(?string $action): string
