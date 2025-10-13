@@ -22,10 +22,6 @@ final class controller
         if (empty($action)) {
             return 'login';
         }
-
-        $action = $action;
-
-
         return htmlspecialchars($action, ENT_QUOTES, 'UTF-8');
     }
 
