@@ -14,7 +14,8 @@ final class controller
     {
         $name = (string)$controller;
         $name = trim($name);
-        return htmlspecialchars($name . 'Controller', ENT_QUOTES, 'UTF-8');
+        $name = $name . 'Controller';
+        return htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
     }
 
     private function actionName(?string $action): string
