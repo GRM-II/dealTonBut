@@ -21,12 +21,12 @@ final class Controller
 
         $candidates = [
             $name . 'Controller',               // e.g., userController
-            ucfirst($name) . '_controller',     // e.g., User_controller (legacy style)
+            ucfirst($name) . 'Controller',     // e.g., User_controller (legacy style)
             ucfirst($name) . 'Controller',      // e.g., UserController
         ];
 
         foreach ($candidates as $candidate) {
-            $path = Constants::controllersRepository() . $candidate . '.php';
+            $path = constants::controllersRepository() . $candidate . '.php';
             if (is_readable($path)) {
                 return htmlspecialchars($candidate, ENT_QUOTES, 'UTF-8');
             }

@@ -6,7 +6,7 @@ final class userController
     {
         $model = new userModel();
         $status = method_exists($model, 'getDbStatus') ? $model->getDbStatus() : ['available' => true, 'message' => ''];
-        View::show('user/Login', ['db_status' => $status]);
+        View::show('user/login', ['db_status' => $status]);
     }
 
     public function login(): void
@@ -15,7 +15,7 @@ final class userController
         $status = method_exists($model, 'getDbStatus') ? $model->getDbStatus() : ['available' => true, 'message' => ''];
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            View::show('user/Login', ['db_status' => $status]);
+            View::show('user/login', ['db_status' => $status]);
             return;
         }
 

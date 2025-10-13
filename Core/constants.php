@@ -1,5 +1,5 @@
 <?php
-final class Constants
+final class constants
 {
     // Les constantes relatives aux chemins
 
