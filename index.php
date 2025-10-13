@@ -31,7 +31,7 @@ $S_action = $_GET['action'] ?? 'login';
 
 view::openBuffer();
 // Exécution du contrôleur et de l'action
-$C_controller = new Controller($S_controller, $S_action);
+$C_controller = new controller($S_controller, $S_action);
 $C_controller->execute();
 
 // Récupère le contenu tamponné
