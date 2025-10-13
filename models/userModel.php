@@ -144,7 +144,7 @@ final class userModel
             } catch (\PDOException $e) {
                 $code = $e->getCode();
                 $msg = $e->getMessage();
-                error_log("PDO Exception: Code=$code, Message=$msg");
+                error_log("PDO exception: Code=$code, Message=$msg");
                 // 23000 = integrity constraint violation (incl. duplicates)
                 if ($code === '23000' || strpos($msg, '1062') !== false) {
                     if (stripos($msg, 'Username') !== false) {

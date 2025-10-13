@@ -2,10 +2,10 @@
 
 // Ce fichier est le point d'entrée de votre application
 
-require 'Core/autoLoader.php';
-require 'Core/view.php';
-require 'Core/controller.php';
-require 'Core/Exception/controllerException.php';
+require 'core/autoLoader.php';
+require 'core/view.php';
+require 'core/controller.php';
+require 'core/exception/controllerException.php';
 
 //////////////////////////////////////////////////////////////////////////
 if (session_status() === PHP_SESSION_NONE) {

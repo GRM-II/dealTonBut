@@ -3,15 +3,15 @@ final class constants
 {
     // Les constantes relatives aux chemins
 
-    const VIEWS_REPOSITORY       = '/Views/';
+    const VIEWS_REPOSITORY       = '/views/';
 
-    const MODELS_REPOSITORY      = '/Models/';
+    const MODELS_REPOSITORY      = '/models/';
 
-    const CORE_REPOSITORY        = '/Core/';
+    const CORE_REPOSITORY        = '/core/';
 
-    const EXCEPTIONS_REPOSITORY  = '/Core/Exception/';
+    const EXCEPTIONS_REPOSITORY  = '/core/exception/';
 
-    const CONTROLLERS_REPOSITORY = '/Controllers/';
+    const CONTROLLERS_REPOSITORY = '/controllers/';
 
 
     public static function rootRepository(): string {

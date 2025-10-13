@@ -1,5 +1,5 @@
 <?php
-require 'Core/constants.php';
+require 'core/constants.php';
 
 final class autoLoader
 {
