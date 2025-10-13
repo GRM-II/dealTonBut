@@ -1,6 +1,5 @@
 <?php
-
-final class User_model
+final class userModel
 {
     private static ?PDO $connection = null;
 
