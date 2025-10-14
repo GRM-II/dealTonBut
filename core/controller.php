@@ -10,20 +10,21 @@ final class controller
         $this->url['action'] = $this->actionName($S_action);
     }
 
-    private function controllerName(?string $controller): string
+    private function controllerName(?string $S_controller): string
     {
-        $name = (string)$controller;
-        $name = trim($name);
-        $name = $name . 'Controller';
-        return htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+        if (empty($S_controller)) {
+            $S_controller = 'homepage';
+        }
+        $S_name = trim($S_controller) . 'Controller';
+        return htmlspecialchars($S_name, ENT_QUOTES, 'UTF-8');
     }
 
-    private function actionName(?string $action): string
+    private function actionName(?string $S_action): string
     {
-        if (empty($action)) {
+        if (empty($S_action)) {
             return 'login';
         }
-        return htmlspecialchars($action, ENT_QUOTES, 'UTF-8');
+        return htmlspecialchars($S_action, ENT_QUOTES, 'UTF-8');
     }
 
     public function execute(): void
