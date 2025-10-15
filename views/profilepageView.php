@@ -1,97 +1,82 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DealTonBut - Profil</title>
-    <link rel="stylesheet" href="/public/assets/includes/styles/style.css">
-    <link rel="icon" type="image/x-icon" href="/public/assets/img/favicon.ico">
-</head>
-<body>
-<header>
-    <div class="header-left">
-        <img src="/public/assets/img/placeholder-meme.jpeg" alt="[PLACEHOLDER] amoU" class="header-logo">
-    </div>
-    <div style="display: flex; gap: 10px; align-items: center;">
-        <a href="?controller=user&action=logout" style="padding: 8px 15px; background: #dc3545; color: white; text-decoration: none; border-radius: 5px;">Se déconnecter</a>
-        <button id="theme-toggle" onclick="toggleTheme()" aria-label="Change theme"></button>
-    </div>
-</header>
+<?php if (session_status() === PHP_SESSION_NONE) session_start();
+$dbUnavailable = isset($A_view['db_status']) && isset($A_view['db_status']['available']) && !$A_view['db_status']['available'];
+$dbMessage = $dbUnavailable ? ($A_view['db_status']['message'] . (isset($A_view['db_status']['details']) ? ' – ' . $A_view['db_status']['details'] : '')) : '';
+$disabledAttr = $dbUnavailable ? 'disabled' : '';
+?>
+<div class="content">
+    <div class="login-rectangle">
+        <img src="/public/assets/img/placeholder-meme.jpeg" alt="Image de profil" class="log-img">
+        <div class="rectangle-title">Profil utilisateur</div>
 
-<main>
-    <div class="content">
-        <div class="login-rectangle">
-            <img src="/public/assets/img/placeholder-meme.jpeg" alt="Image de profil" class="log-img">
-            <div class="rectangle-title">Profil utilisateur</div>
-
-            <div style="margin-top:20px;">
-                <form id="edit-username-form" method="post" action="?controller=profilepage&action=updateProfile" style="display:inline;">
-                    <strong>Nom d'utilisateur :</strong>
-                    <span id="username-display"><?php echo htmlspecialchars($A_view['username'] ?? 'N/A'); ?></span>
-                    <input type="text" id="username-input" name="new_username" value="<?php echo htmlspecialchars($A_view['username'] ?? ''); ?>" style="display:none;width:140px;" class="input-rectangle" required>
-                    <button type="button" id="edit-username-btn" class="input-rectangle" style="padding:2px 8px;font-size:0.95em;">Modifier</button>
-                    <button type="submit" id="save-username-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;background:#1360AA;color:#fff;">Enregistrer</button>
-                    <button type="button" id="cancel-username-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;">Annuler</button>
-                </form>
-                <br>
-                <form id="edit-email-form" method="post" action="?controller=profilepage&action=updateProfile" style="display:inline;">
-                    <strong>Email :</strong>
-                    <span id="email-display"><?php echo htmlspecialchars($A_view['email'] ?? 'N/A'); ?></span>
-                    <input type="email" id="email-input" name="new_email" value="<?php echo htmlspecialchars($email ?? ''); ?>" style="display:none;width:180px;" class="input-rectangle" required>
-                    <button type="button" id="edit-email-btn" class="input-rectangle" style="padding:2px 8px;font-size:0.95em;">Modifier</button>
-                    <button type="submit" id="save-email-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;background:#1360AA;color:#fff;">Enregistrer</button>
-                    <button type="button" id="cancel-email-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;">Annuler</button>
-                </form>
+        <?php if ($dbUnavailable): ?>
+            <div style="margin:10px 0;padding:10px;border-radius:6px;background:#fff4e5;color:#92400e;border:1px solid #f6ad55;">
+                <?php echo htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8'); ?>
             </div>
+        <?php endif; ?>
 
-            <form method="post" action="?controller=profilepage&action=updateProfile" style="margin-top:20px;">
-                <label for="bio"><strong>Bio :</strong></label><br>
-                <textarea id="bio" name="bio" rows="4" cols="40" class="input-rectangle" placeholder="Présentez-vous..."></textarea><br>
-                <button type="submit" class="input-rectangle" style="background:#1360AA;color:#fff;cursor:pointer;">Enregistrer la bio</button>
+        <?php if (isset($A_view['flash'])): ?>
+            <div style="margin:10px 0;padding:10px;border-radius:6px;<?php echo $A_view['flash']['success'] ? 'background:#e6ffed;color:#03543f;border:1px solid #84e1bc;' : 'background:#ffe6e6;color:#9b1c1c;border:1px solid #f5a4a4;'; ?>">
+                <?php echo htmlspecialchars($A_view['flash']['message'], ENT_QUOTES, 'UTF-8'); ?>
+            </div>
+        <?php endif; ?>
+
+        <div style="margin-top:20px;">
+            <form id="edit-username-form" method="post" action="?controller=profilepage&action=updateProfile" style="display:inline;">
+                <strong>Nom d'utilisateur :</strong>
+                <span id="username-display"><?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
+                <input type="text" id="new_username" name="new_username" value="<?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" style="display:none;width:140px;" class="input-rectangle" required <?php echo $disabledAttr; ?>>
+                <button type="button" id="edit-username-btn" class="input-rectangle" style="padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Modifier</button>
+                <button type="submit" id="save-username-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;background:#1360AA;color:#fff;" <?php echo $disabledAttr; ?>>Enregistrer</button>
+                <button type="button" id="cancel-username-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Annuler</button>
+            </form>
+            <br><br>
+            <form id="edit-email-form" method="post" action="?controller=profilepage&action=updateProfile" style="display:inline;">
+                <strong>Email :</strong>
+                <span id="email-display"><?php echo htmlspecialchars($A_view['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
+                <input type="email" id="new_email" name="new_email" value="<?php echo htmlspecialchars($A_view['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" style="display:none;width:180px;" class="input-rectangle" required <?php echo $disabledAttr; ?>>
+                <button type="button" id="edit-email-btn" class="input-rectangle" style="padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Modifier</button>
+                <button type="submit" id="save-email-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;background:#1360AA;color:#fff;" <?php echo $disabledAttr; ?>>Enregistrer</button>
+                <button type="button" id="cancel-email-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Annuler</button>
+            </form>
+            <br><br>
+            <form id="edit-password-form" method="post" action="?controller=profilepage&action=updateProfile" style="display:inline;">
+                <strong>Mot de passe :</strong>
+                <span id="password-display">••••••••</span>
+                <input type="password" id="new_password" name="new_password" placeholder="Nouveau mot de passe" style="display:none;width:180px;" class="input-rectangle" required <?php echo $disabledAttr; ?>>
+                <button type="button" id="edit-password-btn" class="input-rectangle" style="padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Modifier</button>
+                <button type="submit" id="save-password-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;background:#1360AA;color:#fff;" <?php echo $disabledAttr; ?>>Enregistrer</button>
+                <button type="button" id="cancel-password-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Annuler</button>
             </form>
         </div>
-    </div>
-</main>
 
-<footer>
-    <div class="footer-left">
-        <img src="/public/assets/img/amU_logo.svg" alt="[PLACEHOLDER] amoU" class="footer-logo">
-        <p>Mentions légales :</p>
+        <div style="margin-top:30px;padding-top:20px;border-top:1px solid #ddd;">
+            <strong style="color:#9b1c1c;">Zone de danger</strong><br>
+            <p style="font-size:0.9em;color:#666;">La suppression de votre compte est définitive et irréversible.</p>
+            <button type="button" id="delete-account-btn" class="input-rectangle" style="background:#dc2626;color:#fff;cursor:pointer;margin-top:10px;" <?php echo $disabledAttr; ?>>Supprimer mon compte</button>
+        </div>
     </div>
-</footer>
+</div>
+
+<!-- Modal de confirmation de suppression -->
+<div id="delete-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;justify-content:center;align-items:center;">
+    <div style="background:white;padding:30px;border-radius:8px;max-width:400px;text-align:center;">
+        <h3 style="color:#9b1c1c;margin-top:0;">Confirmer la suppression</h3>
+        <p>Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.</p>
+        <form method="post" action="?controller=profilepage&action=deleteAccount" style="display:inline;">
+            <button type="submit" class="input-rectangle" style="background:#dc2626;color:#fff;margin-right:10px;">Oui, supprimer</button>
+            <button type="button" id="cancel-delete-btn" class="input-rectangle">Annuler</button>
+        </form>
+    </div>
+</div>
 
 <script>
-    function toggleTheme() {
-        document.body.classList.toggle('dark-theme');
-        setThemeIcon();
-        const theme = document.body.classList.contains('dark-theme') ? 'dark' : 'light';
-        localStorage.setItem('theme', theme);
-    }
-
-    function setThemeIcon() {
-        const btn = document.getElementById('theme-toggle');
-        if (btn) {
-            btn.innerHTML = document.body.classList.contains('dark-theme') ? '🌙' : '☀️';
-        }
-    }
-
-    function applySavedTheme() {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.body.classList.add('dark-theme');
-        }
-        setThemeIcon();
-    }
-
     window.addEventListener('DOMContentLoaded', function() {
-        applySavedTheme();
-
         // Edit username
         const editUsernameBtn = document.getElementById('edit-username-btn');
         const saveUsernameBtn = document.getElementById('save-username-btn');
         const cancelUsernameBtn = document.getElementById('cancel-username-btn');
         const usernameDisplay = document.getElementById('username-display');
-        const usernameInput = document.getElementById('username-input');
+        const usernameInput = document.getElementById('new_username');
 
         editUsernameBtn.addEventListener('click', function() {
             usernameDisplay.style.display = 'none';
@@ -116,7 +101,7 @@
         const saveEmailBtn = document.getElementById('save-email-btn');
         const cancelEmailBtn = document.getElementById('cancel-email-btn');
         const emailDisplay = document.getElementById('email-display');
-        const emailInput = document.getElementById('email-input');
+        const emailInput = document.getElementById('new_email');
 
         editEmailBtn.addEventListener('click', function() {
             emailDisplay.style.display = 'none';
@@ -135,7 +120,49 @@
             editEmailBtn.style.display = '';
             emailInput.value = emailDisplay.textContent;
         });
+
+        // Edit password
+        const editPasswordBtn = document.getElementById('edit-password-btn');
+        const savePasswordBtn = document.getElementById('save-password-btn');
+        const cancelPasswordBtn = document.getElementById('cancel-password-btn');
+        const passwordDisplay = document.getElementById('password-display');
+        const passwordInput = document.getElementById('new_password');
+
+        editPasswordBtn.addEventListener('click', function() {
+            passwordDisplay.style.display = 'none';
+            passwordInput.style.display = '';
+            savePasswordBtn.style.display = '';
+            cancelPasswordBtn.style.display = '';
+            editPasswordBtn.style.display = 'none';
+            passwordInput.focus();
+        });
+
+        cancelPasswordBtn.addEventListener('click', function() {
+            passwordDisplay.style.display = '';
+            passwordInput.style.display = 'none';
+            savePasswordBtn.style.display = 'none';
+            cancelPasswordBtn.style.display = 'none';
+            editPasswordBtn.style.display = '';
+            passwordInput.value = '';
+        });
+
+        // Delete account modal
+        const deleteAccountBtn = document.getElementById('delete-account-btn');
+        const deleteModal = document.getElementById('delete-modal');
+        const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
+
+        deleteAccountBtn.addEventListener('click', function() {
+            deleteModal.style.display = 'flex';
+        });
+
+        cancelDeleteBtn.addEventListener('click', function() {
+            deleteModal.style.display = 'none';
+        });
+
+        deleteModal.addEventListener('click', function(e) {
+            if (e.target === deleteModal) {
+                deleteModal.style.display = 'none';
+            }
+        });
     });
 </script>
-</body>
-</html>

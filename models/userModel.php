@@ -186,6 +186,49 @@ final class userModel
     }
 
     /**
+     * Met à jour le mot de passe
+     */
+    public static function updatePassword(int $userId, string $hashedPassword): bool
+    {
+        if (empty($hashedPassword)) {
+            return false;
+        }
+
+        try {
+            $pdo = self::getConnection();
+            $sql = "UPDATE User SET Mdp = :password WHERE id = :userId";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':password', $hashedPassword, PDO::PARAM_STR);
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+
+            return $stmt->execute();
+
+        } catch (PDOException $e) {
+            error_log("Erreur updatePassword : " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Supprime un utilisateur
+     */
+    public static function deleteUser(int $userId): bool
+    {
+        try {
+            $pdo = self::getConnection();
+            $sql = "DELETE FROM User WHERE id = :userId";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+
+            return $stmt->execute();
+
+        } catch (PDOException $e) {
+            error_log("Erreur deleteUser : " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
      * Met à jour le nom d'utilisateur
      */
     public function updateUsername(string $currentUsername, string $newUsername): array
