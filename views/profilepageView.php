@@ -20,8 +20,8 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             </div>
         <?php endif; ?>
 
-        <div style="margin-top:20px;">
-            <form id="edit-user name-form" method="post" action="?controller=profilepage&action=updateProfile" style="display:inline;">
+        <div style="margin-top:20px;text-align:center;">
+            <form id="edit-username-form" method="post" action="?controller=profilepage&action=updateProfile" style="display:inline;">
                 <strong>Nom d'utilisateur :</strong>
                 <span id="username-display"><?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
                 <input type="text" id="new_username" name="new_username" value="<?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" style="display:none;width:140px;" class="input-rectangle" required <?php echo $disabledAttr; ?>>
@@ -46,6 +46,15 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                 <button type="button" id="edit-password-btn" class="input-rectangle" style="padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Modifier</button>
                 <button type="submit" id="save-password-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;background:#1360AA;color:#fff;" <?php echo $disabledAttr; ?>>Enregistrer</button>
                 <button type="button" id="cancel-password-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Annuler</button>
+            </form>
+        </div>
+
+
+        <div style="margin-top:30px;text-align:center;">
+            <form method="post" action="?controller=user&action=logout">
+                <button type="submit" class="input-rectangle" style="background:#1360AA;color:#fff;cursor:pointer;padding:10px 20px;">
+                    Se déconnecter
+                </button>
             </form>
         </div>
 
