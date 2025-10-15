@@ -1,8 +1,7 @@
 <?php
-//require DIR . '/../view/homepageView.php';
-class homePageController
+final class homepageController  // Changé de homePageController à homepageController
 {
-    public function login()
+    public function login(): void  // Changé de login() à login(): void
     {
         $model = new userModel();
         if (method_exists($model, 'getDbStatus')) {
@@ -13,8 +12,13 @@ class homePageController
         view::show("homepageView", ['db_status' => $status]);
     }
 
+    public function index(): void  // Ajout de la méthode index
+    {
+        $this->login();  // Redirige vers login ou afficher la homepage
+    }
+
     // Page de diagnostic simple pour aider à activer les pilotes MySQL
-    public function diagnostics()
+    public function diagnostics(): void  // Ajout du type de retour
     {
         $pdoAvailable = class_exists('PDO');
         $pdoDrivers = $pdoAvailable ? implode(', ', \PDO::getAvailableDrivers()) : 'PDO indisponible';
@@ -24,7 +28,7 @@ class homePageController
         $iniFile = php_ini_loaded_file();
 
         header('Content-Type: text/html; charset=utf-8');
-        echo '<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Diagnostics</title></head><body>'; 
+        echo '<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Diagnostics</title></head><body>';
         echo '<h1>Diagnostics MySQL</h1>';
         echo '<ul>';
         echo '<li>Version de PHP: ' . htmlspecialchars($phpVersion, ENT_QUOTES, 'UTF-8') . '</li>';
