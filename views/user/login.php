@@ -1,20 +1,3 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DealTonBut - Connexion</title>
-    <link rel="stylesheet" href="/public/assets/includes/styles/style.css">
-    <link rel="icon" type="image/x-icon" href="/public/assets/img/favicon.ico">
-</head>
-<body>
-<header>
-    <div class="header-left">
-        <img src="/public/assets/img/placeholder-meme.jpeg" alt="[PLACEHOLDER] amoU" class="header-logo">
-    </div>
-    <button id="theme-toggle" onclick="toggleTheme()" aria-label="Change theme"></button>
-</header>
-
 <main>
     <div class="content">
         <div class="login-rectangle">
@@ -58,13 +41,6 @@
     </div>
 </main>
 
-<footer>
-    <div class="footer-left">
-        <img src="/public/assets/img/amU_logo.svg" alt="[PLACEHOLDER] amoU" class="footer-logo">
-        <p>Mentions légales :</p>
-    </div>
-</footer>
-
 <script>
     function setThemeIcon() {
         const btn = document.getElementById('theme-toggle');
@@ -96,5 +72,3 @@
     // IMPORTANT : Pas de hashing côté client !
     // Le mot de passe est envoyé en clair via HTTPS et hashé côté serveur
 </script>
-</body>
-</html>
