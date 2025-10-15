@@ -39,6 +39,22 @@ final class userModel
         return self::$connection;
     }
 
+    // Dans votre userModel.php
+    public function getUserIdByUsername(string $username): ?int
+    {
+        try {
+            $pdo = self::getConnection(); // ← Changement ici !
+            $stmt = $pdo->prepare("SELECT ID FROM User WHERE Username = :username");
+            $stmt->execute(['username' => $username]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $result ? (int)$result['ID'] : null;
+        } catch (PDOException $e) {
+            error_log("Erreur getUserIdByUsername: " . $e->getMessage());
+            return null;
+        }
+    }
+
     /**
      * Crée un nouvel utilisateur dans la base de données
      */
@@ -227,6 +243,25 @@ final class userModel
             return false;
         }
     }
+    /**
+     * Supprime un utilisateur par son username
+     */
+    public function deleteUserByUsername(string $username): bool
+    {
+        try {
+            $pdo = self::getConnection();
+            $sql = "DELETE FROM User WHERE Username = :username";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':username', $username, PDO::PARAM_STR);
+
+            return $stmt->execute();
+
+        } catch (PDOException $e) {
+            error_log("Erreur deleteUserByUsername : " . $e->getMessage());
+            return false;
+        }
+    }
+
 
     /**
      * Met à jour le nom d'utilisateur

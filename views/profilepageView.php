@@ -21,7 +21,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         <?php endif; ?>
 
         <div style="margin-top:20px;">
-            <form id="edit-username-form" method="post" action="?controller=profilepage&action=updateProfile" style="display:inline;">
+            <form id="edit-user name-form" method="post" action="?controller=profilepage&action=updateProfile" style="display:inline;">
                 <strong>Nom d'utilisateur :</strong>
                 <span id="username-display"><?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
                 <input type="text" id="new_username" name="new_username" value="<?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" style="display:none;width:140px;" class="input-rectangle" required <?php echo $disabledAttr; ?>>
@@ -49,7 +49,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             </form>
         </div>
 
-        <div style="margin-top:30px;padding-top:20px;border-top:1px solid #ddd;">
+        <div style="margin-top:30px;padding-top:20px;border-top:1px solid #ddd;text-align:center;">
             <strong style="color:#9b1c1c;">Zone de danger</strong><br>
             <p style="font-size:0.9em;color:#666;">La suppression de votre compte est définitive et irréversible.</p>
             <button type="button" id="delete-account-btn" class="input-rectangle" style="background:#dc2626;color:#fff;cursor:pointer;margin-top:10px;" <?php echo $disabledAttr; ?>>Supprimer mon compte</button>
@@ -162,7 +162,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         deleteModal.addEventListener('click', function(e) {
             if (e.target === deleteModal) {
                 deleteModal.style.display = 'none';
-                window.location.href = 'index.php?controller=homepage&action=login';
+                window.location.href = '?controller=homepage&action=login';
             }
         });
     });

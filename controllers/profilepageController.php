@@ -16,6 +16,9 @@ final class profilepageController
             exit;
         }
 
+        // DEBUG : Décommenter pour voir le contenu de la session
+        // echo '<pre>'; var_dump($_SESSION['user']); echo '</pre>'; exit;
+
         $userData = $_SESSION['user'];
         view::show('profilepageView', [
             'username' => $userData['username'] ?? 'N/A',
@@ -88,14 +91,23 @@ final class profilepageController
             exit;
         }
 
-        $userId = $_SESSION['user']['id'];
+        // Récupérer l'ID via le username
+        $username = $_SESSION['user']['username'];
 
         try {
+            // Option A : Créer une méthode dans userModel pour récupérer l'ID
+            $userId = $this->userModel->getUserIdByUsername($username);
+
+            if (!$userId) {
+                throw new Exception('Utilisateur introuvable.');
+            }
+
             $result = $this->userModel->deleteUser($userId);
 
             if ($result) {
+                session_unset();
                 session_destroy();
-                header('Location: ?controller=homepage&deleted=1');
+                header('Location: ?controller=user&action=login&deleted=1');
                 exit;
             } else {
                 throw new Exception('Erreur lors de la suppression du compte.');
