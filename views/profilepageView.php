@@ -21,28 +21,28 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         <?php endif; ?>
 
         <div style="margin-top:20px;">
-            <form id="edit-username-form" method="post" action="?controller=profilepage&action=updateUsername" style="display:inline;">
+            <form id="edit-username-form" method="post" action="?controller=profilepage&action=updateProfile" style="display:inline;">
                 <strong>Nom d'utilisateur :</strong>
-                <span id="username-display"><?php echo htmlspecialchars($A_view['user']['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
-                <input type="text" id="username-input" name="username" value="<?php echo htmlspecialchars($A_view['user']['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" style="display:none;width:140px;" class="input-rectangle" required <?php echo $disabledAttr; ?>>
+                <span id="username-display"><?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
+                <input type="text" id="new_username" name="new_username" value="<?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" style="display:none;width:140px;" class="input-rectangle" required <?php echo $disabledAttr; ?>>
                 <button type="button" id="edit-username-btn" class="input-rectangle" style="padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Modifier</button>
                 <button type="submit" id="save-username-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;background:#1360AA;color:#fff;" <?php echo $disabledAttr; ?>>Enregistrer</button>
                 <button type="button" id="cancel-username-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Annuler</button>
             </form>
             <br><br>
-            <form id="edit-email-form" method="post" action="?controller=profilepage&action=updateEmail" style="display:inline;">
+            <form id="edit-email-form" method="post" action="?controller=profilepage&action=updateProfile" style="display:inline;">
                 <strong>Email :</strong>
-                <span id="email-display"><?php echo htmlspecialchars($A_view['user']['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
-                <input type="email" id="email-input" name="email" value="<?php echo htmlspecialchars($A_view['user']['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" style="display:none;width:180px;" class="input-rectangle" required <?php echo $disabledAttr; ?>>
+                <span id="email-display"><?php echo htmlspecialchars($A_view['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
+                <input type="email" id="new_email" name="new_email" value="<?php echo htmlspecialchars($A_view['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" style="display:none;width:180px;" class="input-rectangle" required <?php echo $disabledAttr; ?>>
                 <button type="button" id="edit-email-btn" class="input-rectangle" style="padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Modifier</button>
                 <button type="submit" id="save-email-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;background:#1360AA;color:#fff;" <?php echo $disabledAttr; ?>>Enregistrer</button>
                 <button type="button" id="cancel-email-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Annuler</button>
             </form>
             <br><br>
-            <form id="edit-password-form" method="post" action="?controller=profilepage&action=updatePassword" style="display:inline;">
+            <form id="edit-password-form" method="post" action="?controller=profilepage&action=updateProfile" style="display:inline;">
                 <strong>Mot de passe :</strong>
                 <span id="password-display">••••••••</span>
-                <input type="password" id="password-input" name="password" placeholder="Nouveau mot de passe" style="display:none;width:180px;" class="input-rectangle" required <?php echo $disabledAttr; ?>>
+                <input type="password" id="new_password" name="new_password" placeholder="Nouveau mot de passe" style="display:none;width:180px;" class="input-rectangle" required <?php echo $disabledAttr; ?>>
                 <button type="button" id="edit-password-btn" class="input-rectangle" style="padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Modifier</button>
                 <button type="submit" id="save-password-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;background:#1360AA;color:#fff;" <?php echo $disabledAttr; ?>>Enregistrer</button>
                 <button type="button" id="cancel-password-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Annuler</button>
@@ -70,34 +70,14 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
 </div>
 
 <script>
-    function setThemeIcon() {
-        const btn = document.getElementById('theme-toggle');
-        if (btn) {
-            if (document.body.classList.contains('dark-theme')) {
-                btn.innerHTML = '🌙';
-            } else {
-                btn.innerHTML = '☀️';
-            }
-        }
-    }
-    function applySavedTheme() {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.body.classList.add('dark-theme');
-        } else {
-            document.body.classList.remove('dark-theme');
-        }
-        setThemeIcon();
-    }
     window.addEventListener('DOMContentLoaded', function() {
-        applySavedTheme();
-
         // Edit username
         const editUsernameBtn = document.getElementById('edit-username-btn');
         const saveUsernameBtn = document.getElementById('save-username-btn');
         const cancelUsernameBtn = document.getElementById('cancel-username-btn');
         const usernameDisplay = document.getElementById('username-display');
-        const usernameInput = document.getElementById('username-input');
+        const usernameInput = document.getElementById('new_username');
+
         editUsernameBtn.addEventListener('click', function() {
             usernameDisplay.style.display = 'none';
             usernameInput.style.display = '';
@@ -106,6 +86,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             editUsernameBtn.style.display = 'none';
             usernameInput.focus();
         });
+
         cancelUsernameBtn.addEventListener('click', function() {
             usernameDisplay.style.display = '';
             usernameInput.style.display = 'none';
@@ -120,7 +101,8 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         const saveEmailBtn = document.getElementById('save-email-btn');
         const cancelEmailBtn = document.getElementById('cancel-email-btn');
         const emailDisplay = document.getElementById('email-display');
-        const emailInput = document.getElementById('email-input');
+        const emailInput = document.getElementById('new_email');
+
         editEmailBtn.addEventListener('click', function() {
             emailDisplay.style.display = 'none';
             emailInput.style.display = '';
@@ -129,6 +111,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             editEmailBtn.style.display = 'none';
             emailInput.focus();
         });
+
         cancelEmailBtn.addEventListener('click', function() {
             emailDisplay.style.display = '';
             emailInput.style.display = 'none';
@@ -143,7 +126,8 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         const savePasswordBtn = document.getElementById('save-password-btn');
         const cancelPasswordBtn = document.getElementById('cancel-password-btn');
         const passwordDisplay = document.getElementById('password-display');
-        const passwordInput = document.getElementById('password-input');
+        const passwordInput = document.getElementById('new_password');
+
         editPasswordBtn.addEventListener('click', function() {
             passwordDisplay.style.display = 'none';
             passwordInput.style.display = '';
@@ -152,6 +136,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             editPasswordBtn.style.display = 'none';
             passwordInput.focus();
         });
+
         cancelPasswordBtn.addEventListener('click', function() {
             passwordDisplay.style.display = '';
             passwordInput.style.display = 'none';
