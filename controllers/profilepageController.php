@@ -2,26 +2,21 @@
 
 final class profilepageController
 {
+    private $userModel;
+
+    public function __construct()
+    {
+        $this->userModel = new userModel();
+    }
+
     public function index(): void
     {
-        // DEBUG: Afficher le contenu complet de la session
-        echo "<!-- DEBUG SESSION COMPLETE: " . htmlspecialchars(json_encode($_SESSION)) . " -->\n";
-
-        // Vérifier si l'utilisateur est connecté
         if (!isset($_SESSION['user']) || !isset($_SESSION['logged_in'])) {
-            echo "<!-- DEBUG: User not logged in, redirecting... -->\n";
             header('Location: ?controller=user&action=login');
             exit;
         }
 
-        // Récupérer les données utilisateur depuis la session
         $userData = $_SESSION['user'];
-
-        echo "<!-- DEBUG USER DATA: " . htmlspecialchars(json_encode($userData)) . " -->\n";
-        echo "<!-- DEBUG Username: " . htmlspecialchars($userData['username'] ?? 'MISSING') . " -->\n";
-        echo "<!-- DEBUG Email: " . htmlspecialchars($userData['email'] ?? 'MISSING') . " -->\n";
-
-        // Passer les données à la vue
         view::show('profilepageView', [
             'username' => $userData['username'] ?? 'N/A',
             'email' => $userData['email'] ?? 'N/A'
@@ -41,32 +36,78 @@ final class profilepageController
             exit;
         }
 
-        $userModel = new userModel();
         $currentUsername = $_SESSION['user']['username'];
 
         // Mise à jour du nom d'utilisateur
         if (isset($_POST['new_username']) && !empty(trim($_POST['new_username']))) {
             $newUsername = trim($_POST['new_username']);
-            $result = $userModel->updateUsername($currentUsername, $newUsername);
+            $result = $this->userModel->updateUsername($currentUsername, $newUsername);
 
             if ($result['success']) {
                 $_SESSION['user']['username'] = $newUsername;
+                $_SESSION['flash'] = ['success' => true, 'message' => $result['message']];
                 $currentUsername = $newUsername;
+            } else {
+                $_SESSION['flash'] = ['success' => false, 'message' => $result['message']];
             }
         }
 
         // Mise à jour de l'email
         if (isset($_POST['new_email']) && !empty(trim($_POST['new_email']))) {
             $newEmail = trim($_POST['new_email']);
-            $result = $userModel->updateEmail($currentUsername, $newEmail);
+            $result = $this->userModel->updateEmail($currentUsername, $newEmail);
 
             if ($result['success']) {
                 $_SESSION['user']['email'] = $newEmail;
+                $_SESSION['flash'] = ['success' => true, 'message' => $result['message']];
+            } else {
+                $_SESSION['flash'] = ['success' => false, 'message' => $result['message']];
             }
         }
 
-        // Rediriger vers le profil
-        header('Location: ?controller=profilepage&action=index');
+        // Mise à jour du mot de passe
+        if (isset($_POST['new_password']) && !empty($_POST['new_password'])) {
+            $hashedPassword = password_hash($_POST['new_password'], PASSWORD_DEFAULT);
+            $result = $this->userModel->updatePassword($_SESSION['user']['id'], $hashedPassword);
+
+            if ($result) {
+                $_SESSION['flash'] = ['success' => true, 'message' => 'Mot de passe mis à jour avec succès.'];
+            } else {
+                $_SESSION['flash'] = ['success' => false, 'message' => 'Erreur lors de la mise à jour du mot de passe.'];
+            }
+        }
+
+        header('Location: ?controller=profilepage');
         exit;
+    }
+
+    public function deleteAccount(): void
+    {
+        if (!isset($_SESSION['user'])) {
+            header('Location: ?controller=user&action=login');
+            exit;
+        }
+
+        $userId = $_SESSION['user']['id'];
+
+        try {
+            $result = $this->userModel->deleteUser($userId);
+
+            if ($result) {
+                session_destroy();
+                header('Location: ?controller=homepage&deleted=1');
+                exit;
+            } else {
+                throw new Exception('Erreur lors de la suppression du compte.');
+            }
+
+        } catch (Exception $e) {
+            $_SESSION['flash'] = [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+            header('Location: ?controller=profilepage');
+            exit;
+        }
     }
 }
