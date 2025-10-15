@@ -37,4 +37,4 @@ $displayContent = view::getBufferContent();
 $A_params = $C_controller->getParams();
 
 // Utilise le layout avec le contenu
-view::show('layout', ['body' => $displayContent]);
+view::show('standard/layout', ['body' => $displayContent]);
