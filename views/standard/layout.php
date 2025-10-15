@@ -8,12 +8,12 @@
     <link rel="icon" type="image/x-icon" href="/public/assets/img/favicon.ico">
 </head>
 <body>
-    <?php view::show('standard/header'); ?>
+    <?php view::show('header'); ?>
 
     <main>
         <?php echo $A_view['body']; ?>
     </main>
 
-    <?php view::show('standard/footer'); ?>
+    <?php view::show('footer'); ?>
 </body>
 </html>
