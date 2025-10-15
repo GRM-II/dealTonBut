@@ -162,6 +162,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         deleteModal.addEventListener('click', function(e) {
             if (e.target === deleteModal) {
                 deleteModal.style.display = 'none';
+                window.location.href = 'index.php?controller=homepage&action=login';
             }
         });
     });
