@@ -1,6 +1,6 @@
 <?php if (session_status() === PHP_SESSION_NONE) session_start();
 $dbUnavailable = isset($A_view['db_status']) && isset($A_view['db_status']['available']) && !$A_view['db_status']['available'];
-$dbMessage = $dbUnavailable ? ($A_view['db_status']['message'] . (isset($A_view['db_status']['details']) ? ' — ' . $A_view['db_status']['details'] : '')) : '';
+$dbMessage = $dbUnavailable ? ($A_view['db_status']['message'] . (isset($A_view['db_status']['details']) ? ' – ' . $A_view['db_status']['details'] : '')) : '';
 $disabledAttr = $dbUnavailable ? 'disabled' : '';
 ?>
 <div class="content">
@@ -21,7 +21,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         <?php endif; ?>
 
         <div style="margin-top:20px;">
-            <form id="edit-username-form" method="post" action="?controller=profile&action=updateUsername" style="display:inline;">
+            <form id="edit-username-form" method="post" action="?controller=profilepage&action=updateUsername" style="display:inline;">
                 <strong>Nom d'utilisateur :</strong>
                 <span id="username-display"><?php echo htmlspecialchars($A_view['user']['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
                 <input type="text" id="username-input" name="username" value="<?php echo htmlspecialchars($A_view['user']['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" style="display:none;width:140px;" class="input-rectangle" required <?php echo $disabledAttr; ?>>
@@ -29,8 +29,8 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                 <button type="submit" id="save-username-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;background:#1360AA;color:#fff;" <?php echo $disabledAttr; ?>>Enregistrer</button>
                 <button type="button" id="cancel-username-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Annuler</button>
             </form>
-            <br>
-            <form id="edit-email-form" method="post" action="?controller=profile&action=updateEmail" style="display:inline;">
+            <br><br>
+            <form id="edit-email-form" method="post" action="?controller=profilepage&action=updateEmail" style="display:inline;">
                 <strong>Email :</strong>
                 <span id="email-display"><?php echo htmlspecialchars($A_view['user']['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
                 <input type="email" id="email-input" name="email" value="<?php echo htmlspecialchars($A_view['user']['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" style="display:none;width:180px;" class="input-rectangle" required <?php echo $disabledAttr; ?>>
@@ -38,15 +38,37 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                 <button type="submit" id="save-email-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;background:#1360AA;color:#fff;" <?php echo $disabledAttr; ?>>Enregistrer</button>
                 <button type="button" id="cancel-email-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Annuler</button>
             </form>
+            <br><br>
+            <form id="edit-password-form" method="post" action="?controller=profilepage&action=updatePassword" style="display:inline;">
+                <strong>Mot de passe :</strong>
+                <span id="password-display">••••••••</span>
+                <input type="password" id="password-input" name="password" placeholder="Nouveau mot de passe" style="display:none;width:180px;" class="input-rectangle" required <?php echo $disabledAttr; ?>>
+                <button type="button" id="edit-password-btn" class="input-rectangle" style="padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Modifier</button>
+                <button type="submit" id="save-password-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;background:#1360AA;color:#fff;" <?php echo $disabledAttr; ?>>Enregistrer</button>
+                <button type="button" id="cancel-password-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Annuler</button>
+            </form>
         </div>
 
-        <form method="post" action="?controller=profile&action=updateBio" style="margin-top:20px;">
-            <label for="bio"><strong>Bio :</strong></label><br>
-            <textarea id="bio" name="bio" rows="4" cols="40" class="input-rectangle" placeholder="Présentez-vous..." <?php echo $disabledAttr; ?>><?php echo htmlspecialchars($A_view['user']['bio'] ?? '', ENT_QUOTES, 'UTF-8'); ?></textarea><br>
-            <button type="submit" class="input-rectangle" style="background:#1360AA;color:#fff;cursor:pointer;" <?php echo $disabledAttr; ?>>Enregistrer la bio</button>
+        <div style="margin-top:30px;padding-top:20px;border-top:1px solid #ddd;">
+            <strong style="color:#9b1c1c;">Zone de danger</strong><br>
+            <p style="font-size:0.9em;color:#666;">La suppression de votre compte est définitive et irréversible.</p>
+            <button type="button" id="delete-account-btn" class="input-rectangle" style="background:#dc2626;color:#fff;cursor:pointer;margin-top:10px;" <?php echo $disabledAttr; ?>>Supprimer mon compte</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmation de suppression -->
+<div id="delete-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;justify-content:center;align-items:center;">
+    <div style="background:white;padding:30px;border-radius:8px;max-width:400px;text-align:center;">
+        <h3 style="color:#9b1c1c;margin-top:0;">Confirmer la suppression</h3>
+        <p>Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.</p>
+        <form method="post" action="?controller=profilepage&action=deleteAccount" style="display:inline;">
+            <button type="submit" class="input-rectangle" style="background:#dc2626;color:#fff;margin-right:10px;">Oui, supprimer</button>
+            <button type="button" id="cancel-delete-btn" class="input-rectangle">Annuler</button>
         </form>
     </div>
 </div>
+
 <script>
     function setThemeIcon() {
         const btn = document.getElementById('theme-toggle');
@@ -70,7 +92,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
     window.addEventListener('DOMContentLoaded', function() {
         applySavedTheme();
 
-        //edit username
+        // Edit username
         const editUsernameBtn = document.getElementById('edit-username-btn');
         const saveUsernameBtn = document.getElementById('save-username-btn');
         const cancelUsernameBtn = document.getElementById('cancel-username-btn');
@@ -92,7 +114,8 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             editUsernameBtn.style.display = '';
             usernameInput.value = usernameDisplay.textContent;
         });
-        //edit email
+
+        // Edit email
         const editEmailBtn = document.getElementById('edit-email-btn');
         const saveEmailBtn = document.getElementById('save-email-btn');
         const cancelEmailBtn = document.getElementById('cancel-email-btn');
@@ -113,6 +136,48 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             cancelEmailBtn.style.display = 'none';
             editEmailBtn.style.display = '';
             emailInput.value = emailDisplay.textContent;
+        });
+
+        // Edit password
+        const editPasswordBtn = document.getElementById('edit-password-btn');
+        const savePasswordBtn = document.getElementById('save-password-btn');
+        const cancelPasswordBtn = document.getElementById('cancel-password-btn');
+        const passwordDisplay = document.getElementById('password-display');
+        const passwordInput = document.getElementById('password-input');
+        editPasswordBtn.addEventListener('click', function() {
+            passwordDisplay.style.display = 'none';
+            passwordInput.style.display = '';
+            savePasswordBtn.style.display = '';
+            cancelPasswordBtn.style.display = '';
+            editPasswordBtn.style.display = 'none';
+            passwordInput.focus();
+        });
+        cancelPasswordBtn.addEventListener('click', function() {
+            passwordDisplay.style.display = '';
+            passwordInput.style.display = 'none';
+            savePasswordBtn.style.display = 'none';
+            cancelPasswordBtn.style.display = 'none';
+            editPasswordBtn.style.display = '';
+            passwordInput.value = '';
+        });
+
+        // Delete account modal
+        const deleteAccountBtn = document.getElementById('delete-account-btn');
+        const deleteModal = document.getElementById('delete-modal');
+        const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
+
+        deleteAccountBtn.addEventListener('click', function() {
+            deleteModal.style.display = 'flex';
+        });
+
+        cancelDeleteBtn.addEventListener('click', function() {
+            deleteModal.style.display = 'none';
+        });
+
+        deleteModal.addEventListener('click', function(e) {
+            if (e.target === deleteModal) {
+                deleteModal.style.display = 'none';
+            }
         });
     });
 </script>

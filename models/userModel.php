@@ -155,6 +155,97 @@ final class userModel
             ]
         ];
     }
+    public static function updateUsername(int $userId, string $username): bool
+    {
+        $username = trim($username);
+
+        if (empty($username)) {
+            return false;
+        }
+
+        try {
+            $pdo = self::getConnection();
+            $sql = "UPDATE User SET Username = :username WHERE id = :userId";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':username', $username, PDO::PARAM_STR);
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+
+            return $stmt->execute();
+
+        } catch (PDOException $e) {
+            error_log("Erreur updateUsername : " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Met à jour l'email
+     */
+    public static function updateEmail(int $userId, string $email): bool
+    {
+        $email = trim($email);
+
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return false;
+        }
+
+        try {
+            $pdo = self::getConnection();
+            $sql = "UPDATE User SET Email = :email WHERE id = :userId";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+
+            return $stmt->execute();
+
+        } catch (PDOException $e) {
+            error_log("Erreur updateEmail : " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Met à jour le mot de passe
+     */
+    public static function updatePassword(int $userId, string $hashedPassword): bool
+    {
+        if (empty($hashedPassword)) {
+            return false;
+        }
+
+        try {
+            $pdo = self::getConnection();
+            $sql = "UPDATE User SET Mdp = :password WHERE id = :userId";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':password', $hashedPassword, PDO::PARAM_STR);
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+
+            return $stmt->execute();
+
+        } catch (PDOException $e) {
+            error_log("Erreur updatePassword : " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Supprime un utilisateur
+     */
+    public static function deleteUser(int $userId): bool
+    {
+        try {
+            $pdo = self::getConnection();
+            $sql = "DELETE FROM User WHERE id = :userId";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+
+            return $stmt->execute();
+
+        } catch (PDOException $e) {
+            error_log("Erreur deleteUser : " . $e->getMessage());
+            return false;
+        }
+    }
 
     /**
      * Vérifie le statut de la connexion à la base de données
