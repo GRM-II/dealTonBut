@@ -16,7 +16,7 @@ final class view
 
     public static function show ($S_localisation, $A_parameters = array()) : void
     {
-        $S_file = constants::viewsRepository() . $S_localisation . '.php';
+        $S_file = constants::standardRepository() . $S_localisation . '.php';
 
         $A_view = $A_parameters;
         // Démarrage d'un sous-tampon

@@ -13,6 +13,8 @@ final class constants
 
     const CONTROLLERS_REPOSITORY = '/controllers/';
 
+    const STANDARD_REPOSITORY    = '/views/standard/';
+
 
     public static function rootRepository(): string {
         return realpath(__DIR__ . '/../');
@@ -36,6 +38,10 @@ final class constants
 
     public static function controllersRepository(): string {
         return self::rootRepository() . self::CONTROLLERS_REPOSITORY;
+    }
+
+    public static function standardRepository(): string {
+        return self::rootRepository() . self::STANDARD_REPOSITORY;
     }
 
 
