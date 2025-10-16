@@ -6,7 +6,7 @@ final class userController
     {
         $model = new userModel();
         $status = method_exists($model, 'getDbStatus') ? $model->getDbStatus() : ['available' => true, 'message' => ''];
-        view::show('user/homepage', ['db_status' => $status]);
+        view::show('homepage', ['db_status' => $status]);
     }
     public function login(): void
     {
