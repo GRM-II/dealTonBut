@@ -2,6 +2,12 @@
 
 final class userController
 {
+    public function defaultAction()
+    {
+        $model = new userModel();
+        $status = method_exists($model, 'getDbStatus') ? $model->getDbStatus() : ['available' => true, 'message' => ''];
+        view::show('user/login', ['db_status' => $status]);
+    }
     public function login(): void
     {
         // ACTIVATION AFFICHAGE ERREURS
