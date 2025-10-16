@@ -36,7 +36,7 @@
             </form>
 
             <a href="#" class="text-link">Mot de passe oublié ?</a>
-            <a href="index.php?controller=homepage&action=homepage" class="text-link">Vous ne possédez pas de compte ?</a>
+            <a href="index.php?controller=homepage&action=login" class="text-link">Vous ne possédez pas de compte ?</a>
         </div>
     </div>
 </main>
