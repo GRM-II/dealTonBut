@@ -104,13 +104,13 @@ final class userController
 
     public function register(): void
     {
+        view::show('user/register', ['db_status' => (new userModel())->getDbStatus()]);
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
             echo 'Méthode non autorisée';
             return;
         }
-
-        view::show('user/register', ['db_status' => (new userModel())->getDbStatus()]);
 
         $username = isset($_POST['username']) ? (string)$_POST['username'] : '';
         $email = isset($_POST['email']) ? (string)$_POST['email'] : '';
