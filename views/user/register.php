@@ -45,47 +45,10 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
 </div>
 
 <script>
-    function setThemeIcon() {
-        const btn = document.getElementById('theme-toggle');
-        if (btn) {
-            if (document.body.classList.contains('dark-theme')) {
-                btn.innerHTML = '🌙';
-            } else {
-                btn.innerHTML = '☀️';
-            }
-        }
-    }
-    function applySavedTheme() {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.body.classList.add('dark-theme');
-        } else {
-            document.body.classList.remove('dark-theme');
-        }
-        setThemeIcon();
-    }
-    function toggleTheme() {
-        document.body.classList.toggle('dark-theme');
-        localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
-        setThemeIcon();
-    }
     window.addEventListener('DOMContentLoaded', function() {
-        applySavedTheme();
-        var form = document.getElementById('register-form');
-        if (<?php echo $dbUnavailable ? 'true' : 'false'; ?>) {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                alert(<?php echo json_encode($dbMessage, JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT); ?>);
-            });
-            return;
-        }
-        form.addEventListener('submit', function(e) {
-            const pwd = document.getElementById('password').value;
-            const confirm = document.getElementById('confirm-password').value;
-            if (pwd !== confirm) {
-                e.preventDefault();
-                alert('Les mots de passe ne correspondent pas.');
-            }
-        });
+        initRegisterForm(
+                <?php echo $dbUnavailable ? 'true' : 'false'; ?>,
+                <?php echo json_encode($dbMessage, JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT); ?>
+        );
     });
 </script>
