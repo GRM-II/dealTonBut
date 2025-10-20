@@ -51,4 +51,9 @@ final class homepageController  // Changé de homePageController à homepageCont
     {
         view::show("forgotPasswordView");
     }
+
+    public function help(): void
+    {
+        view::show("helpView");
+    }
 }

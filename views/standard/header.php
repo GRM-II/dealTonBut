@@ -9,6 +9,7 @@
         <a href="?controller=marketpage&action=index" class="nav-link">Marketplace</a>
         <a href="?controller=profilepage&action=index" class="nav-link">Profil</a>
         <a href="?controller=homepage&action=about" class="nav-link">À propos</a>
+        <a href="?controller=homepage&action=help" class="nav-link">Aide</a>
     </nav>
     <?php endif; ?>
     

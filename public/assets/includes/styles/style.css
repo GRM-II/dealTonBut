@@ -591,3 +591,34 @@ body.dark-theme .flash-warning {
     color: #fcd34d;
     border-color: #92400e;
 }
+
+/* FAQ styles */
+.faq-item {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.faq-item:last-of-type {
+    border-bottom: none;
+}
+
+body.dark-theme .faq-item {
+    border-bottom-color: #555;
+}
+
+.faq-item h3 {
+    color: #1360AA;
+    font-size: 1.1em;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+body.dark-theme .faq-item h3 {
+    color: #5BA3E0;
+}
+
+.faq-item p {
+    margin: 0;
+    line-height: 1.6;
+}
