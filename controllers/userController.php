@@ -110,7 +110,7 @@ final class userController
             return;
         }
 
-        view::show('homepageView', ['db_status' => (new userModel())->getDbStatus()]);
+        view::show('login', ['db_status' => (new userModel())->getDbStatus()]);
 
         $username = isset($_POST['username']) ? (string)$_POST['username'] : '';
         $email = isset($_POST['email']) ? (string)$_POST['email'] : '';
