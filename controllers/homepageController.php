@@ -41,4 +41,14 @@ final class homepageController  // Changé de homePageController à homepageCont
         echo '<p><a href="?controller=homepage&action=login">Retour</a></p>';
         echo '</body></html>';
     }
+
+    public function about(): void
+    {
+        view::show("aboutView");
+    }
+
+    public function forgotPassword(): void
+    {
+        view::show("forgotPasswordView");
+    }
 }

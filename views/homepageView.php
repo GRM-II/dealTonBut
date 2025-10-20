@@ -35,7 +35,7 @@
                 </button>
             </form>
 
-            <a href="#" class="text-link">Mot de passe oublié ?</a>
+            <a href="?controller=homepage&action=forgotPassword" class="text-link">Mot de passe oublié ?</a>
             <a href="index.php?controller=user&action=register" class="text-link">Vous ne possédez pas de compte ?</a>
         </div>
     </div>

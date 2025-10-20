@@ -54,6 +54,29 @@ body.dark-theme header {
     color: #E4E4E4;
 }
 
+.header-nav {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.nav-link {
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: background 0.2s;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme .nav-link {
+    color: #E4E4E4;
+}
+
 #theme-toggle {
     width: 40px;
     height: 40px;
@@ -449,4 +472,122 @@ body.dark-theme .text-link {
     p {
         font-size: 0.95em;
     }
+}
+
+/* About page styles */
+.about-container {
+    max-width: 800px;
+}
+
+.about-content {
+    width: 100%;
+    padding: 0 20px;
+    text-align: left;
+}
+
+.about-content h2 {
+    color: #1360AA;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+body.dark-theme .about-content h2 {
+    color: #5BA3E0;
+}
+
+.about-content h3 {
+    color: #2c3e50;
+    font-size: 1.2em;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+body.dark-theme .about-content h3 {
+    color: #E4E4E4;
+}
+
+.about-content p {
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.about-list {
+    list-style-type: disc;
+    padding-left: 30px;
+    line-height: 1.8;
+}
+
+.about-actions {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.btn-primary {
+    display: inline-block;
+    background: #1360AA;
+    color: #fff;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 20px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-primary:hover {
+    background: #0e4a85;
+}
+
+body.dark-theme .btn-primary {
+    background: #5BA3E0;
+    color: #fff;
+}
+
+body.dark-theme .btn-primary:hover {
+    background: #4690cc;
+}
+
+/* Flash messages */
+.flash-message {
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin: 15px 0;
+    font-size: 0.95em;
+    text-align: center;
+}
+
+.flash-success {
+    background: #e6ffed;
+    color: #03543f;
+    border: 1px solid #84e1bc;
+}
+
+.flash-error {
+    background: #ffe6e6;
+    color: #9b1c1c;
+    border: 1px solid #f5a4a4;
+}
+
+.flash-warning {
+    background: #fff4e5;
+    color: #92400e;
+    border: 1px solid #f6ad55;
+}
+
+body.dark-theme .flash-success {
+    background: #064e3b;
+    color: #a7f3d0;
+    border-color: #065f46;
+}
+
+body.dark-theme .flash-error {
+    background: #7f1d1d;
+    color: #fca5a5;
+    border-color: #991b1b;
+}
+
+body.dark-theme .flash-warning {
+    background: #78350f;
+    color: #fcd34d;
+    border-color: #92400e;
 }
