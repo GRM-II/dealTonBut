@@ -1,20 +1,30 @@
 <?php
 
-final class envReader
+class envReader
 {
-    private $env = fopen(".env", "r") or die("Unable to open file");
 
-    private const HOST = fgets($env);
+    private const string HOST = '';
+    private const string USER = '';
+    private const string MDP = '';
+    private const string PORT = '';
+    private const string BD = '';
 
-    private const USER = fgets($env);
+    public function __construct()
+    {
+        private $env = fopen(".env", "r") or die("Unable to open file");
 
-    private const MDP = fgets($env);
+        self::HOST . fgets($env);
 
-    private const PORT = fgets($env);
+        self::USER . fgets($env);
 
-    private const BD = fgets($env);
+        self::MDP . fgets($env);
 
-    fclose($env);
+        self::PORT . fgets($env);
+
+        self::BD . fgets($env);
+
+        fclose($env);
+    }
 
     public static function getHost(): string {
         return self::HOST;
