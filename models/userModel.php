@@ -1,15 +1,17 @@
 <?php
 
+require 'core/envReader.php';
+
 final class userModel
 {
     private static ?PDO $connection = null;
 
     // Paramètres de connexion à la base de données
-    private const DB_HOST = 'yms-10.h.filess.io';
-    private const DB_NAME = 'bdDealTonBut_triangleup';
-    private const DB_USER = 'bdDealTonBut_triangleup';
-    private const DB_PASS = 'a2aca2a35f059450391954de64d656284de558d1';
-    private const DB_PORT = 61032;
+    private const DB_HOST = getHost();
+    private const DB_NAME = getBd();
+    private const DB_USER = getUser();
+    private const DB_PASS = getMdp();
+    private const DB_PORT = getPort();
 
     /**
      * Récupère ou crée la connexion PDO unique (pattern Singleton)
