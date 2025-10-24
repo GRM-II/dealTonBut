@@ -2,7 +2,7 @@
 
 final class userController
 {
-    public function defaultAction()
+    public function homepage()
     {
         $model = new userModel();
         $status = method_exists($model, 'getDbStatus') ? $model->getDbStatus() : ['available' => true, 'message' => ''];
@@ -104,29 +104,70 @@ final class userController
 
     public function register(): void
     {
-        view::show('user/register', ['db_status' => (new userModel())->getDbStatus()]);
-
+        // Si GET : afficher le formulaire
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            http_response_code(405);
-            echo 'Méthode non autorisée';
+            view::show('user/register', ['db_status' => (new userModel())->getDbStatus()]);
             return;
         }
 
+        // Si POST : traiter l'inscription
         $username = isset($_POST['username']) ? (string)$_POST['username'] : '';
         $email = isset($_POST['email']) ? (string)$_POST['email'] : '';
         $password = isset($_POST['password']) ? (string)$_POST['password'] : '';
         $confirm = isset($_POST['confirm_password']) ? (string)$_POST['confirm_password'] : '';
 
         if ($password !== $confirm) {
-            $message = 'Les mots de passe ne correspondent pas.';
-            $this->renderResult(false, $message);
+            view::show('user/register', [
+                'db_status' => (new userModel())->getDbStatus(),
+                'flash' => [
+                    'success' => false,
+                    'message' => 'Les mots de passe ne correspondent pas.'
+                ]
+            ]);
             return;
         }
 
         $userModel = new userModel();
         $result = $userModel->createUser($username, $email, $password);
 
-        $this->renderResult($result['success'], $result['message']);
+        if ($result['success']) {
+            // Succès : stocker le message et rediriger
+            $_SESSION['flash_message'] = [
+                'success' => true,
+                'message' => $result['message']
+            ];
+            header('Location: ?controller=user&action=login');
+            exit; // CRUCIAL : arrêter l'exécution ici
+        } else {
+            // Échec : réafficher le formulaire avec l'erreur
+            view::show('user/register', [
+                'db_status' => (new userModel())->getDbStatus(),
+                'flash' => [
+                    'success' => false,
+                    'message' => $result['message']
+                ]
+            ]);
+        }
+
+
+        $userModel = new userModel();
+        $result = $userModel->createUser($username, $email, $password);
+
+        if ($result['success']) {
+            // Succès : rediriger vers la page de login
+            $_SESSION['registration_success'] = $result['message'];
+            header('Location: ?controller=user&action=login');
+            exit;
+        } else {
+            // Échec : réafficher le formulaire avec l'erreur
+            view::show('user/register', [
+                'db_status' => (new userModel())->getDbStatus(),
+                'flash' => [
+                    'success' => false,
+                    'message' => $result['message']
+                ]
+            ]);
+        }
     }
 
     private function renderResult(bool $success, string $message): void

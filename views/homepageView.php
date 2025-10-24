@@ -40,6 +40,3 @@
         </div>
     </div>
 </main>
-
-    // IMPORTANT : Pas de hashing côté client !
-    // Le mot de passe est envoyé en clair via HTTPS et hashé côté serveur
