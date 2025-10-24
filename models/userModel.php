@@ -57,52 +57,64 @@ final class userModel
      */
     public function createUser(string $username, string $email, string $password): array
     {
-        // Validation des données
-        $username = trim($username);
-        $email = trim($email);
-
-        if (empty($username) || empty($email) || empty($password)) {
-            return ['success' => false, 'message' => 'Tous les champs sont requis.'];
-        }
-
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return ['success' => false, 'message' => 'Email invalide.'];
-        }
-
-        // Hash sécurisé du mot de passe
-        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-
         try {
-            $pdo = self::getConnection();
-            $sql = "INSERT INTO User (Username, Email, Mdp) VALUES (:username, :email, :password)";
-            $stmt = $pdo->prepare($sql);
+            $pdo = self::getConnection(); // ← CORRECTION ICI
 
-            $stmt->bindValue(':username', $username, PDO::PARAM_STR);
-            $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-            $stmt->bindValue(':password', $passwordHash, PDO::PARAM_STR);
+            // 1. Vérifier si l'email existe déjà
+            $stmt = $pdo->prepare("SELECT ID FROM User WHERE Email = :email LIMIT 1");
+            $stmt->execute(['email' => $email]);
 
-            $stmt->execute();
-            $userId = $pdo->lastInsertId();
-
-            return [
-                'success' => true,
-                'message' => 'Compte créé avec succès.',
-                'id' => $userId
-            ];
-
-        } catch (PDOException $e) {
-            // Gestion des doublons (code erreur 23000)
-            if ($e->getCode() === '23000') {
-                if (stripos($e->getMessage(), 'Username') !== false) {
-                    return ['success' => false, 'message' => "Ce nom d'utilisateur est déjà pris."];
-                }
-                if (stripos($e->getMessage(), 'Email') !== false) {
-                    return ['success' => false, 'message' => 'Cet email est déjà utilisé.'];
-                }
+            if ($stmt->fetch()) {
+                return [
+                    'success' => false,
+                    'message' => 'Cette adresse email est déjà utilisée.'
+                ];
             }
 
-            error_log("Erreur createUser : " . $e->getMessage());
-            return ['success' => false, 'message' => 'Erreur lors de la création du compte.'];
+            // 2. Vérifier si le nom d'utilisateur existe déjà
+            $stmt = $pdo->prepare("SELECT ID FROM User WHERE Username = :username LIMIT 1");
+            $stmt->execute(['username' => $username]);
+
+            if ($stmt->fetch()) {
+                return [
+                    'success' => false,
+                    'message' => 'Ce nom d\'utilisateur est déjà pris.'
+                ];
+            }
+
+            // 3. Hasher le mot de passe
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+            // 4. Insérer le nouvel utilisateur
+            $stmt = $pdo->prepare(
+                "INSERT INTO User (Username, Email, Mdp, created_at) 
+             VALUES (:username, :email, :password, NOW())"
+            );
+
+            $result = $stmt->execute([
+                'username' => $username,
+                'email' => $email,
+                'password' => $hashedPassword
+            ]);
+
+            if ($result) {
+                return [
+                    'success' => true,
+                    'message' => 'Compte créé avec succès ! Vous pouvez maintenant vous connecter.'
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'message' => 'Erreur lors de la création du compte.'
+                ];
+            }
+
+        } catch (PDOException $e) {
+            error_log("Erreur création utilisateur : " . $e->getMessage());
+            return [
+                'success' => false,
+                'message' => 'Une erreur est survenue lors de la création du compte.'
+            ];
         }
     }
 
