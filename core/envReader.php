@@ -3,47 +3,47 @@
 class envReader
 {
 
-    private const string HOST = '';
-    private const string USER = '';
-    private const string MDP = '';
-    private const string PORT = '';
-    private const string BD = '';
+    private string $host;
+    private string $user;
+    private string $mdp;
+    private string $port;
+    private string $bd;
 
     public function __construct()
     {
-        private $env = fopen(".env", "r") or die("Unable to open file");
+        $env = fopen(".env", "r") or die("Unable to open file");
 
-        self::HOST . fgets($env);
+        $this->host = fgets($env);
 
-        self::USER . fgets($env);
+        $this->user = fgets($env);
 
-        self::MDP . fgets($env);
+        $this->mdp = fgets($env);
 
-        self::PORT . fgets($env);
+        $this->port = fgets($env);
 
-        self::BD . fgets($env);
+        $this->bd = fgets($env);
 
         fclose($env);
     }
 
-    public static function getHost(): string {
-        return self::HOST;
+    public function getHost(): string {
+        return $this->host;
     }
 
-    public static function getUser(): string {
-        return self::USER;
+    public function getUser(): string {
+        return $this->user;
     }
 
-    public static function getMdp(): string {
-        return self::MDP;
+    public function getMdp(): string {
+        return $this->mdp;
     }
 
-    public static function getPort(): string {
-        return self::PORT;
+    public function getPort(): string {
+        return $this->port;
     }
 
-    public static function getBd(): string {
-        return self::BD;
+    public function getBd(): string {
+        return $this->bd;
     }
 }
 
