@@ -7,11 +7,12 @@ final class userModel
     private static ?PDO $connection = null;
 
     // Paramètres de connexion à la base de données
-    private const DB_HOST = getHost();
-    private const DB_NAME = getBd();
-    private const DB_USER = getUser();
-    private const DB_PASS = getMdp();
-    private const DB_PORT = getPort();
+    $id = new envReader();
+    private const DB_HOST = $id.getHost();
+    private const DB_NAME = $id.getBd();
+    private const DB_USER = $id.getUser();
+    private const DB_PASS = $id.getMdp();
+    private const DB_PORT = $id.getPort();
 
     /**
      * Récupère ou crée la connexion PDO unique (pattern Singleton)

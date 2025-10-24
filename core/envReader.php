@@ -2,7 +2,7 @@
 
 class envReader
 {
-
+    // création des variables
     private string $host;
     private string $user;
     private string $mdp;
@@ -11,6 +11,7 @@ class envReader
 
     public function __construct()
     {
+        // ouverture d'une tête de lecture dans le fichier d'indentification
         $env = fopen(".env", "r") or die("Unable to open file");
 
         $this->host = fgets($env);
@@ -22,7 +23,7 @@ class envReader
         $this->port = fgets($env);
 
         $this->bd = fgets($env);
-
+        // fermeture du fichier
         fclose($env);
     }
 
