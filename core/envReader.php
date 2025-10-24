@@ -2,7 +2,6 @@
 
 class envReader
 {
-    // création des variables
     private string $host;
     private string $user;
     private string $mdp;
@@ -11,41 +10,34 @@ class envReader
 
     public function __construct()
     {
-        // ouverture d'une tête de lecture dans le fichier d'indentification
-        $env = fopen(".env", "r") or die("Unable to open file");
+        // Chemin absolu du fichier ..env
+        $envPath = __DIR__ . '\.env';
 
-        $this->host = fgets($env);
+        // Vérifier si le fichier existe
+        if (!file_exists($envPath)) {
+            throw new Exception("Le fichier .env n'existe pas à l'emplacement : " . $envPath);
+        }
 
-        $this->user = fgets($env);
+        // Lecture du fichier
+        $env = fopen($envPath, "r");
 
-        $this->mdp = fgets($env);
+        if (!$env) {
+            throw new Exception("Impossible d'ouvrir le fichier .env");
+        }
 
-        $this->port = fgets($env);
+        // Lecture et nettoyage des valeurs (suppression des espaces et retours à la ligne)
+        $this->host = trim(fgets($env));
+        $this->user = trim(fgets($env));
+        $this->mdp = trim(fgets($env));
+        $this->port = trim(fgets($env));
+        $this->bd = trim(fgets($env));
 
-        $this->bd = fgets($env);
-        // fermeture du fichier
         fclose($env);
     }
 
-    public function getHost(): string {
-        return $this->host;
-    }
-
-    public function getUser(): string {
-        return $this->user;
-    }
-
-    public function getMdp(): string {
-        return $this->mdp;
-    }
-
-    public function getPort(): string {
-        return $this->port;
-    }
-
-    public function getBd(): string {
-        return $this->bd;
-    }
+    public function getHost(): string { return $this->host; }
+    public function getUser(): string { return $this->user; }
+    public function getMdp(): string { return $this->mdp; }
+    public function getPort(): string { return $this->port; }
+    public function getBd(): string { return $this->bd; }
 }
-
-?>
