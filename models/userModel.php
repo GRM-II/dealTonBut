@@ -6,14 +6,6 @@ final class userModel
 {
     private static ?PDO $connection = null;
 
-    // Paramètres de connexion à la base de données
-    $id = new envReader();
-    private const DB_HOST = $id.getHost();
-    private const DB_NAME = $id.getBd();
-    private const DB_USER = $id.getUser();
-    private const DB_PASS = $id.getMdp();
-    private const DB_PORT = $id.getPort();
-
     /**
      * Récupère ou crée la connexion PDO unique (pattern Singleton)
      */
@@ -21,14 +13,16 @@ final class userModel
     {
         if (self::$connection === null) {
             try {
+                $id = new envReader();
+
                 $dsn = sprintf(
                     "mysql:host=%s;port=%d;dbname=%s;charset=utf8mb4",
-                    self::DB_HOST,
-                    self::DB_PORT,
-                    self::DB_NAME
+                    $id->getHost(),
+                    $id->getPort(),
+                    $id->getBd()
                 );
 
-                self::$connection = new PDO($dsn, self::DB_USER, self::DB_PASS);
+                self::$connection = new PDO($dsn, $id->getUser(), $id->getMdp());
                 self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 self::$connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
