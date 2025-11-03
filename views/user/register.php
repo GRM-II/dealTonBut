@@ -9,11 +9,11 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         <div class="rectangle-title">Créer un compte</div>
 
         <?php if ($dbUnavailable): ?>
-            <div style="margin:10px 0;padding:10px;border-radius:6px;background:#fff4e5;color:#92400e;border:1px solid #f6ad55;">
+            <div class="flash-message flash-warning">
                 <?php echo htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8'); ?>
-                <div style="margin-top:8px;font-size:0.95em;">
+                <div class="warning-details">
                     Pour corriger ce problème, activez l'une des extensions MySQL de PHP sur votre serveur :
-                    <ul style="margin:6px 0 0 18px;">
+                    <ul>
                         <li>Sur Windows (XAMPP/WAMP) : ouvrez php.ini et décommentez extension=pdo_mysql et/ou extension=mysqli puis redémarrez Apache.</li>
                         <li>Sur Linux : installez php-mysql (ou php8.x-mysql) et redémarrez votre serveur web.</li>
                     </ul>
@@ -24,12 +24,14 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         <?php endif; ?>
 
         <?php if (isset($A_view['flash'])): ?>
-            <div style="margin:10px 0;padding:10px;border-radius:6px;<?php echo $A_view['flash']['success'] ? 'background:#e6ffed;color:#03543f;border:1px solid #84e1bc;' : 'background:#ffe6e6;color:#9b1c1c;border:1px solid #f5a4a4;'; ?>">
+            <div class="flash-message <?php echo $A_view['flash']['success'] ? 'flash-success' : 'flash-error'; ?>">
                 <?php echo htmlspecialchars($A_view['flash']['message'], ENT_QUOTES, 'UTF-8'); ?>
             </div>
         <?php endif; ?>
 
-        <form class="input-rectangles" id="register-form" method="post" action="?controller=user&action=register">
+        <form class="input-rectangles" id="register-form" method="post" action="?controller=user&action=register"
+              data-db-unavailable="<?php echo $dbUnavailable ? 'true' : 'false'; ?>"
+              data-db-message="<?php echo htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8'); ?>">
             <label for="username"></label>
             <input type="text" id="username" name="username" placeholder="Nom d'utilisateur" class="input-rectangle" required <?php echo $disabledAttr; ?> title="<?php echo $dbUnavailable ? htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8') : ''; ?>">
             <label for="email"></label>
@@ -38,17 +40,8 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             <input type="password" id="password" name="password" placeholder="Mot de passe" class="input-rectangle" required <?php echo $disabledAttr; ?> title="<?php echo $dbUnavailable ? htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8') : ''; ?>">
             <label for="confirm-password"></label>
             <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirmer" class="input-rectangle" required <?php echo $disabledAttr; ?> title="<?php echo $dbUnavailable ? htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8') : ''; ?>">
-            <button type="submit" class="input-rectangle" style="background:#1360AA;color:#fff;cursor:pointer;font-size:1.2em;" <?php echo $disabledAttr; ?>>Créer le compte</button>
+            <button type="submit" class="input-rectangle btn-submit" <?php echo $disabledAttr; ?>>Créer le compte</button>
         </form>
         <a href="index.php?controller=user&action=defaultAction" class="text-link">Vous possédez déjà un compte ?</a>
     </div>
 </div>
-
-<script>
-    window.addEventListener('DOMContentLoaded', function() {
-        initRegisterForm(
-                <?php echo $dbUnavailable ? 'true' : 'false'; ?>,
-                <?php echo json_encode($dbMessage, JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT); ?>
-        );
-    });
-</script>

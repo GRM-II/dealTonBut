@@ -9,13 +9,13 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         <div class="rectangle-title">Profil utilisateur</div>
 
         <?php if ($dbUnavailable): ?>
-            <div class="dbunavailable">
+            <div class="flash-message flash-warning">
                 <?php echo htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8'); ?>
             </div>
         <?php endif; ?>
 
         <?php if (isset($A_view['flash'])): ?>
-            <div style="margin:10px 0;padding:10px;border-radius:6px;<?php echo $A_view['flash']['success'] ? 'background:#e6ffed;color:#03543f;border:1px solid #84e1bc;' : 'background:#ffe6e6;color:#9b1c1c;border:1px solid #f5a4a4;'; ?>">
+            <div class="flash-message <?php echo $A_view['flash']['success'] ? 'flash-success' : 'flash-error'; ?>">
                 <?php echo htmlspecialchars($A_view['flash']['message'], ENT_QUOTES, 'UTF-8'); ?>
             </div>
         <?php endif; ?>
@@ -78,6 +78,3 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
     </div>
 </div>
 
-<script>
-    window.addEventListener('DOMContentLoaded', initProfilePage);
-</script>
