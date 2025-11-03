@@ -1,8 +1,12 @@
 /* CSS variables */
 :root {
-    /* Main colors */
+    /* Colors */
     --primary-color: #1360AA;
     --primary-dark: #0a53be;
+    --red-color: #dc2626;
+    --white-color: #ddd;
+    --dark-red-color: #9b1c1c;
+    --grey-color: #666;
 
     /* Background */
     --bg-light: #fff;
@@ -237,6 +241,11 @@ body.dark-theme .login-rectangle {
     margin-bottom: 5vh;
     text-align: center;
     color: var(--text-light);
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    background: none;
+    width: auto;
 }
 
 body.dark-theme .rectangle-title {
@@ -264,9 +273,85 @@ body.dark-theme .rectangle-title {
     box-shadow: var(--shadow-default);
 }
 
+.not-displayed {
+    display: none;
+}
+
+.blue {
+    background: var(--primary-color);
+    color: var(--bg-light);
+}
+
+.red {
+    background: var(--red-color);
+    color: var(--bg-light);
+}
+
+.submit-rectangle {
+    height: 44px;
+    padding: 0 12px;
+    background: var(--primary-color);
+    color: var(--bg-light);
+    cursor: pointer;
+    font-size: 1.2em;
+}
+
+.profile-form {
+    margin-top: 30px;
+    text-align: center;
+    display: inline;
+}
+
+.danger-zone {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--white-color);
+    text-align: center;
+}
+
+.danger-zone strong {
+    color: var(--dark-red-color);
+}
+
+.danger-zone p {
+    font-size: 0.9em;
+    color: var(--grey-color);
+}
+
+.delete-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.delete-rectangle {
+    background: var(--bg-light);
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 400px;
+    text-align: center;
+}
+
+.delete-retangle h3 {
+    color: var(--dark-red-color);
+    margin-top: 0;
+}
+
 body.dark-theme .input-rectangle {
     background: var(--text-dark);
     color: var(--bg-dark);
+}
+
+body.dark-theme .submit-rectangle {
+    background: var(--text-dark);
+    color: var(--surface-dark);
 }
 
 .input-rectangle:focus {
@@ -282,6 +367,10 @@ body.dark-theme .input-rectangle {
     font-size: 0.8em;
     cursor: pointer;
     transition: color var(--transition-fast);
+    box-shadow: none;
+    padding: 0;
+    background: none;
+    width: auto;
 }
 
 .text-link:hover {
@@ -302,6 +391,29 @@ body.dark-theme .input-rectangle {
     background: var(--bg-light);
     box-shadow: var(--shadow-default);
     border-radius: var(--radius-default);
+}
+
+.error {
+    color: var(--red-color);
+    padding: 10px;
+    background: var(--white-color);
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+/* Dimitri saches que je ne comprends pas ce choix de couleur autant catastrophique que GavinzBeats (même lui est mieux) */
+.dbunavailable {
+    margin:10px 0;
+    padding:10px;
+    border-radius:6px;
+    background:#fff4e5;
+    color:#92400e;
+    border:1px solid #f6ad55;
+}
+
+.dbunavailable-list {
+    margin-top:8px;
+    font-size:0.95em;
 }
 
 body.dark-theme .log-img {
@@ -385,6 +497,10 @@ body.dark-theme .text-link:hover {
     .footer-logo {
         width: 30px;
         height: 30px;
+        object-fit: contain;
+        background: var(--bg-light);
+        box-shadow: var(--shadow-default);
+        border-radius: var(--radius-default);
     }
 
     h1 {
@@ -409,6 +525,11 @@ body.dark-theme .text-link:hover {
     .rectangle-title {
         font-size: 1.3em;
         margin-bottom: 2vh;
+        box-shadow: none;
+        border-radius: 0;
+        padding: 0;
+        background: none;
+        width: auto;
     }
 
     .input-rectangle {
@@ -427,9 +548,20 @@ body.dark-theme .text-link:hover {
         gap: 0.5vh;
     }
 
+    .submit-rectangle {
+        height: 32px;
+        font-size: 1em;
+        padding: 0 8px;
+    }
+
     .text-link {
         font-size: 1em;
         margin-top: 1vh;
+        box-shadow: none;
+        border-radius: 0;
+        padding: 0;
+        background: none;
+        width: auto;
     }
 
     .log-img {
@@ -446,6 +578,10 @@ body.dark-theme .text-link:hover {
     .header-logo {
         width: 28px;
         height: 28px;
+        object-fit: contain;
+        background: var(--bg-light);
+        box-shadow: var(--shadow-default);
+        border-radius: 20px;
     }
 
     .content {
@@ -467,6 +603,10 @@ body.dark-theme .text-link:hover {
     .footer-logo {
         width: 26px;
         height: 26px;
+        object-fit: contain;
+        background: var(--bg-light);
+        box-shadow: var(--shadow-default);
+        border-radius: 20px;
     }
 
     h1 {
