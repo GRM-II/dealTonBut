@@ -18,7 +18,7 @@ class marketpageController
         // Récupérer les offres depuis la base de données
         $offers = $this->getOffers();
 
-        View::show('marketpageView', [
+        view::show('marketpageView', [
             'user' => $_SESSION['user'] ?? null,
             'isLoggedIn' => $isLoggedIn,
             'db_status' => $status,
