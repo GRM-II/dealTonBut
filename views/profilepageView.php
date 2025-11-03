@@ -9,7 +9,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         <div class="rectangle-title">Profil utilisateur</div>
 
         <?php if ($dbUnavailable): ?>
-            <div style="margin:10px 0;padding:10px;border-radius:6px;background:#fff4e5;color:#92400e;border:1px solid #f6ad55;">
+            <div class="dbunavailable">
                 <?php echo htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8'); ?>
             </div>
         <?php endif; ?>
@@ -20,59 +20,59 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             </div>
         <?php endif; ?>
 
-        <div style="margin-top:20px;text-align:center;">
-            <form id="edit-username-form" method="post" action="?controller=profilepage&action=updateProfile" style="display:inline;">
+        <div class="profile-form">
+            <form id="edit-username-form" method="post" action="?controller=profilepage&action=updateProfile">
                 <strong>Nom d'utilisateur :</strong>
                 <span id="username-display"><?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
-                <input type="text" id="new_username" name="new_username" value="<?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" style="display:none;width:140px;" class="input-rectangle" required <?php echo $disabledAttr; ?>>
-                <button type="button" id="edit-username-btn" class="input-rectangle" style="padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Modifier</button>
-                <button type="submit" id="save-username-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;background:#1360AA;color:#fff;" <?php echo $disabledAttr; ?>>Enregistrer</button>
-                <button type="button" id="cancel-username-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Annuler</button>
+                <input type="text" id="new_username" name="new_username" value="<?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle not-displayed" required <?php echo $disabledAttr; ?>>
+                <button type="button" id="edit-username-btn" class="input-rectangle" <?php echo $disabledAttr; ?>>Modifier</button>
+                <button type="submit" id="save-username-btn" class="blue input-rectangle not-displayed" <?php echo $disabledAttr; ?>>Enregistrer</button>
+                <button type="button" id="cancel-username-btn" class="input-rectangle not-displayed" <?php echo $disabledAttr; ?>>Annuler</button>
             </form>
             <br><br>
-            <form id="edit-email-form" method="post" action="?controller=profilepage&action=updateProfile" style="display:inline;">
+            <form id="edit-email-form" method="post" action="?controller=profilepage&action=updateProfile">
                 <strong>Email :</strong>
                 <span id="email-display"><?php echo htmlspecialchars($A_view['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
-                <input type="email" id="new_email" name="new_email" value="<?php echo htmlspecialchars($A_view['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" style="display:none;width:180px;" class="input-rectangle" required <?php echo $disabledAttr; ?>>
-                <button type="button" id="edit-email-btn" class="input-rectangle" style="padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Modifier</button>
-                <button type="submit" id="save-email-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;background:#1360AA;color:#fff;" <?php echo $disabledAttr; ?>>Enregistrer</button>
-                <button type="button" id="cancel-email-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Annuler</button>
+                <input type="email" id="new_email" name="new_email" value="<?php echo htmlspecialchars($A_view['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle not-displayed" required <?php echo $disabledAttr; ?>>
+                <button type="button" id="edit-email-btn" class="input-rectangle" <?php echo $disabledAttr; ?>>Modifier</button>
+                <button type="submit" id="save-email-btn" class="blue input-rectangle not-displayed" <?php echo $disabledAttr; ?>>Enregistrer</button>
+                <button type="button" id="cancel-email-btn" class="input-rectangle not-displayed" <?php echo $disabledAttr; ?>>Annuler</button>
             </form>
             <br><br>
-            <form id="edit-password-form" method="post" action="?controller=profilepage&action=updateProfile" style="display:inline;">
+            <form id="edit-password-form" method="post" action="?controller=profilepage&action=updateProfile">
                 <strong>Mot de passe :</strong>
                 <span id="password-display">••••••••</span>
-                <input type="password" id="new_password" name="new_password" placeholder="Nouveau mot de passe" style="display:none;width:180px;" class="input-rectangle" required <?php echo $disabledAttr; ?>>
-                <button type="button" id="edit-password-btn" class="input-rectangle" style="padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Modifier</button>
-                <button type="submit" id="save-password-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;background:#1360AA;color:#fff;" <?php echo $disabledAttr; ?>>Enregistrer</button>
-                <button type="button" id="cancel-password-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Annuler</button>
+                <input type="password" id="new_password" name="new_password" placeholder="Nouveau mot de passe" class="input-rectangle not-displayed" required <?php echo $disabledAttr; ?>>
+                <button type="button" id="edit-password-btn" class="input-rectangle" <?php echo $disabledAttr; ?>>Modifier</button>
+                <button type="submit" id="save-password-btn" class="blue input-rectangle not-displayed" <?php echo $disabledAttr; ?>>Enregistrer</button>
+                <button type="button" id="cancel-password-btn" class="input-rectangle not-displayed" <?php echo $disabledAttr; ?>>Annuler</button>
             </form>
         </div>
 
 
-        <div style="margin-top:30px;text-align:center;">
+        <div class="profile-form">
             <form method="post" action="?controller=user&action=logout">
-                <button type="submit" class="input-rectangle" style="background:#1360AA;color:#fff;cursor:pointer;padding:10px 20px;">
+                <button type="submit" class="blue input-rectangle">
                     Se déconnecter
                 </button>
             </form>
         </div>
 
-        <div style="margin-top:30px;padding-top:20px;border-top:1px solid #ddd;text-align:center;">
-            <strong style="color:#9b1c1c;">Zone de danger</strong><br>
-            <p style="font-size:0.9em;color:#666;">La suppression de votre compte est définitive et irréversible.</p>
-            <button type="button" id="delete-account-btn" class="input-rectangle" style="background:#dc2626;color:#fff;cursor:pointer;margin-top:10px;" <?php echo $disabledAttr; ?>>Supprimer mon compte</button>
+        <div class="danger-zone">
+            <strong>Zone de danger</strong><br>
+            <p>La suppression de votre compte est définitive et irréversible.</p>
+            <button type="button" id="delete-account-btn" class="red input-rectangle" <?php echo $disabledAttr; ?>>Supprimer mon compte</button>
         </div>
     </div>
 </div>
 
 <!-- Modal de confirmation de suppression -->
-<div id="delete-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;justify-content:center;align-items:center;">
-    <div style="background:white;padding:30px;border-radius:8px;max-width:400px;text-align:center;">
-        <h3 style="color:#9b1c1c;margin-top:0;">Confirmer la suppression</h3>
+<div id="delete-modal" class="delete-modal">
+    <div class="delete-rectangle">
+        <h3>Confirmer la suppression</h3>
         <p>Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.</p>
-        <form method="post" action="?controller=profilepage&action=deleteAccount" style="display:inline;">
-            <button type="submit" class="input-rectangle" style="background:#dc2626;color:#fff;margin-right:10px;">Oui, supprimer</button>
+        <form class="profile-form" method="post" action="?controller=profilepage&action=deleteAccount">
+            <button type="submit" class="red input-rectangle">Oui, supprimer</button>
             <button type="button" id="cancel-delete-btn" class="input-rectangle">Annuler</button>
         </form>
     </div>
