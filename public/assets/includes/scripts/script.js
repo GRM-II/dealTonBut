@@ -50,6 +50,39 @@ function initRegisterForm(dbUnavailable, dbMessage) {
 
 window.addEventListener('DOMContentLoaded', function() {
     applySavedTheme();
+
+    // Gestion du bouton de changement de thème
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+    }
+
+    // Gestion des confirmations de suppression
+    document.querySelectorAll('[data-confirm]').forEach(button => {
+        button.addEventListener('click', function(e) {
+            const message = this.getAttribute('data-confirm');
+            if (!confirm(message)) {
+                e.preventDefault();
+            }
+        });
+    });
+
+    const registerForm = document.getElementById('register-form');
+    if (registerForm) {
+        const dbUnavailable = registerForm.hasAttribute('data-db-unavailable') && registerForm.getAttribute('data-db-unavailable') === 'true';
+        const dbMessage = registerForm.getAttribute('data-db-message') || '';
+        initRegisterForm(dbUnavailable, dbMessage);
+    }
+
+    // Page marketplace
+    if (document.getElementById('search-input')) {
+        initMarketplace();
+    }
+
+    // Page de profil
+    if (document.getElementById('edit-username-form')) {
+        initProfilePage();
+    }
 });
 
 // Marketplace: Gestion du modal et du carrousel

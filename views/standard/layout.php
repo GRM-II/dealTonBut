@@ -13,5 +13,6 @@
         <?php echo $A_view['body']; ?>
     </main>
     <?php view::show('standard/footer'); ?>
+    <script src="/public/assets/includes/scripts/script.js"></script>
 </body>
 </html>

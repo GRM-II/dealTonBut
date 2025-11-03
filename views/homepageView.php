@@ -5,7 +5,7 @@
             <div class="rectangle-title">Connexion</div>
 
             <?php if (isset($error)): ?>
-                <div style="color: red; padding: 10px; background: #ffe0e0; margin: 10px 0; border-radius: 5px;">
+                <div class="error-message">
                     <?= htmlspecialchars($error) ?>
                 </div>
             <?php endif; ?>
@@ -29,8 +29,7 @@
 
                 <button type="submit"
                         name="submit"
-                        class="input-rectangle"
-                        style="background:#1360AA;color:#fff;cursor:pointer;font-size:1.2em;">
+                        class="input-rectangle btn-submit">
                     Connexion
                 </button>
             </form>
