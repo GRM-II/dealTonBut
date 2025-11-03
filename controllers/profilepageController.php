@@ -95,7 +95,6 @@ final class profilepageController
         $username = $_SESSION['user']['username'];
 
         try {
-            // Option A : Créer une méthode dans userModel pour récupérer l'ID
             $userId = $this->userModel->getUserIdByUsername($username);
 
             if (!$userId) {
