@@ -10,7 +10,9 @@
 <body>
     <?php view::show('standard/header'); ?>
     <main>
-        <?php echo $A_view['body']; ?>
+        <?php if (!empty($A_view)) {
+            echo $A_view['body'];
+        } ?>
     </main>
     <?php view::show('standard/footer'); ?>
 </body>
