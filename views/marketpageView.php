@@ -34,6 +34,7 @@ if (!empty($A_view['offers'])) {
 
     <!-- Barre de recherche -->
     <div class="market-search">
+        <label for="search-input" class="visually-hidden">Rechercher une offre</label>
         <input type="text" id="search-input" placeholder="Recherche" class="input-rectangle">
     </div>
 
@@ -68,7 +69,7 @@ if (!empty($A_view['offers'])) {
                                     <?php if ($isLoggedIn && $offer['user_id'] == $_SESSION['user_id']): ?>
                                         <form method="post" action="?controller=marketpage&action=deleteOffer" class="product-delete-form">
                                             <input type="hidden" name="offer_id" value="<?php echo $offer['id']; ?>">
-                                            <button type="submit" class="input-rectangle btn-delete" data-confirm="Supprimer cette offre ?" <?php echo $disabledAttr; ?>>
+                                            <button type="submit" class="input-rectangle btn-delete" onclick="return confirm('Supprimer cette offre ?');" <?php echo $disabledAttr; ?>>
                                                 Supprimer
                                             </button>
                                         </form>
@@ -96,13 +97,17 @@ if (!empty($A_view['offers'])) {
             <h2 class="rectangle-title">Créer une offre</h2>
             <form method="post" action="?controller=marketpage&action=createOffer">
                 <div class="input-rectangles">
-                    <input type="text" name="title" class="input-rectangle" placeholder="Titre de l'offre" required <?php echo $disabledAttr; ?>>
+                    <label for="offer-title">Titre de l'offre</label>
+                    <input type="text" id="offer-title" name="title" class="input-rectangle" placeholder="Titre de l'offre" required <?php echo $disabledAttr; ?>>
 
-                    <textarea name="description" class="input-rectangle textarea-field" placeholder="Description de l'offre" rows="4" required <?php echo $disabledAttr; ?>></textarea>
+                    <label for="offer-description">Description de l'offre</label>
+                    <textarea id="offer-description" name="description" class="input-rectangle textarea-field" placeholder="Description de l'offre" rows="4" required <?php echo $disabledAttr; ?>></textarea>
 
-                    <input type="number" name="price" class="input-rectangle" placeholder="Prix (points)" step="0.01" min="0" required <?php echo $disabledAttr; ?>>
+                    <label for="offer-price">Prix (points)</label>
+                    <input type="number" id="offer-price" name="price" class="input-rectangle" placeholder="Prix (points)" step="0.01" min="0" required <?php echo $disabledAttr; ?>>
 
-                    <select name="category" class="input-rectangle" required <?php echo $disabledAttr; ?>>
+                    <label for="offer-category">Catégorie</label>
+                    <select id="offer-category" name="category" class="input-rectangle" required <?php echo $disabledAttr; ?>>
                         <option value="">-- Catégorie --</option>
                         <option value="Services">Services</option>
                         <option value="Maths">Maths</option>
@@ -121,4 +126,8 @@ if (!empty($A_view['offers'])) {
         </div>
     </div>
 <?php endif; ?>
+
+<script>
+    window.addEventListener('DOMContentLoaded', initMarketplace);
+</script>
 
