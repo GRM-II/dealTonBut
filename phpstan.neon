@@ -1,8 +1,0 @@
-parameters:
-  level: 8
-  paths:
-     - controllers
-     - core
-     - models
-     - views
-     - index.php
