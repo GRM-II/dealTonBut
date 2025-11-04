@@ -2,7 +2,7 @@
 
 final class userController
 {
-    private PDO $pdo;
+    private userModel $userModel;
 
     // Constructeur pour s'assurer que la session est démarrée et la connexion DB établie
     public function __construct()
@@ -11,44 +11,14 @@ final class userController
             session_start();
         }
 
-        // Initialiser la connexion à la base de données
-        $this->initDatabase();
-    }
-
-    private function initDatabase(): void
-    {
-        try {
-            // Charger envReader si ce n'est pas déjà fait
-            if (!class_exists('envReader')) {
-                require_once __DIR__ . '/../core/envReader.php';
-            }
-
-            $env = new envReader();
-            $dsn = "mysql:host={$env->getHost()};port={$env->getPort()};dbname={$env->getBd()};charset=utf8mb4";
-
-            $this->pdo = new PDO(
-                $dsn,
-                $env->getUser(),
-                $env->getMdp(),
-                [
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                    PDO::ATTR_EMULATE_PREPARES => false
-                ]
-            );
-        } catch (PDOException $e) {
-            throw new Exception("Erreur de connexion à la base de données : " . $e->getMessage());
-        }
+        // Instancier le modèle utilisateur (gestion DB centralisée dans userModel)
+        $this->userModel = new userModel();
     }
 
     private function getDbStatus(): array
     {
-        try {
-            $this->pdo->query('SELECT 1');
-            return ['available' => true, 'message' => 'Base de données connectée'];
-        } catch (Exception $e) {
-            return ['available' => false, 'message' => 'Erreur de connexion : ' . $e->getMessage()];
-        }
+        // Délègue au userModel pour connaître l'état de la base
+        return $this->userModel->getDbStatus();
     }
 
     public function homepage(): void
@@ -111,45 +81,16 @@ final class userController
 
     private function authenticate(string $login, string $password): array
     {
+        // Délègue l'authentification au modèle pour éviter la duplication
         try {
-            // Rechercher l'utilisateur par username ou email
-            $stmt = $this->pdo->prepare("
-                SELECT id, username, email, mdp 
-                FROM User 
-                WHERE username = ? OR email = ?
-            ");
-            $stmt->execute([$login, $login]);
-            $user = $stmt->fetch();
-
-            if (!$user) {
-                return [
-                    'success' => false,
-                    'message' => 'Identifiants incorrects.',
-                    'user' => null
-                ];
+            $result = $this->userModel->authenticate($login, $password);
+            if (!$result['success']) {
+                // Normalise le message d'erreur attendu côté UI/tests
+                $result['message'] = 'Identifiants incorrects.';
             }
-
-            // Vérifier le mot de passe
-            if (!password_verify($password, $user['mdp'])) {
-                return [
-                    'success' => false,
-                    'message' => 'Identifiants incorrects.',
-                    'user' => null
-                ];
-            }
-
-            // Ne pas retourner le mot de passe
-            unset($user['mdp']);
-
-            return [
-                'success' => true,
-                'message' => 'Connexion réussie.',
-                'user' => $user
-            ];
-
-        } catch (PDOException $e) {
-            error_log("Erreur authenticate: " . $e->getMessage());
-
+            return $result;
+        } catch (Throwable $e) {
+            error_log("Erreur authenticate (controller): " . $e->getMessage());
             return [
                 'success' => false,
                 'message' => 'Une erreur est survenue lors de la connexion.',
@@ -257,66 +198,35 @@ final class userController
 
     private function createUser(string $username, string $email, string $password): array
     {
-        try {
-            // Validation de l'email
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                return [
-                    'success' => false,
-                    'message' => 'L\'adresse email n\'est pas valide.'
-                ];
-            }
-
-            // Validation de la longueur du mot de passe
-            if (strlen($password) < 6) {
-                return [
-                    'success' => false,
-                    'message' => 'Le mot de passe doit contenir au moins 6 caractères.'
-                ];
-            }
-
-            // Vérifier si le nom d'utilisateur existe déjà
-            $stmt = $this->pdo->prepare("SELECT id FROM User WHERE username = ?");
-            $stmt->execute([$username]);
-            if ($stmt->fetch()) {
-                return [
-                    'success' => false,
-                    'message' => 'Ce nom d\'utilisateur est déjà utilisé.'
-                ];
-            }
-
-            // Vérifier si l'email existe déjà
-            $stmt = $this->pdo->prepare("SELECT id FROM User WHERE email = ?");
-            $stmt->execute([$email]);
-            if ($stmt->fetch()) {
-                return [
-                    'success' => false,
-                    'message' => 'Cette adresse email est déjà utilisée.'
-                ];
-            }
-
-            // Hasher le mot de passe
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-            // Insérer le nouvel utilisateur
-            $stmt = $this->pdo->prepare("
-                INSERT INTO User (username, email, mdp) 
-                VALUES (?, ?, ?)
-            ");
-
-            $stmt->execute([$username, $email, $hashedPassword]);
-
-            return [
-                'success' => true,
-                'message' => 'Compte créé avec succès ! Vous pouvez maintenant vous connecter.'
-            ];
-
-        } catch (PDOException $e) {
-            // Log l'erreur
-            error_log("Erreur createUser: " . $e->getMessage());
-
+        // Valider côté contrôleur les règles simples d'UI
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return [
                 'success' => false,
-                'message' => 'Une erreur est survenue lors de la création du compte. Détails: ' . $e->getMessage()
+                'message' => "L'adresse email n'est pas valide."
+            ];
+        }
+        if (strlen($password) < 6) {
+            return [
+                'success' => false,
+                'message' => 'Le mot de passe doit contenir au moins 6 caractères.'
+            ];
+        }
+
+        // Déléguer la création au modèle (unicité + insertion)
+        try {
+            $result = $this->userModel->createUser($username, $email, $password);
+            // Normalisation des messages pour compatibilité avec l'existant/tests
+            if (!$result['success']) {
+                if (str_contains($result['message'], "déjà pris")) {
+                    $result['message'] = "Ce nom d'utilisateur est déjà utilisé.";
+                }
+            }
+            return $result;
+        } catch (Throwable $e) {
+            error_log('Erreur createUser (controller): ' . $e->getMessage());
+            return [
+                'success' => false,
+                'message' => 'Une erreur est survenue lors de la création du compte.'
             ];
         }
     }
