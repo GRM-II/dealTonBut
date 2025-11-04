@@ -6,9 +6,6 @@ final class userModel
 {
     private static ?PDO $connection = null;
 
-    /**
-     * Récupère ou crée la connexion PDO unique (pattern Singleton)
-     */
     public static function getConnection(): PDO
     {
         if (self::$connection === null) {

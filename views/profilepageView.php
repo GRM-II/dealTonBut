@@ -4,6 +4,9 @@ $dbMessage = $dbUnavailable ? ($A_view['db_status']['message'] . (isset($A_view[
 $disabledAttr = $dbUnavailable ? 'disabled' : '';
 ?>
 <div class="content">
+    <a href="?controller=marketpage&action=index" id="marketplace-btn" class="marketplace-link-btn" style="background: #ff00ff; color: white; padding: 12px 20px; text-decoration: none; border-radius: 8px; display: inline-block; margin-bottom: 20px; font-weight: bold; cursor: pointer;">
+        Accéder à la Marketplace
+    </a>
     <div class="login-rectangle">
         <img src="/public/assets/img/placeholder-meme.jpeg" alt="Image de profil" class="log-img">
         <div class="rectangle-title">Profil utilisateur</div>
