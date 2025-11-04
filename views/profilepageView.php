@@ -7,6 +7,9 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
     <a href="?controller=marketpage&action=index" id="marketplace-btn" class="marketplace-link-btn" style="background: #ff00ff; color: white; padding: 12px 20px; text-decoration: none; border-radius: 8px; display: inline-block; margin-bottom: 20px; font-weight: bold; cursor: pointer;">
         Accéder à la Marketplace
     </a>
+    <a href="?controller=marketpage&action=index" id="tradeplace-btn" class="tradeplace-link-btn" style="background: #ff00ff; color: white; padding: 12px 20px; text-decoration: none; border-radius: 8px; display: inline-block; margin-bottom: 20px; font-weight: bold; cursor: pointer;">
+        Accéder à Tradeplace (❌)
+    </a>
     <div class="login-rectangle">
         <img src="/public/assets/img/placeholder-meme.jpeg" alt="Image de profil" class="log-img">
         <div class="rectangle-title">Profil utilisateur</div>
