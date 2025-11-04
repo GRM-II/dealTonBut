@@ -450,3 +450,76 @@ body.dark-theme .text-link {
         font-size: 0.95em;
     }
 }
+
+/* Suppresion de compte */
+#delete-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    align-items: center;
+    justify-content: center;
+}
+
+#delete-modal .modal-content {
+    background: #ff00ff;
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 400px;
+    text-align: center;
+    transform: scale(0.9);
+    transition: transform 0.4s ease;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-theme #delete-modal .modal-content {
+    background: #646464;
+    color: #E4E4E4;
+}
+
+#delete-modal h3 {
+    color: #9b1c1c;
+    margin-top: 0;
+}
+
+#delete-modal p {
+    color: #333;
+}
+
+body.dark-theme #delete-modal p {
+    color: #E4E4E4;
+}
+
+#delete-modal form {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#delete-modal .input-rectangle {
+    padding: 10px 20px;
+    height: auto;
+    width: auto;
+}
+
+#delete-modal .btn-delete {
+    background: #dc2626;
+    color: #fff;
+}
+
+#delete-modal .btn-cancel {
+    background: #fff;
+    color: #2c3e50;
+}
+
+body.dark-theme #delete-modal .btn-cancel {
+    background: #E4E4E4;
+    color: #242424;
+}

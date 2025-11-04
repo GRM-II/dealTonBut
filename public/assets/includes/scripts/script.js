@@ -50,6 +50,15 @@ function initRegisterForm(dbUnavailable, dbMessage) {
 
 window.addEventListener('DOMContentLoaded', function() {
     applySavedTheme();
+
+    // Auto-détection de la page et initialisation appropriée
+    if (document.getElementById('delete-account-btn')) {
+        // Page de profil détectée donc initialiser
+        initProfilePage();
+    } else if (document.getElementById('open-modal-btn')) {
+        // Page marketplace détectée donc initialiser
+        initMarketplace();
+    }
 });
 
 // Marketplace: Gestion du modal et du carrousel
@@ -209,17 +218,49 @@ function initProfilePage() {
 
     if (deleteAccountBtn && deleteModal) {
         deleteAccountBtn.addEventListener('click', function() {
+
+            // Afficher le modal avec display flex pour le centrage
             deleteModal.style.display = 'flex';
+
+            // Force un reflow pour que la transition CSS fonctionne
+            void deleteModal.offsetHeight;
+
+            // Démarrer l'animation de fade-in
+            deleteModal.style.opacity = '1';
+            const innerDiv = deleteModal.querySelector('div');
+            if (innerDiv) {
+                innerDiv.style.transform = 'scale(1)';
+            }
         });
 
-        cancelDeleteBtn.addEventListener('click', function() {
-            deleteModal.style.display = 'none';
-        });
+        if (cancelDeleteBtn) {
+            cancelDeleteBtn.addEventListener('click', function() {
+                // Animation de fade-out
+                deleteModal.style.opacity = '0';
+                const innerDiv = deleteModal.querySelector('div');
+                if (innerDiv) {
+                    innerDiv.style.transform = 'scale(0.9)';
+                }
+                // Masquer après l'animation (400ms)
+                setTimeout(function() {
+                    deleteModal.style.display = 'none';
+                }, 400);
+            });
+        }
 
+        // Fermer le modal si on clique en dehors
         deleteModal.addEventListener('click', function(e) {
             if (e.target === deleteModal) {
-                deleteModal.style.display = 'none';
-                window.location.href = '?controller=homepage&action=login';
+                // Animation de fade-out
+                deleteModal.style.opacity = '0';
+                const innerDiv = deleteModal.querySelector('div');
+                if (innerDiv) {
+                    innerDiv.style.transform = 'scale(0.9)';
+                }
+                // Masquer après l'animation (400ms)
+                setTimeout(function() {
+                    deleteModal.style.display = 'none';
+                }, 400);
             }
         });
     }

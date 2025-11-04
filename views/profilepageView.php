@@ -67,17 +67,14 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
 </div>
 
 <!-- Modal de confirmation de suppression -->
-<div id="delete-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;justify-content:center;align-items:center;">
-    <div style="background:white;padding:30px;border-radius:8px;max-width:400px;text-align:center;">
-        <h3 style="color:#9b1c1c;margin-top:0;">Confirmer la suppression</h3>
-        <p>Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.</p>
-        <form method="post" action="?controller=profilepage&action=deleteAccount" style="display:inline;">
-            <button type="submit" class="input-rectangle" style="background:#dc2626;color:#fff;margin-right:10px;">Oui, supprimer</button>
-            <button type="button" id="cancel-delete-btn" class="input-rectangle">Annuler</button>
+<div id="delete-modal">
+    <div class="modal-content">
+        <h3>Confirmer la suppression</h3>
+        <p>Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible et votre compte sera triste );</p>
+        <form method="post" action="?controller=profilepage&action=deleteAccount">
+            <button type="submit" class="input-rectangle btn-delete">Oui, supprimer</button>
+            <button type="button" id="cancel-delete-btn" class="input-rectangle btn-cancel">Non, j'y tiens</button>
         </form>
     </div>
 </div>
 
-<script>
-    window.addEventListener('DOMContentLoaded', initProfilePage);
-</script>
