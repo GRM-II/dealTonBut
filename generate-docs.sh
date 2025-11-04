@@ -1,15 +1,18 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
 echo "========================================="
 echo "Documentation PHPDoc - dealTonBut"
-echo "Utilisateur: dimitriCrespo"
-echo "Date: 2025-11-03"
+echo "Utilisateur: $(whoami)"
+echo "Date: $(date '+%Y-%m-%d %H:%M:%S')"
 echo "========================================="
 
-# Télécharger PHPDocumentor si nécessaire
-if [ ! -f "phpDocumentor.phar" ]; then
-    echo "Téléchargement de PHPDocumentor..."
-    wget -q https://phpdoc.org/phpDocumentor.phar
-    chmod +x phpDocumentor.phar
-    echo "✅ PHPDocumentor téléchargé"
+# Vérifier phpDocumentor via Composer
+if [ ! -x "vendor/bin/phpdoc" ]; then
+    echo "❌ phpDocumentor introuvable dans vendor/bin/phpdoc"
+    echo "Installez-le avec: composer require --dev phpdocumentor/phpdocumentor"
+    exit 1
 fi
 
 # Créer les dossiers
@@ -21,15 +24,15 @@ echo "Nettoyage..."
 rm -rf docs/api/*
 rm -rf .phpdoc/cache/*
 
-# S'assurer qu'il n'y a PAS de phpdoc.xml
+# S'assurer qu'il n'y a PAS de phpdoc.xml local (si corrompu)
 if [ -f "phpdoc.xml" ]; then
-    echo "⚠️  Renommage de phpdoc.xml (corrompu)"
+    echo "⚠️  Renommage de phpdoc.xml (corrompu?)"
     mv phpdoc.xml phpdoc.xml.old
 fi
 
-# Générer SANS fichier de configuration
-echo "Génération de la documentation..."
-php -d memory_limit=512M phpDocumentor.phar run \
+# Générer avec l'exécutable Composer
+echo "Génération de la documentation (Composer)..."
+php -d memory_limit=512M vendor/bin/phpdoc run \
     -d controllers \
     -d models \
     -d core \
@@ -58,7 +61,7 @@ else
     echo ""
     echo "Diagnostic:"
     echo "- Version PHP: $(php -v | head -1)"
-    echo "- PHPDocumentor: $(php phpDocumentor.phar --version 2>&1 | head -1)"
+    echo "- PHPDocumentor (Composer): $(vendor/bin/phpdoc --version 2>&1 | head -1)"
     echo ""
     exit 1
 fi

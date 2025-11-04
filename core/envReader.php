@@ -26,11 +26,16 @@ class envReader
         }
 
         // Lecture et nettoyage des valeurs (suppression des espaces et retours à la ligne)
-        $this->host = trim(fgets($env));
-        $this->user = trim(fgets($env));
-        $this->mdp = trim(fgets($env));
-        $this->port = trim(fgets($env));
-        $this->bd = trim(fgets($env));
+        parse_str(trim(fgets($env)), $output);
+        $this->host = $output['DB_HOST'];
+        parse_str(trim(fgets($env)), $output);
+        $this->user = $output['DB_USER'];
+        parse_str(trim(fgets($env)), $output);
+        $this->mdp = $output['DB_MDP'];
+        parse_str(trim(fgets($env)), $output);
+        $this->port = $output['DB_PORT'];
+        parse_str(trim(fgets($env)), $output);
+        $this->bd = $output['DB_NAME'];
 
         fclose($env);
     }
