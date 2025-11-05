@@ -59,7 +59,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         </div>
 
         <div style="margin-top:30px;padding-top:20px;border-top:1px solid #ddd;text-align:center;">
-            <strong style="color:#9b1c1c;">Zone de danger</strong><br>
+            <strong style="color:#9b1c1c;">Oh là jeune ménestrel</strong><br>
             <p style="font-size:0.9em;color:#666;">La suppression de votre compte est définitive et irréversible.</p>
             <button type="button" id="delete-account-btn" class="input-rectangle" style="background:#dc2626;color:#fff;cursor:pointer;margin-top:10px;" <?php echo $disabledAttr; ?>>Supprimer mon compte</button>
         </div>
