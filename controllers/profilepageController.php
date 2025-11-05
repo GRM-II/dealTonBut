@@ -2,7 +2,7 @@
 
 final class profilepageController
 {
-    private $userModel;
+    private userModel $userModel;
 
     public function __construct()
     {

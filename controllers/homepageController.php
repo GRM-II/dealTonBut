@@ -4,11 +4,7 @@ final class homepageController  // Changé de homePageController à homepageCont
     public function login(): void  // Changé de login() à login(): void
     {
         $model = new userModel();
-        if (method_exists($model, 'getDbStatus')) {
-            $status = $model->getDbStatus();
-        } else {
-            $status = ['available' => true, 'message' => ''];
-        }
+        $status = $model->getDbStatus();
         view::show("homepageView", ['db_status' => $status]);
     }
 
