@@ -10,8 +10,8 @@ class envReader
 
     public function __construct()
     {
-        // Chemin absolu du fichier ..env
-        $envPath = __DIR__ . '\.env';
+        // Chemin absolu du fichier .env
+        $envPath = __DIR__ . '/.env';
 
         // Vérifier si le fichier existe
         if (!file_exists($envPath)) {
