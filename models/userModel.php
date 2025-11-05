@@ -87,8 +87,8 @@ final class userModel
 
             // 4. Insérer le nouvel utilisateur
             $stmt = $pdo->prepare(
-                "INSERT INTO User (Username, Email, Mdp, created_at) 
-             VALUES (:username, :email, :password, NOW())"
+                "INSERT INTO User (Username, Email, Mdp) 
+             VALUES (:username, :email, :password)"
             );
 
             $result = $stmt->execute([
