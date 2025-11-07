@@ -18,26 +18,43 @@ class envReader
             throw new Exception("Le fichier .env n'existe pas à l'emplacement : " . $envPath);
         }
 
-        // Lecture du fichier
-        $env = fopen($envPath, "r");
+        // Lecture du fichier et parsing des variables
+        $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
-        if (!$env) {
-            throw new Exception("Impossible d'ouvrir le fichier .env");
+        if ($lines === false) {
+            throw new Exception("Impossible de lire le fichier .env");
         }
 
-        // Lecture et nettoyage des valeurs (suppression des espaces et retours à la ligne)
-        parse_str(trim(fgets($env)), $output);
-        $this->host = $output['DB_HOST'];
-        parse_str(trim(fgets($env)), $output);
-        $this->user = $output['DB_USER'];
-        parse_str(trim(fgets($env)), $output);
-        $this->mdp = $output['DB_MDP'];
-        parse_str(trim(fgets($env)), $output);
-        $this->port = $output['DB_PORT'];
-        parse_str(trim(fgets($env)), $output);
-        $this->bd = $output['DB_NAME'];
+        $env = [];
+        foreach ($lines as $line) {
+            // Ignorer les commentaires
+            if (strpos(trim($line), '#') === 0) {
+                continue;
+            }
 
-        fclose($env);
+            // Parser la ligne
+            $parts = explode('=', $line, 2);
+            if (count($parts) === 2) {
+                $key = trim($parts[0]);
+                $value = trim($parts[1]);
+                $env[$key] = $value;
+            }
+        }
+
+        // Vérifier que toutes les clés nécessaires existent
+        $requiredKeys = ['DB_HOST', 'DB_USER', 'DB_MDP', 'DB_PORT', 'DB_NAME'];
+        foreach ($requiredKeys as $key) {
+            if (!isset($env[$key])) {
+                throw new Exception("La clé '$key' est manquante dans le fichier .env");
+            }
+        }
+
+        // Assigner les valeurs
+        $this->host = $env['DB_HOST'];
+        $this->user = $env['DB_USER'];
+        $this->mdp = $env['DB_MDP'];
+        $this->port = $env['DB_PORT'];
+        $this->bd = $env['DB_NAME'];
     }
 
     public function getHost(): string { return $this->host; }
