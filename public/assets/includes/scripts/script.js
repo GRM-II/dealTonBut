@@ -59,7 +59,38 @@ window.addEventListener('DOMContentLoaded', function() {
         // Page marketplace détectée donc initialiser
         initMarketplace();
     }
+
+    // Initialiser la modale de mot de passe oublié
+    initForgotPasswordModal();
 });
+
+// Gestion de la modale mot de passe oublié
+function initForgotPasswordModal() {
+    const modal = document.getElementById('forgot-password-modal');
+    const link = document.getElementById('forgot-password-link');
+    const closeBtn = modal ? modal.querySelector('.close') : null;
+
+    if (link && modal) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            modal.style.display = 'block';
+        });
+    }
+
+    if (closeBtn && modal) {
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+    }
+
+    if (modal) {
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
+}
 
 // Marketplace: Gestion du modal et du carrousel
 function initMarketplace() {

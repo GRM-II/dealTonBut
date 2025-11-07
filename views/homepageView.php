@@ -35,8 +35,29 @@
                 </button>
             </form>
 
-            <a href="#" class="text-link">Mot de passe oublié ?</a>
+            <a href="#" class="text-link" id="forgot-password-link">Mot de passe oublié ?</a>
             <a href="index.php?controller=user&action=register" class="text-link">Vous ne possédez pas de compte ?</a>
+        </div>
+    </div>
+
+    <!-- Modal pour mot de passe oublié -->
+    <div id="forgot-password-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Réinitialiser le mot de passe</h2>
+            <p>Entrez votre adresse email pour recevoir un lien de réinitialisation.</p>
+            <form id="forgot-password-form" method="POST" action="?controller=user&action=forgotPassword">
+                <input type="email"
+                       name="email"
+                       placeholder="Votre adresse email"
+                       class="input-rectangle"
+                       required>
+                <button type="submit"
+                        class="input-rectangle"
+                        style="background:#1360AA;color:#fff;cursor:pointer;font-size:1.1em;margin-top:10px;">
+                    Envoyer
+                </button>
+            </form>
         </div>
     </div>
 </main>
