@@ -213,6 +213,137 @@ body.dark-theme footer p {
     margin-left: 50px;
 }
 
+.project-description-rectangle {
+    width: 80%;
+    max-width: 500px;
+    min-width: 220px;
+    background: var(--bg-light);
+    margin: 0 auto 30px auto;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 30px;
+    box-shadow: var(--shadow-default);
+    border-radius: var(--radius-default);
+}
+
+body.dark-theme .project-description-rectangle {
+    background: var(--surface-dark);
+}
+
+.project-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    box-shadow: var(--shadow-default);
+    border-radius: var(--radius-small);
+    flex-shrink: 0;
+}
+
+body.dark-theme .project-logo {
+    background: var(--primary-color);
+}
+
+.project-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.project-title {
+    font-size: 1.8em;
+    font-weight: bold;
+    margin: 0;
+    color: var(--text-light);
+}
+
+body.dark-theme .project-title {
+    color: var(--text-dark);
+}
+
+.project-description {
+    font-size: 1em;
+    margin: 0 0 10px 0;
+    color: var(--text-light-secondary);
+    text-align: left;
+}
+
+body.dark-theme .project-description {
+    color: var(--text-dark);
+}
+
+.btn-learn-more {
+    align-self: flex-start;
+    background: var(--primary-color);
+    color: var(--bg-light);
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--radius-button);
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background var(--transition-fast), transform var(--transition-fast);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.btn-learn-more:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.btn-learn-more:focus {
+    outline: none;
+    box-shadow: var(--shadow-focus);
+}
+
+body.dark-theme .btn-learn-more {
+    background: var(--primary-color);
+    color: var(--bg-light);
+}
+
+.project-description-detailed {
+    width: 80%;
+    max-width: 500px;
+    min-width: 220px;
+    background: var(--bg-light);
+    margin: 30px auto 0 auto;
+    padding: 30px;
+    box-shadow: var(--shadow-default);
+    border-radius: var(--radius-default);
+}
+
+body.dark-theme .project-description-detailed {
+    background: var(--surface-dark);
+}
+
+.project-description-title {
+    font-size: 1.6em;
+    font-weight: bold;
+    margin: 0 0 20px 0;
+    color: var(--text-light);
+    text-align: center;
+}
+
+body.dark-theme .project-description-title {
+    color: var(--text-dark);
+}
+
+.project-description-text {
+    font-size: 1em;
+    line-height: 1.6;
+    margin: 0 0 15px 0;
+    color: var(--text-light-secondary);
+    text-align: justify;
+}
+
+.project-description-text:last-child {
+    margin-bottom: 0;
+}
+
+body.dark-theme .project-description-text {
+    color: var(--text-dark);
+}
+
 .login-rectangle {
     width: 80%;
     max-width: 500px;
@@ -476,6 +607,51 @@ body.dark-theme .text-link:hover {
 
 /* Medium screens */
 @media (max-width: 1024px) {
+    .project-description-rectangle {
+        max-width: 90vw;
+        padding: 16px 24px;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .project-logo {
+        width: 64px;
+        height: 64px;
+    }
+
+    .project-text {
+        gap: 3px;
+    }
+
+    .project-title {
+        font-size: 1.5em;
+    }
+
+    .project-description {
+        font-size: 0.9em;
+    }
+
+    .btn-learn-more {
+        font-size: 0.85em;
+        padding: 7px 14px;
+    }
+
+    .project-description-detailed {
+        max-width: 90vw;
+        padding: 24px;
+        margin-top: 24px;
+    }
+
+    .project-description-title {
+        font-size: 1.4em;
+        margin-bottom: 16px;
+    }
+
+    .project-description-text {
+        font-size: 0.95em;
+        margin-bottom: 12px;
+    }
+
     .login-rectangle {
         max-width: 90vw;
         min-height: 300px;
@@ -560,6 +736,54 @@ body.dark-theme .text-link:hover {
 
 /* Phone */
 @media (max-width: 600px) {
+    .project-description-rectangle {
+        max-width: 70vw;
+        min-width: 0;
+        padding: 12px 16px;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .project-logo {
+        width: 48px;
+        height: 48px;
+    }
+
+    .project-text {
+        gap: 2px;
+    }
+
+    .project-title {
+        font-size: 1.2em;
+    }
+
+    .project-description {
+        font-size: 0.85em;
+    }
+
+    .btn-learn-more {
+        font-size: 0.8em;
+        padding: 6px 12px;
+    }
+
+    .project-description-detailed {
+        max-width: 70vw;
+        min-width: 0;
+        padding: 16px;
+        margin-top: 16px;
+    }
+
+    .project-description-title {
+        font-size: 1.2em;
+        margin-bottom: 12px;
+    }
+
+    .project-description-text {
+        font-size: 0.9em;
+        margin-bottom: 10px;
+        line-height: 1.5;
+    }
+
     .login-rectangle {
         max-width: 70vw;
         min-width: 0;
