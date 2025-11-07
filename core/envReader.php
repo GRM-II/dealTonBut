@@ -18,34 +18,52 @@ class envReader
             throw new Exception("Le fichier .env n'existe pas à l'emplacement : " . $envPath);
         }
 
-        // Lecture du fichier et parsing des variables
-        $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        // Lecture du contenu complet
+        $content = file_get_contents($envPath);
 
-        if ($lines === false) {
+        if ($content === false) {
             throw new Exception("Impossible de lire le fichier .env");
         }
 
+        // Normaliser les fins de ligne (Windows/Linux/Mac)
+        $content = str_replace(["\r\n", "\r"], "\n", $content);
+
+        // Séparer par lignes
+        $lines = explode("\n", $content);
+
         $env = [];
         foreach ($lines as $line) {
-            // Ignorer les commentaires
-            if (strpos(trim($line), '#') === 0) {
+            // Nettoyer la ligne
+            $line = trim($line);
+
+            // Ignorer les lignes vides et les commentaires
+            if (empty($line) || strpos($line, '#') === 0) {
                 continue;
             }
 
-            // Parser la ligne
-            $parts = explode('=', $line, 2);
-            if (count($parts) === 2) {
-                $key = trim($parts[0]);
-                $value = trim($parts[1]);
+            // Parser la ligne (chercher le premier =)
+            $pos = strpos($line, '=');
+            if ($pos !== false) {
+                $key = trim(substr($line, 0, $pos));
+                $value = trim(substr($line, $pos + 1));
+
+                // Enlever les guillemets si présents
+                $value = trim($value, '"\'');
+
                 $env[$key] = $value;
             }
+        }
+
+        // Debug : afficher ce qui a été trouvé (à retirer après tests)
+        if (empty($env)) {
+            throw new Exception("Aucune variable trouvée dans le fichier .env. Contenu brut : " . var_export($content, true));
         }
 
         // Vérifier que toutes les clés nécessaires existent
         $requiredKeys = ['DB_HOST', 'DB_USER', 'DB_MDP', 'DB_PORT', 'DB_NAME'];
         foreach ($requiredKeys as $key) {
             if (!isset($env[$key])) {
-                throw new Exception("La clé '$key' est manquante dans le fichier .env");
+                throw new Exception("La clé '$key' est manquante dans le fichier .env. Clés trouvées : " . implode(', ', array_keys($env)));
             }
         }
 
