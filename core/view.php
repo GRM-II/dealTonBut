@@ -11,10 +11,15 @@ final class view
     public static function getBufferContent(): string
     {
         // On retourne le contenu du tampon principal
-        return ob_get_clean();
+        return ob_get_clean() ?: '';
     }
 
-    public static function show ($S_localisation, $A_parameters = array()) : void
+    /**
+     * @param string $S_localisation
+     * @param array<string> $A_parameters
+     * @return void
+     */
+    public static function show (string $S_localisation, array $A_parameters = array()) : void
     {
         $S_file = constants::viewsRepository() . $S_localisation . '.php';
 
