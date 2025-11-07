@@ -97,12 +97,9 @@ if (!empty($A_view['offers'])) {
             <form method="post" action="?controller=marketpage&action=createOffer">
                 <div class="input-rectangles">
                     <input type="text" name="title" class="input-rectangle" placeholder="Titre de l'offre" required <?php echo $disabledAttr; ?>>
-
                     <textarea name="description" class="input-rectangle textarea-field" placeholder="Description de l'offre" rows="4" required <?php echo $disabledAttr; ?>></textarea>
-
                     <input type="number" name="price" class="input-rectangle" placeholder="Prix (points)" step="0.01" min="0" required <?php echo $disabledAttr; ?>>
-
-                    <select name="category" class="input-rectangle" required <?php echo $disabledAttr; ?>>
+                    <select name="category" class="input-rectangle select-input" required <?php echo $disabledAttr; ?>>
                         <option value="">-- Catégorie --</option>
                         <option value="Services">Services</option>
                         <option value="Maths">Maths</option>
@@ -114,7 +111,6 @@ if (!empty($A_view['offers'])) {
                         <option value="Alimentation">Alimentation</option>
                         <option value="Autre">Autre</option>
                     </select>
-
                     <button type="submit" class="input-rectangle btn-submit">Publier l'offre</button>
                 </div>
             </form>

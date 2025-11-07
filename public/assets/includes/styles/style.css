@@ -317,6 +317,29 @@ body.dark-theme .login-rectangle span {
     color: var(--text-dark);
 }
 
+.market-search {
+    text-align: center;
+}
+
+.market-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.modal-content {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.textarea-field {
+    margin-bottom: 30px;
+    resize: vertical;
+}
+
+.select-input {
+    margin-bottom: 30px;
+}
+
 .danger-zone {
     margin-top: 30px;
     padding-top: 20px;
