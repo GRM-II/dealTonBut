@@ -50,7 +50,7 @@ body {
 
 @media (prefers-color-scheme: dark) {
     body:not(.light-theme) {
-        background-color: var(--bg-dark);
+        background-color: var(--bg-light);
         color: var(--text-dark);
     }
 }
@@ -109,9 +109,6 @@ body.dark-theme header {
     box-shadow: var(--shadow-default);
 }
 
-#theme-toggle:after {
-    content: "";
-}
 
 #theme-toggle:hover {
     background: #e0e0e0;
@@ -302,6 +299,24 @@ body.dark-theme .rectangle-title {
     display: inline;
 }
 
+.profile-form strong,
+.login-rectangle strong {
+    color: var(--text-light);
+}
+
+body.dark-theme .profile-form strong,
+body.dark-theme .login-rectangle strong {
+    color: var(--text-dark);
+}
+
+.login-rectangle span {
+    color: var(--text-light);
+}
+
+body.dark-theme .login-rectangle span {
+    color: var(--text-dark);
+}
+
 .danger-zone {
     margin-top: 30px;
     padding-top: 20px;
@@ -309,13 +324,44 @@ body.dark-theme .rectangle-title {
     text-align: center;
 }
 
+body.dark-theme .danger-zone {
+    border-top: 1px solid var(--surface-dark);
+}
+
 .danger-zone strong {
     color: var(--dark-red-color);
+}
+
+body.dark-theme .danger-zone strong {
+    color: var(--red-color);
 }
 
 .danger-zone p {
     font-size: 0.9em;
     color: var(--grey-color);
+}
+
+body.dark-theme .danger-zone p {
+    color: var(--text-dark);
+}
+
+.danger-warning-text {
+    font-size: 0.9em;
+    color: var(--text-light-secondary);
+}
+
+body.dark-theme .danger-warning-text {
+    color: var(--text-dark);
+}
+
+.danger-title,
+.login-rectangle .danger-title {
+    color: var(--dark-red-color);
+}
+
+body.dark-theme .danger-title,
+body.dark-theme .login-rectangle .danger-title {
+    color: var(--red-color);
 }
 
 .delete-modal {
@@ -339,9 +385,18 @@ body.dark-theme .rectangle-title {
     text-align: center;
 }
 
+body.dark-theme .delete-rectangle {
+    background: var(--bg-dark);
+    color: var(--text-dark);
+}
+
 .delete-retangle h3 {
     color: var(--dark-red-color);
     margin-top: 0;
+}
+
+body.dark-theme .delete-retangle h3 {
+    color: var(--red-color);
 }
 
 body.dark-theme .input-rectangle {
@@ -401,6 +456,11 @@ body.dark-theme .submit-rectangle {
     border-radius: 5px;
 }
 
+body.dark-theme .error {
+    color: var(--red-color);
+    background: var(--surface-dark);
+}
+
 /* Dimitri saches que je ne comprends pas ce choix de couleur autant catastrophique que GavinzBeats (même lui est mieux) */
 .dbunavailable {
     margin:10px 0;
@@ -411,12 +471,23 @@ body.dark-theme .submit-rectangle {
     border:1px solid #f6ad55;
 }
 
+body.dark-theme .dbunavailable {
+    background: #5a3e1a;
+    color: #fbbf24;
+    border: 1px solid #d97706;
+}
+
 .error-message {
     color: var(--red-color);
     padding: 10px;
     background: #ffe0e0;
     margin: 10px 0;
     border-radius: var(--radius-button);
+}
+
+body.dark-theme .error-message {
+    color: var(--red-color);
+    background: var(--surface-dark);
 }
 
 .warning-details {
@@ -426,6 +497,37 @@ body.dark-theme .submit-rectangle {
 
 .warning-details ul {
     margin: 6px 0 0 18px;
+}
+
+/* Messages flash */
+.flash-success {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 6px;
+    background: #e6ffed;
+    color: #03543f;
+    border: 1px solid #84e1bc;
+}
+
+body.dark-theme .flash-success {
+    background: #1a3d2e;
+    color: #84e1bc;
+    border: 1px solid #2d5f4a;
+}
+
+.flash-error {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 6px;
+    background: #ffe6e6;
+    color: #9b1c1c;
+    border: 1px solid #f5a4a4;
+}
+
+body.dark-theme .flash-error {
+    background: var(--surface-dark);
+    color: var(--red-color);
+    border: 1px solid #9b1c1c;
 }
 
 /* Boutons stylisés */
@@ -497,6 +599,10 @@ body.dark-theme .text-link:hover {
         margin-bottom: 2px;
         font-size: 1em;
         color: var(--text-light);
+    }
+
+    body.dark-theme .input-rectangles label {
+        color: var(--text-dark);
     }
 
     .input-rectangles {
@@ -588,6 +694,10 @@ body.dark-theme .text-link:hover {
         margin-bottom: 2px;
         font-size: 1em;
         color: var(--text-light);
+    }
+
+    body.dark-theme .input-rectangles label {
+        color: var(--text-dark);
     }
 
     .input-rectangles {
@@ -728,11 +838,11 @@ body.dark-theme #delete-modal p {
 }
 
 #delete-modal .btn-cancel {
-    background: #0a53be;
+    background: var(--primary-color);
     color: var(--white-color);
 }
 
 body.dark-theme #delete-modal .btn-cancel {
-    background: var(--bg-dark);
-    color: var(--text-dark);
+    background: var(--primary-color);
+    color: var(--white-color);
 }
