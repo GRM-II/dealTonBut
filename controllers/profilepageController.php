@@ -16,8 +16,6 @@ final class profilepageController
             exit;
         }
 
-        // DEBUG : Décommenter pour voir le contenu de la session
-        // echo '<pre>'; var_dump($_SESSION['user']); echo '</pre>'; exit;
 
         $userData = $_SESSION['user'];
         view::show('profilepageView', [

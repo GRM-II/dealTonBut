@@ -29,10 +29,13 @@ class envReader
         $content = str_replace("\xEF\xBB\xBF", '', $content);
 
         // Normaliser les retours à la ligne
-        $content = preg_replace('/\r\n|\r|\n/', "\n", $content);
+        $normalizedContent = preg_replace('/\r\n|\r|\n/', "\n", $content);
+        if ($normalizedContent === null) {
+            throw new Exception("Erreur lors de la normalisation du fichier .env");
+        }
 
         // Séparer par lignes
-        $lines = explode("\n", $content);
+        $lines = explode("\n", $normalizedContent);
 
         $env = [];
         foreach ($lines as $line) {
@@ -47,7 +50,7 @@ class envReader
             // Parser avec : ou =
             $parts = preg_split('/\s*[:=]\s*/', $line, 2);
 
-            if (count($parts) === 2) {
+            if ($parts !== false && count($parts) === 2) {
                 $key = trim($parts[0]);
                 $value = trim($parts[1]);
 
@@ -68,12 +71,9 @@ class envReader
         // Vérifier que toutes les valeurs sont présentes
         if (empty($this->host) || empty($this->user) || empty($this->mdp) ||
             empty($this->port) || empty($this->bd)) {
-            throw new Exception(
-                "Configuration incomplète. Valeurs trouvées: " .
-                "host='{$this->host}', user='{$this->user}', " .
-                "mdp='" . (empty($this->mdp) ? 'vide' : 'défini') . "', " .
-                "port='{$this->port}', bd='{$this->bd}'"
-            );
+            // Ne pas exposer les détails de configuration dans les messages d'erreur
+            error_log("Configuration .env incomplète - vérifiez les variables: host, user, mdp, port, bd");
+            throw new Exception("Configuration de la base de données incomplète. Veuillez vérifier le fichier .env");
         }
     }
 

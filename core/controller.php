@@ -1,7 +1,10 @@
 <?php
 final class controller
 {
+    /** @var array{controller: string, action: string} */
     private array $url;
+
+    /** @var array<string, mixed> */
     private array $params = [];
 
     public function __construct(?string $S_controller, ?string $S_action)
@@ -43,7 +46,10 @@ final class controller
         }
 
         try {
-            call_user_func_array([$controllerInstance, $action], []);
+            $callable = [$controllerInstance, $action];
+            if (is_callable($callable)) {
+                call_user_func($callable);
+            }
         } catch (\Throwable $e) {
             throw new RuntimeException("Erreur lors de l'exécution de l'action '$action' : " . $e->getMessage());
         }
@@ -53,6 +59,9 @@ final class controller
         }
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getParams(): array
     {
         return $this->params;

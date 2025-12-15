@@ -15,6 +15,11 @@ final class userController
         $this->userModel = new userModel();
     }
 
+    /**
+     * Récupère le statut de la base de données
+     *
+     * @return array{available: bool, message: string, details?: string}
+     */
     private function getDbStatus(): array
     {
         // Délègue au userModel pour connaître l'état de la base
@@ -48,7 +53,7 @@ final class userController
             try {
                 $result = $this->authenticate($login, $password);
 
-                if ($result['success']) {
+                if ($result['success'] && isset($result['user'])) {
                     // Stocker les informations de l'utilisateur dans la session
                     $_SESSION['user'] = $result['user'];
                     $_SESSION['logged_in'] = true;
@@ -79,6 +84,11 @@ final class userController
         view::show('user/login', ['flash' => $flashMessage]);
     }
 
+    /**
+     * Authentifie un utilisateur
+     *
+     * @return array{success: bool, message: string, user?: array{username: string, email: string}}
+     */
     private function authenticate(string $login, string $password): array
     {
         // Délègue l'authentification au modèle pour éviter la duplication
@@ -93,8 +103,7 @@ final class userController
             error_log("Erreur authenticate (controller): " . $e->getMessage());
             return [
                 'success' => false,
-                'message' => 'Une erreur est survenue lors de la connexion.',
-                'user' => null
+                'message' => 'Une erreur est survenue lors de la connexion.'
             ];
         }
     }
@@ -106,8 +115,9 @@ final class userController
         session_destroy();
 
         // Supprimer le cookie de session
-        if (isset($_COOKIE[session_name()])) {
-            setcookie(session_name(), '', time() - 3600, '/');
+        $sessionName = session_name();
+        if ($sessionName !== false && isset($_COOKIE[$sessionName])) {
+            setcookie($sessionName, '', time() - 3600, '/');
         }
 
         // Rediriger vers la page d'accueil
@@ -117,10 +127,6 @@ final class userController
 
     public function register(): void
     {
-        // Activer l'affichage des erreurs temporairement
-        ini_set('display_errors', 1);
-        error_reporting(E_ALL);
-
         // Si GET : afficher le formulaire
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             view::show('user/register', ['db_status' => $this->getDbStatus()]);
@@ -180,22 +186,23 @@ final class userController
                 ]);
             }
         } catch (Exception $e) {
-            // Afficher l'erreur complète pour le debug
-            echo "<pre>ERREUR DEBUG:\n";
-            echo "Message: " . $e->getMessage() . "\n";
-            echo "Trace: " . $e->getTraceAsString() . "\n";
-            echo "</pre>";
+            error_log("Erreur inscription : " . $e->getMessage());
 
             view::show('user/register', [
                 'db_status' => $this->getDbStatus(),
                 'flash' => [
                     'success' => false,
-                    'message' => 'Erreur : ' . $e->getMessage()
+                    'message' => 'Une erreur est survenue lors de l\'inscription.'
                 ]
             ]);
         }
     }
 
+    /**
+     * Crée un nouvel utilisateur
+     *
+     * @return array{success: bool, message: string}
+     */
     private function createUser(string $username, string $email, string $password): array
     {
         // Valider côté contrôleur les règles simples d'UI
@@ -229,10 +236,5 @@ final class userController
                 'message' => 'Une erreur est survenue lors de la création du compte.'
             ];
         }
-    }
-
-    private function renderResult(bool $success, string $message): void
-    {
-        view::show('homepageView', ['flash' => ['success' => $success, 'message' => $message]]);
     }
 }

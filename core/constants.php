@@ -2,22 +2,15 @@
 final class constants
 {
     // Les constantes relatives aux chemins
-
-    const VIEWS_REPOSITORY       = '/views/';
-
-    const MODELS_REPOSITORY      = '/models/';
-
-    const CORE_REPOSITORY        = '/core/';
-
-    const EXCEPTIONS_REPOSITORY  = '/core/exception/';
-
-    const CONTROLLERS_REPOSITORY = '/controllers/';
-
-    const STANDARD_REPOSITORY    = '/views/standard/';
-
+    private const VIEWS_REPOSITORY       = '/views/';
+    private const MODELS_REPOSITORY      = '/models/';
+    private const CORE_REPOSITORY        = '/core/';
+    private const EXCEPTIONS_REPOSITORY  = '/core/exception/';
+    private const CONTROLLERS_REPOSITORY = '/controllers/';
+    private const STANDARD_REPOSITORY    = '/views/standard/';
 
     public static function rootRepository(): string {
-        return realpath(__DIR__ . '/../');
+        return realpath(__DIR__ . '/../') ?: '';
     }
 
     public static function coreRepository(): string {
@@ -43,6 +36,5 @@ final class constants
     public static function standardRepository(): string {
         return self::rootRepository() . self::STANDARD_REPOSITORY;
     }
-
 
 }

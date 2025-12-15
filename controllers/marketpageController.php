@@ -1,8 +1,8 @@
 <?php
 
-class marketpageController
+final class marketpageController
 {
-    public function index()
+    public function index(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
@@ -27,7 +27,7 @@ class marketpageController
         ]);
     }
 
-    public function createOffer()
+    public function createOffer(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
@@ -48,7 +48,10 @@ class marketpageController
         } elseif (!is_numeric($price) || $price <= 0) {
             $_SESSION['flash'] = ['success' => false, 'message' => 'Le prix doit être un nombre valide.'];
         } else {
-            require_once 'models/offerModel.php';
+            if (!class_exists('offerModel', false)) {
+                require_once constants::modelsRepository() . 'offerModel.php';
+            }
+            /** @var bool $result */
             $result = offerModel::createOffer($_SESSION['user_id'], $title, $description, $price, $category);
 
             if ($result) {
@@ -62,7 +65,7 @@ class marketpageController
         exit;
     }
 
-    public function deleteOffer()
+    public function deleteOffer(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
@@ -76,8 +79,11 @@ class marketpageController
         $offerId = $_POST['offer_id'] ?? null;
 
         if ($offerId) {
-            require_once 'models/offerModel.php';
-            $result = offerModel::deleteOffer($offerId, $_SESSION['user_id']);
+            if (!class_exists('offerModel', false)) {
+                require_once constants::modelsRepository() . 'offerModel.php';
+            }
+            /** @var bool $result */
+            $result = offerModel::deleteOffer((int)$offerId, $_SESSION['user_id']);
 
             if ($result) {
                 $_SESSION['flash'] = ['success' => true, 'message' => 'Offre supprimée avec succès.'];
@@ -90,29 +96,30 @@ class marketpageController
         exit;
     }
 
-    // Récupère toutes les offres
-    private function getOffers()
+    /**
+     * Récupère toutes les offres
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    private function getOffers(): array
     {
-        // Pour les tests, si une classe offerModel est déjà définie (double),
-        // on évite d'inclure le vrai fichier pour ne pas redéclarer la classe.
         if (!class_exists('offerModel', false)) {
-            require_once 'models/offerModel.php';
+            require_once constants::modelsRepository() . 'offerModel.php';
         }
         return offerModel::getAllOffers();
     }
 
-    // Récupère le status de la BDD
-    private function getDbStatus()
+    /**
+     * Récupère le status de la BDD
+     *
+     * @return array{available: bool, message: string, details?: string}
+     */
+    private function getDbStatus(): array
     {
-        // Idem: si un double de test existe déjà, on ne charge pas le vrai fichier.
         if (!class_exists('userModel', false)) {
-            require_once 'models/userModel.php';
+            require_once constants::modelsRepository() . 'userModel.php';
         }
         $userModel = new userModel();
-        // Rendez le contrôleur tolérant si le modèle ne propose pas getDbStatus
-        if (method_exists($userModel, 'getDbStatus')) {
-            return $userModel->getDbStatus();
-        }
-        return ['available' => true, 'message' => ''];
+        return $userModel->getDbStatus();
     }
 }
