@@ -7,5 +7,3 @@ parameters:
      - views
      - public
      - index.php
-  ignoreErrors:
-     - '#Call to static method .* on an unknown class offerModel#'
