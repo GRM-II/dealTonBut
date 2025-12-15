@@ -11,6 +11,13 @@ class marketpageController
         // Vérifier si l'utilisateur est connecté
         $isLoggedIn = !empty($_SESSION['user']) && is_array($_SESSION['user']);
 
+        // Si pas connecté, rediriger vers la page de login
+        if (!$isLoggedIn) {
+            $_SESSION['redirect_after_login'] = '?controller=marketpage&action=index';
+            header('Location: ?controller=user&action=login');
+            exit;
+        }
+
         $status = $this->getDbStatus();
         $flash = $_SESSION['flash'] ?? null;
         unset($_SESSION['flash']);
@@ -90,6 +97,85 @@ class marketpageController
         exit;
     }
 
+    public function login()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Rediriger vers la page de connexion en conservant la destination
+        $_SESSION['redirect_after_login'] = '?controller=marketpage&action=index';
+        header('Location: ?controller=user&action=login');
+        exit;
+    }
+
+    public function viewOffer()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $offerId = $_GET['id'] ?? null;
+
+        if (!$offerId) {
+            $_SESSION['flash'] = ['success' => false, 'message' => 'Identifiant d\'offre manquant.'];
+            header('Location: ?controller=marketpage&action=index');
+            exit;
+        }
+
+        require_once 'models/offerModel.php';
+        $offer = offerModel::getOfferById($offerId);
+
+        if (!$offer) {
+            $_SESSION['flash'] = ['success' => false, 'message' => 'Offre introuvable.'];
+            header('Location: ?controller=marketpage&action=index');
+            exit;
+        }
+
+        $status = $this->getDbStatus();
+        $isLoggedIn = !empty($_SESSION['user']) && is_array($_SESSION['user']);
+        $isOwner = $isLoggedIn && isset($_SESSION['user_id']) && $offer['user_id'] == $_SESSION['user_id'];
+
+        View::show('offerDetailsView', [
+            'user' => $_SESSION['user'] ?? null,
+            'isLoggedIn' => $isLoggedIn,
+            'isOwner' => $isOwner,
+            'offer' => $offer,
+            'db_status' => $status
+        ]);
+    }
+
+    public function purchaseOffer()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!isset($_SESSION['user_id'])) {
+            $_SESSION['flash'] = ['success' => false, 'message' => 'Vous devez être connecté pour acheter une offre.'];
+            header('Location: ?controller=marketpage&action=login');
+            exit;
+        }
+
+        $offerId = $_POST['offer_id'] ?? null;
+
+        if ($offerId) {
+            require_once 'models/offerModel.php';
+            $result = offerModel::purchaseOffer($offerId, $_SESSION['user_id']);
+
+            if ($result['success']) {
+                $_SESSION['flash'] = ['success' => true, 'message' => $result['message'] ?? 'Offre achetée avec succès !'];
+            } else {
+                $_SESSION['flash'] = ['success' => false, 'message' => $result['message'] ?? 'Erreur lors de l\'achat de l\'offre.'];
+            }
+        } else {
+            $_SESSION['flash'] = ['success' => false, 'message' => 'Identifiant d\'offre manquant.'];
+        }
+
+        header('Location: ?controller=marketpage&action=index');
+        exit;
+    }
+
     // Récupère toutes les offres
     private function getOffers()
     {
@@ -116,3 +202,4 @@ class marketpageController
         return ['available' => true, 'message' => ''];
     }
 }
+

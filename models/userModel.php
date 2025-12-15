@@ -135,8 +135,8 @@ final class userModel
 
         try {
             $pdo = self::getConnection();
-            // ✓ CORRIGÉ : minuscules cohérentes
-            $sql = "SELECT username, email, mdp 
+
+            $sql = "SELECT id, username, email, mdp 
                     FROM User 
                     WHERE username = :login OR email = :login 
                     LIMIT 1";
@@ -184,6 +184,7 @@ final class userModel
             'success' => true,
             'message' => 'Connexion réussie.',
             'user' => [
+                'id' => $user['id'],
                 'username' => $user['username'],
                 'email' => $user['email']
             ]

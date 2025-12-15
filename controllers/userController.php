@@ -51,10 +51,18 @@ final class userController
                 if ($result['success']) {
                     // Stocker les informations de l'utilisateur dans la session
                     $_SESSION['user'] = $result['user'];
+                    $_SESSION['user_id'] = $result['user']['id'];
                     $_SESSION['logged_in'] = true;
 
-                    // Redirection vers la page de profil
-                    header('Location: ?controller=profilepage&action=index');
+                    // Vérifier s'il y a une redirection en attente
+                    if (isset($_SESSION['redirect_after_login'])) {
+                        $redirect = $_SESSION['redirect_after_login'];
+                        unset($_SESSION['redirect_after_login']);
+                        header("Location: $redirect");
+                    } else {
+                        // Redirection vers la page de profil par défaut
+                        header('Location: ?controller=profilepage&action=index');
+                    }
                     exit;
                 }
 
