@@ -112,9 +112,10 @@ final class profilepageController
             }
 
         } catch (Exception $e) {
+            error_log("Erreur deleteAccount: " . $e->getMessage());
             $_SESSION['flash'] = [
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => 'Une erreur est survenue lors de la suppression du compte.'
             ];
             header('Location: ?controller=profilepage');
             exit;

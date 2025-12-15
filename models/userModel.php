@@ -56,6 +56,8 @@ final class userModel
 
     /**
      * Crée un nouvel utilisateur dans la base de données
+     *
+     * @return array{success: bool, message: string}
      */
     public function createUser(string $username, string $email, string $password): array
     {
@@ -125,6 +127,8 @@ final class userModel
 
     /**
      * Recherche un utilisateur par son username OU son email
+     *
+     * @return array{username: string, email: string, mdp: string}|null
      */
     public function findUserByLogin(string $login): ?array
     {
@@ -158,6 +162,8 @@ final class userModel
 
     /**
      * Authentifie un utilisateur
+     *
+     * @return array{success: bool, message: string, user?: array{username: string, email: string}}
      */
     public function authenticate(string $login, string $password): array
     {
@@ -257,6 +263,8 @@ final class userModel
 
     /**
      * Met à jour le nom d'utilisateur
+     *
+     * @return array{success: bool, message: string}
      */
     public function updateUsername(string $currentUsername, string $newUsername): array
     {
@@ -294,6 +302,8 @@ final class userModel
 
     /**
      * Met à jour l'email
+     *
+     * @return array{success: bool, message: string}
      */
     public function updateEmail(string $username, string $newEmail): array
     {
@@ -331,6 +341,8 @@ final class userModel
 
     /**
      * Vérifie le statut de la connexion à la base de données
+     *
+     * @return array{available: bool, message: string, details?: string}
      */
     public function getDbStatus(): array
     {
@@ -339,7 +351,7 @@ final class userModel
 
             // Vérifie si la table User existe
             $stmt = $pdo->query("SHOW TABLES LIKE 'User'");
-            $tableExists = $stmt->rowCount() > 0;
+            $tableExists = $stmt !== false && $stmt->rowCount() > 0;
 
             if (!$tableExists) {
                 return [

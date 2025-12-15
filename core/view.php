@@ -2,31 +2,44 @@
 
 final class view
 {
+    /**
+     * Démarre le tampon de sortie principal
+     */
     public static function openBuffer(): void
     {
-        // On démarre le tampon de sortie, on va l'appeler "tampon principal"
         ob_start();
     }
 
+    /**
+     * Récupère et nettoie le contenu du tampon principal
+     */
     public static function getBufferContent(): string
     {
-        // On retourne le contenu du tampon principal
         return ob_get_clean() ?: '';
     }
 
     /**
-     * @param string $S_localisation
-     * @param array<string> $A_parameters
-     * @return void
+     * Affiche une vue avec les paramètres fournis
+     *
+     * @param string $S_localisation Chemin relatif de la vue (sans extension .php)
+     * @param array<string, mixed> $A_parameters Paramètres à passer à la vue
+     * @throws RuntimeException Si le fichier de vue n'existe pas
      */
-    public static function show (string $S_localisation, array $A_parameters = array()) : void
+    public static function show(string $S_localisation, array $A_parameters = []): void
     {
         $S_file = constants::viewsRepository() . $S_localisation . '.php';
 
+        if (!is_readable($S_file)) {
+            error_log("Vue introuvable: " . $S_file);
+            throw new RuntimeException("La vue '$S_localisation' est introuvable.");
+        }
+
+        // Extraction des paramètres pour les rendre disponibles dans la vue
         $A_view = $A_parameters;
+
         // Démarrage d'un sous-tampon
         ob_start();
-        include $S_file; // c'est dans ce fichier que sera utilisé A_vue, la vue est inclue dans le sous-tampon
+        include $S_file;
         ob_end_flush();
     }
 }

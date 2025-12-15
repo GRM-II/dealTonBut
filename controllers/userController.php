@@ -68,7 +68,8 @@ final class userController
                 return;
 
             } catch (Exception $e) {
-                view::show('user/login', ['error' => 'Une erreur est survenue: ' . $e->getMessage()]);
+                error_log("Erreur login: " . $e->getMessage());
+                view::show('user/login', ['error' => 'Une erreur est survenue lors de la connexion.']);
                 return;
             }
         }

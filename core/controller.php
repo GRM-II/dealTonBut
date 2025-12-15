@@ -51,7 +51,8 @@ final class controller
                 call_user_func($callable);
             }
         } catch (\Throwable $e) {
-            throw new RuntimeException("Erreur lors de l'exécution de l'action '$action' : " . $e->getMessage());
+            error_log("Erreur exécution action '$action': " . $e->getMessage());
+            throw new RuntimeException("Erreur lors de l'exécution de l'action '$action'.");
         }
 
         if (method_exists($controllerInstance, 'getParams')) {
