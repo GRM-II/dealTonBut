@@ -27,7 +27,8 @@ final class userModel
                 self::$connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
             } catch (PDOException $e) {
-                die("Erreur de connexion à la base de données : " . $e->getMessage());
+                error_log("Erreur de connexion BDD : " . $e->getMessage());
+                throw new RuntimeException("Impossible de se connecter à la base de données.");
             }
         }
 
@@ -117,7 +118,7 @@ final class userModel
             error_log("Erreur création utilisateur : " . $e->getMessage());
             return [
                 'success' => false,
-                'message' => 'Une erreur est survenue lors de la création du compte. ' . $e->getMessage()
+                'message' => 'Une erreur est survenue lors de la création du compte.'
             ];
         }
     }
@@ -355,10 +356,11 @@ final class userModel
             ];
 
         } catch (PDOException $e) {
+            error_log("Erreur getDbStatus : " . $e->getMessage());
             return [
                 'available' => false,
                 'message' => 'Erreur de connexion à la base de données.',
-                'details' => $e->getMessage()
+                'details' => 'Vérifiez la configuration de la base de données'
             ];
         }
     }
