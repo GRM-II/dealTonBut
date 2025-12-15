@@ -26,8 +26,6 @@ final class userModel
                 self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 self::$connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
-                echo "<!-- DB CONNECTION OK -->\n";
-
             } catch (PDOException $e) {
                 die("Erreur de connexion à la base de données : " . $e->getMessage());
             }
@@ -36,16 +34,19 @@ final class userModel
         return self::$connection;
     }
 
-    // Dans votre userModel.php
+    /**
+     * Récupère l'ID d'un utilisateur par son username
+     */
     public function getUserIdByUsername(string $username): ?int
     {
         try {
-            $pdo = self::getConnection(); // ← Changement ici !
-            $stmt = $pdo->prepare("SELECT ID FROM User WHERE Username = :username");
+            $pdo = self::getConnection();
+            // ✓ CORRIGÉ : Uniformisation avec minuscules
+            $stmt = $pdo->prepare("SELECT id FROM User WHERE username = :username");
             $stmt->execute(['username' => $username]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            return $result ? (int)$result['ID'] : null;
+            return $result ? (int)$result['id'] : null;
         } catch (PDOException $e) {
             error_log("Erreur getUserIdByUsername: " . $e->getMessage());
             return null;
@@ -58,10 +59,11 @@ final class userModel
     public function createUser(string $username, string $email, string $password): array
     {
         try {
-            $pdo = self::getConnection(); // ← CORRECTION ICI
+            $pdo = self::getConnection();
 
             // 1. Vérifier si l'email existe déjà
-            $stmt = $pdo->prepare("SELECT ID FROM User WHERE Email = :email LIMIT 1");
+            // ✓ CORRIGÉ : minuscules cohérentes
+            $stmt = $pdo->prepare("SELECT id FROM User WHERE email = :email LIMIT 1");
             $stmt->execute(['email' => $email]);
 
             if ($stmt->fetch()) {
@@ -72,7 +74,8 @@ final class userModel
             }
 
             // 2. Vérifier si le nom d'utilisateur existe déjà
-            $stmt = $pdo->prepare("SELECT ID FROM User WHERE Username = :username LIMIT 1");
+            // ✓ CORRIGÉ : minuscules cohérentes
+            $stmt = $pdo->prepare("SELECT id FROM User WHERE username = :username LIMIT 1");
             $stmt->execute(['username' => $username]);
 
             if ($stmt->fetch()) {
@@ -86,9 +89,10 @@ final class userModel
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
             // 4. Insérer le nouvel utilisateur
+            // ✓ CORRIGÉ : minuscules cohérentes
             $stmt = $pdo->prepare(
-                "INSERT INTO User (Username, Email, Mdp) 
-             VALUES (:username, :email, :password)"
+                "INSERT INTO User (username, email, mdp) 
+                 VALUES (:username, :email, :password)"
             );
 
             $result = $stmt->execute([
@@ -113,33 +117,29 @@ final class userModel
             error_log("Erreur création utilisateur : " . $e->getMessage());
             return [
                 'success' => false,
-                'message' => 'Une erreur est survenue lors de la création du compte.'
+                'message' => 'Une erreur est survenue lors de la création du compte. ' . $e->getMessage()
             ];
         }
     }
 
     /**
-     * Recherche un utilisateur par son username OU son email (VERSION DEBUG)
+     * Recherche un utilisateur par son username OU son email
      */
     public function findUserByLogin(string $login): ?array
     {
-        echo "<!-- findUserByLogin appelé avec: '$login' -->\n";
-
         $login = trim($login);
 
         if (empty($login)) {
-            echo "<!-- findUserByLogin: login vide -->\n";
             return null;
         }
 
         try {
             $pdo = self::getConnection();
-            $sql = "SELECT Username, Email, Mdp 
+            // ✓ CORRIGÉ : minuscules cohérentes
+            $sql = "SELECT username, email, mdp 
                     FROM User 
-                    WHERE Username = :login OR Email = :login 
+                    WHERE username = :login OR email = :login 
                     LIMIT 1";
-
-            echo "<!-- SQL: $sql -->\n";
 
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(':login', $login, PDO::PARAM_STR);
@@ -147,34 +147,22 @@ final class userModel
 
             $user = $stmt->fetch();
 
-            if ($user) {
-                echo "<!-- Utilisateur trouvé: Username=" . htmlspecialchars($user['Username']) . ", Email=" . htmlspecialchars($user['Email']) . " -->\n";
-            } else {
-                echo "<!-- AUCUN utilisateur trouvé pour '$login' -->\n";
-            }
-
             return $user ?: null;
 
         } catch (PDOException $e) {
-            echo "<!-- ERREUR PDO dans findUserByLogin: " . htmlspecialchars($e->getMessage()) . " -->\n";
             error_log("Erreur findUserByLogin : " . $e->getMessage());
             return null;
         }
     }
 
     /**
-     * Authentifie un utilisateur (VERSION DEBUG MAXIMALE)
+     * Authentifie un utilisateur
      */
     public function authenticate(string $login, string $password): array
     {
-        echo "<!-- ============ AUTHENTICATE START ============ -->\n";
-        echo "<!-- Login reçu: '" . htmlspecialchars($login) . "' -->\n";
-        echo "<!-- Password length: " . strlen($password) . " -->\n";
-
         $login = trim($login);
 
         if (empty($login) || empty($password)) {
-            echo "<!-- ERREUR: Identifiants vides -->\n";
             return ['success' => false, 'message' => 'Identifiants manquants.'];
         }
 
@@ -182,30 +170,22 @@ final class userModel
         $user = $this->findUserByLogin($login);
 
         if (!$user) {
-            echo "<!-- ERREUR: Utilisateur non trouvé dans la base -->\n";
             return ['success' => false, 'message' => 'Identifiant ou mot de passe incorrect.'];
         }
 
-        echo "<!-- Hash stocké en BDD: " . htmlspecialchars(substr($user['Mdp'], 0, 20)) . "... -->\n";
-
-        // Vérifie le mot de passe
-        $passwordMatch = password_verify($password, $user['Mdp']);
-        echo "<!-- password_verify result: " . ($passwordMatch ? 'TRUE ✓' : 'FALSE ✗') . " -->\n";
+        // Vérifie le mot de passe (clé cohérente avec SELECT)
+        $passwordMatch = password_verify($password, $user['mdp']);
 
         if (!$passwordMatch) {
-            echo "<!-- ERREUR: Mot de passe incorrect -->\n";
             return ['success' => false, 'message' => 'Identifiant ou mot de passe incorrect.'];
         }
-
-        echo "<!-- ✓✓✓ AUTHENTIFICATION RÉUSSIE ✓✓✓ -->\n";
-        echo "<!-- ============ AUTHENTICATE END ============ -->\n";
 
         return [
             'success' => true,
             'message' => 'Connexion réussie.',
             'user' => [
-                'username' => $user['Username'],
-                'email' => $user['Email']
+                'username' => $user['username'],
+                'email' => $user['email']
             ]
         ];
     }
@@ -221,7 +201,8 @@ final class userModel
 
         try {
             $pdo = self::getConnection();
-            $sql = "UPDATE User SET Mdp = :password WHERE id = :userId";
+            // ✓ CORRIGÉ : minuscules cohérentes
+            $sql = "UPDATE User SET mdp = :password WHERE id = :userId";
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(':password', $hashedPassword, PDO::PARAM_STR);
             $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
@@ -252,6 +233,7 @@ final class userModel
             return false;
         }
     }
+
     /**
      * Supprime un utilisateur par son username
      */
@@ -259,7 +241,8 @@ final class userModel
     {
         try {
             $pdo = self::getConnection();
-            $sql = "DELETE FROM User WHERE Username = :username";
+            // ✓ CORRIGÉ : minuscules cohérentes
+            $sql = "DELETE FROM User WHERE username = :username";
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(':username', $username, PDO::PARAM_STR);
 
@@ -270,7 +253,6 @@ final class userModel
             return false;
         }
     }
-
 
     /**
      * Met à jour le nom d'utilisateur
@@ -285,7 +267,8 @@ final class userModel
 
         try {
             $pdo = self::getConnection();
-            $sql = "UPDATE User SET Username = :newUsername WHERE Username = :currentUsername";
+            // ✓ CORRIGÉ : minuscules cohérentes
+            $sql = "UPDATE User SET username = :newUsername WHERE username = :currentUsername";
             $stmt = $pdo->prepare($sql);
 
             $stmt->bindValue(':newUsername', $newUsername, PDO::PARAM_STR);
@@ -321,7 +304,8 @@ final class userModel
 
         try {
             $pdo = self::getConnection();
-            $sql = "UPDATE User SET Email = :newEmail WHERE Username = :username";
+            // ✓ CORRIGÉ : minuscules cohérentes
+            $sql = "UPDATE User SET email = :newEmail WHERE username = :username";
             $stmt = $pdo->prepare($sql);
 
             $stmt->bindValue(':newEmail', $newEmail, PDO::PARAM_STR);
