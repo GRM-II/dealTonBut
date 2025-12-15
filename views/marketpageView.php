@@ -23,6 +23,13 @@ if (!empty($A_view['offers'])) {
 ?>
 
 <div class="content">
+    <!-- Bouton retour au profil -->
+    <div class="marketplace-header">
+        <a href="?controller=profilepage&action=index" class="btn-back-profile">
+            ← Profil
+        </a>
+    </div>
+
     <div class="marketplace-title-container">
         <h1 class="marketplace-title">Market place</h1>
     </div>

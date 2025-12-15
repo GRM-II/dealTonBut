@@ -580,6 +580,35 @@ body.dark-theme .text-link:hover {
    MARKETPLACE STYLES
    ============================================ */
 
+/* Header de la marketplace avec bouton retour */
+.marketplace-header {
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 10px;
+}
+
+.btn-back-profile {
+    display: inline-block;
+    padding: 8px 16px;
+    background: var(--primary-color);
+    color: var(--bg-light);
+    text-decoration: none;
+    border-radius: var(--radius-button);
+    font-size: 0.95em;
+    transition: background var(--transition-fast), transform var(--transition-fast);
+    box-shadow: var(--shadow-default);
+}
+
+.btn-back-profile:hover {
+    background: var(--primary-dark);
+    transform: translateX(-2px);
+}
+
+body.dark-theme .btn-back-profile {
+    background: var(--primary-color);
+    color: var(--bg-light);
+}
+
 /* Titre Market place centré */
 .marketplace-title-container {
     text-align: center;
