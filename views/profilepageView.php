@@ -6,7 +6,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
 <div class="content">
     <div class="login-rectangle" style="position:relative;">
         <div style="position:absolute;top:10px;left:10px;z-index:10;">
-            <a href="?controller=marketpage" class="input-rectangle" style="display:inline-block;background:#1360AA;color:#fff;text-decoration:none;padding:8px 16px;border-radius:4px;">
+            <a href="?controller=marketpage&action=index" class="input-rectangle" style="display:inline-block;background:#1360AA;color:#fff;text-decoration:none;padding:8px 16px;border-radius:4px;">
                 🛒 Marketplace
             </a>
         </div>

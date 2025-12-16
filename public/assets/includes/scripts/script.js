@@ -122,7 +122,7 @@ function initMarketplace() {
     }
 
     // Navigation carrousel
-    document.querySelectorAll('.nav-left').forEach(btn => {
+    document.querySelectorAll('.arrow-left, .arrow-btn[data-direction="left"]').forEach(btn => {
         btn.addEventListener('click', function() {
             const category = this.getAttribute('data-category');
             const carousel = document.querySelector(`[data-carousel="${category}"]`);
@@ -132,7 +132,7 @@ function initMarketplace() {
         });
     });
 
-    document.querySelectorAll('.nav-right').forEach(btn => {
+    document.querySelectorAll('.arrow-right, .arrow-btn[data-direction="right"]').forEach(btn => {
         btn.addEventListener('click', function() {
             const category = this.getAttribute('data-category');
             const carousel = document.querySelector(`[data-carousel="${category}"]`);
@@ -147,8 +147,8 @@ function initMarketplace() {
     if (searchInput) {
         searchInput.addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase();
-            document.querySelectorAll('.product-card').forEach(card => {
-                const title = card.querySelector('.product-name').textContent.toLowerCase();
+            document.querySelectorAll('.offer-card').forEach(card => {
+                const title = card.querySelector('.offer-title').textContent.toLowerCase();
                 if (title.includes(searchTerm)) {
                     card.style.display = 'flex';
                 } else {
