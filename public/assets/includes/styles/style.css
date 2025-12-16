@@ -858,15 +858,52 @@ body.dark-theme #delete-modal .btn-cancel {
     padding: 0;
     min-height: calc(100vh - 50px);
     overflow-x: hidden;
+    position: relative;
+}
+
+.trade-nav-buttons {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    gap: 20px;
+    z-index: 10;
+}
+
+.trade-nav-btn {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-color);
+    border-radius: var(--radius-button);
+    box-shadow: var(--shadow-default);
+    transition: all var(--transition-fast);
+}
+
+body.dark-theme .trade-nav-btn {
+    background: var(--bg-dark);
+}
+
+.trade-nav-btn:hover {
+    transform: scale(1.1);
+}
+
+.trade-nav-icon {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
 }
 
 .trade-place-title {
     text-align: center;
     font-size: 2rem;
     margin-bottom: 30px;
-    padding: 1rem;
+    padding: 1rem 15rem;
     display: flex;
     align-items: center;
+    background-color: var(--surface-light);
     justify-content: center;
     color: var(--text-light);
     box-shadow: var(--shadow-default);
@@ -875,6 +912,7 @@ body.dark-theme #delete-modal .btn-cancel {
 
 body.dark-theme .trade-place-title {
     color: var(--text-dark);
+    background-color: #343434;
 }
 
 .trade-place-container {
@@ -943,12 +981,22 @@ body.dark-theme .trade-offer-item.active {
 }
 
 .offer-arrow {
-    font-size: 0.8rem;
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 8px solid var(--grey-color);
     opacity: 0.6;
+    transition: all var(--transition-fast);
+}
+
+body.dark-theme .offer-arrow {
+    border-left-color: var(--text-dark);
 }
 
 .trade-offer-item.active .offer-arrow {
     opacity: 1;
+    border-left-color: var(--white-color);
 }
 
 .trade-place-main {
@@ -1090,6 +1138,49 @@ body.dark-theme .detail-value {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+.btn-nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius-button);
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    font-weight: 500;
+}
+
+.btn-nav .btn-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.btn-home {
+    background: var(--primary-color);
+    color: var(--white-color);
+}
+
+.btn-home:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.btn-market {
+    background: #10b981;
+    color: var(--white-color);
+}
+
+.btn-market:hover {
+    background: #059669;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
 .btn-primary {
     background: var(--primary-color);
     color: var(--white-color);
@@ -1123,6 +1214,24 @@ body.dark-theme .detail-value {
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+    .trade-nav-buttons {
+        top: 15px;
+        left: 15px;
+        gap: 10px;
+    }
+
+    .trade-nav-btn {
+        width: 42px;
+        height: 42px;
+    }
+
+    .trade-nav-icon {
+        width: 24px;
+        height: 24px;
+    }
+}
+
 @media (max-width: 768px) {
     .trade-place-container {
         flex-direction: column;
@@ -1138,11 +1247,29 @@ body.dark-theme .detail-value {
         min-height: 400px;
     }
 
+    .trade-nav-buttons {
+        top: 10px;
+        left: 10px;
+        gap: 8px;
+    }
+
+    .trade-nav-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .trade-nav-icon {
+        width: 20px;
+        height: 20px;
+    }
+
     .offer-actions {
         flex-direction: column;
     }
 
-    .btn-contact {
+    .btn-contact,
+    .btn-nav {
         width: 100%;
+        justify-content: center;
     }
 }

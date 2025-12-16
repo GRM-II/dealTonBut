@@ -7,6 +7,17 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
 ?>
 
 <div class="content trade-place-content">
+    <?php if ($isLoggedIn): ?>
+        <div class="trade-nav-buttons">
+            <a href="?controller=marketpage&action=index" class="trade-nav-btn trade-nav-btn-market" title="Marché">
+                <img id="market-nav-icon" src="public/assets/img/Market_Day.svg" alt="Marché" class="trade-nav-icon">
+            </a>
+            <a href="?controller=homepage&action=index" class="trade-nav-btn trade-nav-btn-home" title="Accueil">
+                <img id="home-nav-icon" src="public/assets/img/Home_Day.svg" alt="Accueil" class="trade-nav-icon">
+            </a>
+        </div>
+    <?php endif; ?>
+
     <h1 class="trade-place-title">Trade place</h1>
 
     <?php if ($dbUnavailable): ?>
@@ -32,7 +43,7 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
                     <a href="?controller=tradeplace&action=index&offer_id=<?php echo htmlspecialchars($offer['id'], ENT_QUOTES, 'UTF-8'); ?>"
                        class="trade-offer-item <?php echo ($selectedOffer && $selectedOffer['id'] == $offer['id']) ? 'active' : ''; ?>">
                         <span class="offer-category"><?php echo htmlspecialchars(substr($offer['category'] ?? 'Autre', 0, 20), ENT_QUOTES, 'UTF-8'); ?></span>
-                        <span class="offer-arrow">▶</span>
+                        <span class="offer-arrow"></span>
                     </a>
                 <?php endforeach; ?>
             <?php endif; ?>
@@ -79,12 +90,7 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
                         </div>
                     </div>
 
-                    <?php if ($isLoggedIn): ?>
-                        <div class="offer-actions">
-                            <button class="btn-primary btn-contact">primary placeholder</button>
-                            <button class="btn-secondary btn-contact">secondary placeholder</button>
-                        </div>
-                    <?php endif; ?>
+
                 </div>
             <?php else: ?>
                 <div class="no-offer-selected">

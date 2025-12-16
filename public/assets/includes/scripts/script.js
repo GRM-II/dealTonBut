@@ -9,6 +9,19 @@ function setThemeIcon() {
     }
 }
 
+function updateNavigationIcons() {
+    const isDark = document.body.classList.contains('dark-theme');
+    const homeIcon = document.getElementById('home-nav-icon');
+    const marketIcon = document.getElementById('market-nav-icon');
+
+    if (homeIcon) {
+        homeIcon.src = isDark ? 'public/assets/img/Home_Night.svg' : 'public/assets/img/Home_Day.svg';
+    }
+    if (marketIcon) {
+        marketIcon.src = isDark ? 'public/assets/img/Market_Night.svg' : 'public/assets/img/Market_Day.svg';
+    }
+}
+
 function applySavedTheme() {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
@@ -17,12 +30,14 @@ function applySavedTheme() {
         document.body.classList.remove('dark-theme');
     }
     setThemeIcon();
+    updateNavigationIcons();
 }
 
 function toggleTheme() {
     document.body.classList.toggle('dark-theme');
     localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
     setThemeIcon();
+    updateNavigationIcons();
 }
 
 function initRegisterForm(dbUnavailable, dbMessage) {
