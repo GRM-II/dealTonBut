@@ -5,6 +5,7 @@ final class userController
     private userModel $userModel;
 
     // Constructeur pour s'assurer que la session est démarrée et la connexion DB établie
+
     public function __construct()
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -34,10 +35,13 @@ final class userController
 
     public function login(): void
     {
-        // Si l'utilisateur est déjà connecté, le rediriger vers le profil
+        // Si déjà connecté, déconnecter d'abord
         if (isset($_SESSION['user'])) {
-            header('Location: ?controller=profilepage&action=index');
-            exit;
+            session_unset();
+            session_destroy();
+            // IMPORTANT : Redémarrer avec un nouvel ID de session
+            session_start();
+            session_regenerate_id(true);
         }
 
         // Si le formulaire est soumis
@@ -54,6 +58,9 @@ final class userController
                 $result = $this->authenticate($login, $password);
 
                 if ($result['success'] && isset($result['user'])) {
+                    // Régénérer l'ID de session pour la sécurité
+                    session_regenerate_id(true);
+
                     // Stocker les informations de l'utilisateur dans la session
                     $_SESSION['user'] = $result['user'];
                     $_SESSION['user_id'] = $result['user']['id'];

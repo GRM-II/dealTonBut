@@ -16,11 +16,22 @@ final class profilepageController
             exit;
         }
 
+        // Vérifier que l'utilisateur existe toujours en BDD
+        $username = $_SESSION['user']['username'];
+        $userExists = $this->userModel->getUserByUsername($username);
 
-        $userData = $_SESSION['user'];
+        if (!$userExists) {
+            // L'utilisateur n'existe plus
+            session_unset();
+            session_destroy();
+            header('Location: ?controller=user&action=login&session_expired=1');
+            exit;
+        }
+
+        // Utiliser les données fraîches de la BDD
         view::show('profilepageView', [
-            'username' => $userData['username'] ?? 'N/A',
-            'email' => $userData['email'] ?? 'N/A'
+            'username' => $userExists['username'] ?? 'N/A',
+            'email' => $userExists['email'] ?? 'N/A'
         ]);
     }
 
@@ -89,11 +100,9 @@ final class profilepageController
             exit;
         }
 
-        // Récupérer l'ID via le username
         $username = $_SESSION['user']['username'];
 
         try {
-            // Option A : Créer une méthode dans userModel pour récupérer l'ID
             $userId = $this->userModel->getUserIdByUsername($username);
 
             if (!$userId) {
