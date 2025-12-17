@@ -1,7 +1,7 @@
 <?php
-final class homepageController  // Changé de homePageController à homepageController
+final class homepageController
 {
-    public function login(): void  // Changé de login() à login(): void
+    public function login(): void
     {
         $model = new userModel();
         $status = $model->getDbStatus();
