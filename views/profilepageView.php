@@ -4,15 +4,20 @@ $dbMessage = $dbUnavailable ? ($A_view['db_status']['message'] . (isset($A_view[
 $disabledAttr = $dbUnavailable ? 'disabled' : '';
 ?>
 <div class="content">
-    <div class="login-rectangle" style="position:relative;">
-        <div style="position:absolute;top:10px;left:10px;z-index:10;">
-            <a href="?controller=marketpage&action=index" class="input-rectangle" style="display:inline-block;background:#1360AA;color:#fff;text-decoration:none;padding:8px 16px;border-radius:4px;">
-                🛒 Marketplace
-            </a>
-        </div>
 
-        <img src="/public/assets/img/placeholder-meme.jpeg" alt="Image de profil" class="log-img">
+    <div class="nav-buttons">
+        <a href="?controller=marketpage&action=index" class="nav-btn nav-btn-market" title="Marché">
+            <img id="market-nav-icon" src="/public/assets/img/Market_Day.svg" alt="Marché" class="nav-icon">
+        </a>
+        <a href="?controller=tradeplace&action=index" class="nav-btn nav-btn-home" title="Accueil">
+            <img id="home-nav-icon" src="/public/assets/img/Trade_Day.svg" alt="Trading" class="nav-icon">
+        </a>
+    </div>
+
+    <div class="login-rectangle" style="position:relative;">
+
         <div class="rectangle-title">Profil utilisateur</div>
+        <img src="/public/assets/img/placeholder-meme.jpeg" alt="Image de profil" class="log-img">
 
         <?php if ($dbUnavailable): ?>
             <div style="margin:10px 0;padding:10px;border-radius:6px;background:#fff4e5;color:#92400e;border:1px solid #f6ad55;">

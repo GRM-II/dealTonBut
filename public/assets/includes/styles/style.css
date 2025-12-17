@@ -20,7 +20,7 @@
     --text-dark: #E4E4E4;
 
     /* Visual effects */
-    --shadow-default: 5px 5px 15px 5px rgba(0, 0, 0, 0.5);
+    --shadow-default: 1px 1px 3px 1px rgba(0, 0, 0, 0.5);
     --shadow-focus: 0 0 0 2px var(--primary-color);
     --radius-default: 20px;
     --radius-small: 10px;
@@ -211,8 +211,8 @@ body.dark-theme footer p {
 }
 
 .login-rectangle {
-    width: 80%;
-    max-width: 500px;
+    position: relative;
+    width: 75%;
     min-width: 220px;
     height: 100%;
     min-height: 400px;
@@ -788,6 +788,41 @@ body.dark-theme .offer-title {
 
 body.dark-theme .offer-price {
     color: var(--text-dark);
+}
+
+.nav-buttons {
+    position: absolute;
+    top: 5rem;
+    left: 20px;
+    display: flex;
+    gap: 20px;
+    z-index: 10;
+}
+
+.nav-btn {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-color);
+    border-radius: var(--radius-button);
+    box-shadow: var(--shadow-default);
+    transition: all var(--transition-fast);
+}
+
+body.dark-theme .nav-btn {
+    background: var(--bg-dark);
+}
+
+.nav-btn:hover {
+    transform: scale(1.1);
+}
+
+.nav-icon {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
 }
 
 /* Bouton de suppression sur la carte */
