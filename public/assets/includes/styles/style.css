@@ -1213,8 +1213,28 @@ body.dark-theme .detail-value {
     font-size: 1.2rem;
 }
 
-/* Responsive */
+@media (max-width: 1400px) {
+    .trade-place-title {
+        padding: 1rem 8rem;
+        font-size: 1.8rem;
+    }
+
+    .trade-place-sidebar {
+        width: 40%;
+    }
+
+    .trade-place-main {
+        width: 55%;
+        padding: 25px;
+    }
+}
+
 @media (max-width: 1024px) {
+    .trade-place-title {
+        padding: 1rem 4rem;
+        font-size: 1.6rem;
+    }
+
     .trade-nav-buttons {
         top: 15px;
         left: 15px;
@@ -1222,29 +1242,49 @@ body.dark-theme .detail-value {
     }
 
     .trade-nav-btn {
-        width: 42px;
-        height: 42px;
+        width: 50px;
+        height: 50px;
     }
 
     .trade-nav-icon {
-        width: 24px;
-        height: 24px;
+        width: 45px;
+        height: 45px;
+    }
+
+    .trade-place-container {
+        height: auto;
+        min-height: calc(100vh - 200px);
+        padding: 15px 0;
+    }
+
+    .trade-place-sidebar {
+        width: 45%;
+    }
+
+    .trade-place-main {
+        width: 50%;
+        padding: 20px;
+    }
+
+    .offer-title {
+        font-size: 1.5rem;
+    }
+
+    .offer-details-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
     }
 }
 
 @media (max-width: 768px) {
-    .trade-place-container {
-        flex-direction: column;
-        height: auto;
+    .trade-place-content {
+        margin-top: 50px;
     }
 
-    .trade-place-sidebar {
-        flex: 0 0 auto;
-        max-height: 200px;
-    }
-
-    .trade-place-main {
-        min-height: 400px;
+    .trade-place-title {
+        padding: 0.8rem 2rem;
+        font-size: 1.4rem;
+        margin-bottom: 20px;
     }
 
     .trade-nav-buttons {
@@ -1254,17 +1294,61 @@ body.dark-theme .detail-value {
     }
 
     .trade-nav-btn {
-        width: 36px;
-        height: 36px;
+        width: 40px;
+        height: 40px;
     }
 
     .trade-nav-icon {
-        width: 20px;
-        height: 20px;
+        width: 35px;
+        height: 35px;
+    }
+
+    .trade-place-container {
+        flex-direction: column;
+        height: auto;
+        padding: 10px;
+        gap: 15px;
+    }
+
+    .trade-place-sidebar {
+        width: 100%;
+        border-radius: 20px;
+        max-height: 250px;
+        padding: 15px 10px;
+    }
+
+    .trade-place-main {
+        width: 100%;
+        border-radius: 20px;
+        padding: 20px;
+        min-height: 400px;
+    }
+
+    .offer-detail-card {
+        max-width: 100%;
+    }
+
+    .offer-title {
+        font-size: 1.3rem;
+    }
+
+    .offer-description-box {
+        padding: 15px;
+        min-height: 100px;
+    }
+
+    .offer-meta {
+        padding: 12px;
+    }
+
+    .offer-details-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
     }
 
     .offer-actions {
         flex-direction: column;
+        gap: 10px;
     }
 
     .btn-contact,
@@ -1273,3 +1357,265 @@ body.dark-theme .detail-value {
         justify-content: center;
     }
 }
+
+@media (max-width: 480px) {
+     .trade-place-content {
+        padding: 0 10px;
+    }
+
+    .trade-place-title {
+        padding: 1rem 1.5rem;
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+    }
+
+    .trade-nav-buttons {
+        top: 12px;
+        left: 12px;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .trade-nav-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .trade-nav-icon {
+        width: 35px;
+        height: 35px;
+    }
+
+    .trade-place-container {
+        padding: 10px;
+        gap: 20px;
+    }
+
+    .trade-place-sidebar {
+        padding: 15px 12px;
+        max-height: 220px;
+        gap: 12px;
+    }
+
+    .trade-offer-item {
+        padding: 15px 18px;
+        font-size: 0.95rem;
+        margin-bottom: 4px;
+    }
+
+    .offer-category {
+        font-size: 0.95rem;
+    }
+
+    .trade-place-main {
+        padding: 20px;
+        min-height: 350px;
+    }
+
+    .offer-detail-card {
+        padding: 5px 0;
+    }
+
+    .offer-title {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+    }
+
+    .offer-description-box {
+        padding: 18px;
+        min-height: 100px;
+        margin-bottom: 20px;
+    }
+
+    .offer-description {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .offer-meta {
+        padding: 15px;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .offer-meta-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 4px 0;
+    }
+
+    .meta-label {
+        font-size: 0.9rem;
+    }
+
+    .meta-value {
+        font-size: 1rem;
+    }
+
+    .offer-details-grid {
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .detail-box {
+        padding: 15px;
+    }
+
+    .detail-label {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+
+    .detail-value {
+        font-size: 1.1rem;
+    }
+
+    .offer-actions {
+        margin-top: 25px;
+        gap: 15px;
+    }
+
+    .btn-contact,
+    .btn-nav {
+        padding: 14px 24px;
+        font-size: 0.95rem;
+    }
+
+    .btn-nav .btn-icon {
+        width: 22px;
+        height: 22px;
+    }
+
+    .no-offer-selected,
+    .empty-offers {
+        font-size: 1.05rem;
+        padding: 30px 20px;
+        text-align: center;
+    }
+
+    .flash-message {
+        margin: 15px 10px;
+        padding: 15px;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .trade-place-content {
+        padding: 0 8px;
+    }
+
+    .trade-place-title {
+        padding: 0.8rem 1rem;
+        font-size: 1.05rem;
+        margin-bottom: 15px;
+    }
+
+    .trade-nav-buttons {
+        top: 8px;
+        left: 8px;
+        gap: 8px;
+    }
+
+    .trade-nav-btn {
+        width: 35px;
+        height: 35px;
+    }
+
+    .trade-nav-icon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .trade-place-container {
+        padding: 8px;
+        gap: 15px;
+    }
+
+    .trade-place-sidebar {
+        max-height: 200px;
+        padding: 12px 10px;
+        gap: 10px;
+    }
+
+    .trade-offer-item {
+        padding: 12px 15px;
+        font-size: 0.9rem;
+    }
+
+    .trade-place-main {
+        padding: 15px;
+    }
+
+    .offer-detail-card {
+        padding: 3px 0;
+    }
+
+    .offer-title {
+        font-size: 1.05rem;
+        margin-bottom: 15px;
+    }
+
+    .offer-description-box {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .offer-description {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    .offer-meta {
+        padding: 12px;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .offer-meta-item {
+        gap: 6px;
+        padding: 3px 0;
+    }
+
+    .offer-details-grid {
+        gap: 12px;
+        margin-bottom: 15px;
+    }
+
+    .detail-box {
+        padding: 12px;
+    }
+
+    .detail-label {
+        margin-bottom: 6px;
+    }
+
+    .offer-actions {
+        margin-top: 20px;
+        gap: 12px;
+    }
+
+    .btn-contact,
+    .btn-nav {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+
+    .btn-nav .btn-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .no-offer-selected,
+    .empty-offers {
+        padding: 25px 15px;
+    }
+
+    .flash-message {
+        margin: 12px 8px;
+        padding: 12px;
+    }
+}
+
