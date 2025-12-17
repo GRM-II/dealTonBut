@@ -20,7 +20,7 @@
     --text-dark: #E4E4E4;
 
     /* Visual effects */
-    --shadow-default: 5px 5px 15px 5px rgba(0, 0, 0, 0.5);
+    --shadow-default: 1px 1px 3px 1px rgba(0, 0, 0, 0.5);
     --shadow-focus: 0 0 0 2px var(--primary-color);
     --radius-default: 20px;
     --radius-small: 10px;
