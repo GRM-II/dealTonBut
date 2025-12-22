@@ -11,14 +11,18 @@ function setThemeIcon() {
 
 function updateNavigationIcons() {
     const isDark = document.body.classList.contains('dark-theme');
-    const homeIcon = document.getElementById('home-nav-icon');
+    const tradeIcon = document.getElementById('trade-nav-icon');
     const marketIcon = document.getElementById('market-nav-icon');
+    const homeIcon = document.getElementById('home-nav-icon');
 
-    if (homeIcon) {
-        homeIcon.src = isDark ? 'public/assets/img/Home_Night.svg' : 'public/assets/img/Home_Day.svg';
+    if (tradeIcon) {
+        tradeIcon.src = isDark ? '/public/assets/img/Trade_Night.svg' : '/public/assets/img/Trade_Day.svg';
     }
     if (marketIcon) {
-        marketIcon.src = isDark ? 'public/assets/img/Market_Night.svg' : 'public/assets/img/Market_Day.svg';
+        marketIcon.src = isDark ? '/public/assets/img/Market_Night.svg' : '/public/assets/img/Market_Day.svg';
+    }
+    if (homeIcon) {
+        homeIcon.src = isDark ? '/public/assets/img/Home_Night.svg' : '/public/assets/img/Home_Day.svg';
     }
 }
 
@@ -311,3 +315,33 @@ function initProfilePage() {
         });
     }
 }
+
+// Bouton pour remonter en haut de la page
+function initScrollToTop() {
+    const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
+
+    if (scrollToTopBtn) {
+        // Afficher/masquer le bouton lors du scroll
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                scrollToTopBtn.style.opacity = '1';
+                scrollToTopBtn.style.pointerEvents = 'auto';
+            } else {
+                scrollToTopBtn.style.opacity = '0';
+                scrollToTopBtn.style.pointerEvents = 'none';
+            }
+        });
+
+        // Remonter en haut au clic
+        scrollToTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+}
+
+// Initialiser le bouton de remontée
+initScrollToTop();
+

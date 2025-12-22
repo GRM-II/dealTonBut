@@ -4,75 +4,93 @@ $dbMessage = $dbUnavailable ? ($A_view['db_status']['message'] . (isset($A_view[
 $disabledAttr = $dbUnavailable ? 'disabled' : '';
 ?>
 <div class="content">
-
-    <div class="nav-buttons">
-        <a href="?controller=marketpage&action=index" class="nav-btn nav-btn-market" title="Marché">
-            <img id="market-nav-icon" src="/public/assets/img/Market_Day.svg" alt="Marché" class="nav-icon">
-        </a>
-        <a href="?controller=tradeplace&action=index" class="nav-btn nav-btn-home" title="Accueil">
-            <img id="home-nav-icon" src="/public/assets/img/Trade_Day.svg" alt="Trading" class="nav-icon">
-        </a>
-    </div>
-
-    <div class="login-rectangle" style="position:relative;">
-
-        <div class="rectangle-title">Profil utilisateur</div>
-        <img src="/public/assets/img/placeholder-meme.jpeg" alt="Image de profil" class="log-img">
-
-        <?php if ($dbUnavailable): ?>
-            <div style="margin:10px 0;padding:10px;border-radius:6px;background:#fff4e5;color:#92400e;border:1px solid #f6ad55;">
-                <?php echo htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8'); ?>
-            </div>
-        <?php endif; ?>
-
-        <?php if (isset($A_view['flash'])): ?>
-            <div style="margin:10px 0;padding:10px;border-radius:6px;<?php echo $A_view['flash']['success'] ? 'background:#e6ffed;color:#03543f;border:1px solid #84e1bc;' : 'background:#ffe6e6;color:#9b1c1c;border:1px solid #f5a4a4;'; ?>">
-                <?php echo htmlspecialchars($A_view['flash']['message'], ENT_QUOTES, 'UTF-8'); ?>
-            </div>
-        <?php endif; ?>
-
-        <div style="margin-top:20px;text-align:center;">
-            <form id="edit-username-form" method="post" action="?controller=profilepage&action=updateProfile" style="display:inline;">
-                <strong>Nom d'utilisateur :</strong>
-                <span id="username-display"><?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
-                <label for="new_username"></label><input type="text" id="new_username" name="new_username" value="<?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" style="display:none;width:140px;" class="input-rectangle" required <?php echo $disabledAttr; ?>>
-                <button type="button" id="edit-username-btn" class="input-rectangle" style="padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Modifier</button>
-                <button type="submit" id="save-username-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;background:#1360AA;color:#fff;" <?php echo $disabledAttr; ?>>Enregistrer</button>
-                <button type="button" id="cancel-username-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Annuler</button>
-            </form>
-            <br><br>
-            <form id="edit-email-form" method="post" action="?controller=profilepage&action=updateProfile" style="display:inline;">
-                <strong>Email :</strong>
-                <span id="email-display"><?php echo htmlspecialchars($A_view['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
-                <label for="new_email"></label><input type="email" id="new_email" name="new_email" value="<?php echo htmlspecialchars($A_view['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" style="display:none;width:180px;" class="input-rectangle" required <?php echo $disabledAttr; ?>>
-                <button type="button" id="edit-email-btn" class="input-rectangle" style="padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Modifier</button>
-                <button type="submit" id="save-email-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;background:#1360AA;color:#fff;" <?php echo $disabledAttr; ?>>Enregistrer</button>
-                <button type="button" id="cancel-email-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Annuler</button>
-            </form>
-            <br><br>
-            <form id="edit-password-form" method="post" action="?controller=profilepage&action=updateProfile" style="display:inline;">
-                <strong>Mot de passe :</strong>
-                <span id="password-display">••••••••</span>
-                <label for="new_password"></label><input type="password" id="new_password" name="new_password" placeholder="Nouveau mot de passe" style="display:none;width:180px;" class="input-rectangle" required <?php echo $disabledAttr; ?>>
-                <button type="button" id="edit-password-btn" class="input-rectangle" style="padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Modifier</button>
-                <button type="submit" id="save-password-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;background:#1360AA;color:#fff;" <?php echo $disabledAttr; ?>>Enregistrer</button>
-                <button type="button" id="cancel-password-btn" class="input-rectangle" style="display:none;padding:2px 8px;font-size:0.95em;" <?php echo $disabledAttr; ?>>Annuler</button>
-            </form>
+    <div class="profile-wrapper">
+        <div class="nav-buttons profile-nav-buttons">
+            <a href="?controller=marketpage&action=index" class="nav-btn nav-btn-market" title="Marché">
+                <img id="market-nav-icon" src="/public/assets/img/Market_Day.svg" alt="Marché" class="nav-icon">
+            </a>
+            <a href="?controller=tradeplace&action=index" class="nav-btn nav-btn-trade" title="Trading">
+                <img id="trade-nav-icon" src="/public/assets/img/Trade_Day.svg" alt="Trading" class="nav-icon">
+            </a>
+            <button id="scroll-to-top-btn" class="nav-btn scroll-to-top-btn" title="Remonter en haut">
+                <img src="/public/assets/img/placeholder-meme.jpeg" alt="Remonter" class="nav-icon">
+            </button>
         </div>
 
+        <div class="login-rectangle">
+        <div class="login-grid">
+            <div class="login-left">
 
-        <div style="margin-top:30px;text-align:center;">
-            <form method="post" action="?controller=user&action=logout">
-                <button type="submit" class="input-rectangle" style="background:#1360AA;color:#fff;cursor:pointer;padding:10px 20px;">
-                    Se déconnecter
-                </button>
-            </form>
+                <!-- L'image doit être l'image de profil de l'utilisateur, placeholder pour l'instant -->
+                <img src="/public/assets/img/placeholder-meme.jpeg" alt="Image de profil" class="log-img">
+
+                <div class="rectangle-title">Profil utilisateur</div>
+
+                <?php if ($dbUnavailable): ?>
+                    <div class="db-unavailable-message">
+                        <?php echo htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8'); ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (isset($A_view['flash'])): ?>
+                    <div class="flash-message <?php echo $A_view['flash']['success'] ? 'flash-success' : 'flash-error'; ?>">
+                        <?php echo htmlspecialchars($A_view['flash']['message'], ENT_QUOTES, 'UTF-8'); ?>
+                    </div>
+                <?php endif; ?>
+
+                <div class="profile-forms-container">
+                    <form id="edit-username-form" method="post" action="?controller=profilepage&action=updateProfile" class="profile-edit-form">
+                        <strong>Nom d'utilisateur :</strong>
+                        <span id="username-display"><?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
+                        <label for="new_username"></label><input type="text" id="new_username" name="new_username" value="<?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle profile-edit-input" required <?php echo $disabledAttr; ?>>
+                        <button type="button" id="edit-username-btn" class="input-rectangle profile-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
+                        <button type="submit" id="save-username-btn" class="input-rectangle profile-save-btn" <?php echo $disabledAttr; ?>>Enregistrer</button>
+                        <button type="button" id="cancel-username-btn" class="input-rectangle profile-cancel-btn" <?php echo $disabledAttr; ?>>Annuler</button>
+                    </form>
+                    <br><br>
+                    <form id="edit-email-form" method="post" action="?controller=profilepage&action=updateProfile" class="profile-edit-form">
+                        <strong>Email :</strong>
+                        <span id="email-display"><?php echo htmlspecialchars($A_view['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
+                        <label for="new_email"></label><input type="email" id="new_email" name="new_email" value="<?php echo htmlspecialchars($A_view['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle profile-edit-input" required <?php echo $disabledAttr; ?>>
+                        <button type="button" id="edit-email-btn" class="input-rectangle profile-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
+                        <button type="submit" id="save-email-btn" class="input-rectangle profile-save-btn" <?php echo $disabledAttr; ?>>Enregistrer</button>
+                        <button type="button" id="cancel-email-btn" class="input-rectangle profile-cancel-btn" <?php echo $disabledAttr; ?>>Annuler</button>
+                    </form>
+                    <br><br>
+                    <form id="edit-password-form" method="post" action="?controller=profilepage&action=updateProfile" class="profile-edit-form">
+                        <strong>Mot de passe :</strong>
+                        <span id="password-display">••••••••</span>
+                        <label for="new_password"></label><input type="password" id="new_password" name="new_password" placeholder="Nouveau mot de passe" class="input-rectangle profile-edit-input" required <?php echo $disabledAttr; ?>>
+                        <button type="button" id="edit-password-btn" class="input-rectangle profile-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
+                        <button type="submit" id="save-password-btn" class="input-rectangle profile-save-btn" <?php echo $disabledAttr; ?>>Enregistrer</button>
+                        <button type="button" id="cancel-password-btn" class="input-rectangle profile-cancel-btn" <?php echo $disabledAttr; ?>>Annuler</button>
+                    </form>
+                </div>
+
+                <div class="profile-logout-container">
+                    <form method="post" action="?controller=user&action=logout">
+                        <button type="submit" class="input-rectangle profile-logout-btn">
+                            Se déconnecter
+                        </button>
+                    </form>
+                </div>
+
+                <div class="profile-danger-zone">
+                    <strong class="danger-title">Oh là jeune ménestrel</strong><br>
+                    <p class="danger-warning-text">La suppression de votre compte est définitive et irréversible.</p>
+                    <button type="button" id="delete-account-btn" class="input-rectangle profile-delete-btn" <?php echo $disabledAttr; ?>>Supprimer mon compte</button>
+                </div>
+            </div>
+            <div class="login-right">
+                <div class="login-right-top">
+                    <h3>Note de dev : espace pour savoir son solde de points</h3>
+                </div>
+                <div class="login-right-separator"></div>
+                <div class="login-right-bottom">
+                    <h3>Note de dev : espace pour l'historique des transactions ou autre</h3>
+                </div>
+            </div>
         </div>
-
-        <div style="margin-top:30px;padding-top:20px;border-top:1px solid #ddd;text-align:center;">
-            <strong class="danger-title">Oh là jeune ménestrel</strong><br>
-            <p class="danger-warning-text">La suppression de votre compte est définitive et irréversible.</p>
-            <button type="button" id="delete-account-btn" class="input-rectangle" style="background:#dc2626;color:#fff;cursor:pointer;margin-top:10px;" <?php echo $disabledAttr; ?>>Supprimer mon compte</button>
         </div>
     </div>
 </div>

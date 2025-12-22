@@ -3,7 +3,7 @@
         <div class="login-rectangle">
             <div class="login-grid">
                 <div class="login-left">
-                    <img src="/public/assets/img/placeholder-meme.jpeg" alt="Image de connexion" class="log-img">
+                    <img src="/public/assets/img/placeholder-meme.jpeg" alt="Logo Deal Ton BUT" class="log-img">
                     <div class="rectangle-title">Connexion</div>
 
                     <?php if (isset($error)): ?>
@@ -44,7 +44,7 @@
                 <div class="login-right">
                     <div class="login-right-placeholder">
                         <h1>Deal tom BIOUT</h1>
-                        <p>Fais des dingueries, et gagne des points bonus !</p>
+                        <h2>Commence ton nouveau chapitre de comédien !</h2>
                     </div>
                 </div>
             </div>
