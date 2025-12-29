@@ -45,14 +45,14 @@ final class userModel
         try {
             $pdo = self::getConnection();
 
-            // Vérifie si la table User existe
-            $stmt = $pdo->query("SHOW TABLES LIKE 'User'");
+            // Vérifie si la table Users existe
+            $stmt = $pdo->query("SHOW TABLES LIKE 'Users'");
             $tableExists = $stmt !== false && $stmt->rowCount() > 0;
 
             if (!$tableExists) {
                 return [
                     'available' => false,
-                    'message' => "La table 'User' n'existe pas.",
+                    'message' => "La table 'Users' n'existe pas.",
                     'details' => 'Connexion OK mais table manquante'
                 ];
             }
@@ -60,7 +60,7 @@ final class userModel
             return [
                 'available' => true,
                 'message' => 'Connexion à la base de données opérationnelle.',
-                'details' => "PDO MySQL OK | Table 'User' existe"
+                'details' => "PDO MySQL OK | Table 'Users' existe"
             ];
 
         } catch (PDOException $e) {
@@ -80,7 +80,7 @@ final class userModel
     {
         try {
             $pdo = self::getConnection();
-            $stmt = $pdo->prepare("SELECT id, username, email FROM User WHERE username = :username");
+            $stmt = $pdo->prepare("SELECT id, username, email FROM Users WHERE username = :username");
             $stmt->execute(['username' => $username]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -92,13 +92,37 @@ final class userModel
     }
 
     /**
+     * Récupère un utilisateur avec ses moyennes
+     */
+    public function getUserWithGrades(string $username): ?array
+    {
+        try {
+            $pdo = self::getConnection();
+            $stmt = $pdo->prepare("
+                SELECT id, username, email, 
+                       points_maths, points_programmation, points_reseaux, 
+                       points_BD, points_autre 
+                FROM Users 
+                WHERE username = :username
+            ");
+            $stmt->execute(['username' => $username]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $user ?: null;
+        } catch (PDOException $e) {
+            error_log("Erreur getUserWithGrades: " . $e->getMessage());
+            return null;
+        }
+    }
+
+    /**
      * Récupère l'ID d'un utilisateur par son username
      */
     public function getUserIdByUsername(string $username): ?int
     {
         try {
             $pdo = self::getConnection();
-            $stmt = $pdo->prepare("SELECT id FROM User WHERE username = :username");
+            $stmt = $pdo->prepare("SELECT id FROM Users WHERE username = :username");
             $stmt->execute(['username' => $username]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -118,7 +142,7 @@ final class userModel
             $pdo = self::getConnection();
 
             // 1. Vérifier si l'email existe déjà
-            $stmt = $pdo->prepare("SELECT id FROM User WHERE email = :email LIMIT 1");
+            $stmt = $pdo->prepare("SELECT id FROM Users WHERE email = :email LIMIT 1");
             $stmt->execute(['email' => $email]);
 
             if ($stmt->fetch()) {
@@ -129,7 +153,7 @@ final class userModel
             }
 
             // 2. Vérifier si le nom d'utilisateur existe déjà
-            $stmt = $pdo->prepare("SELECT id FROM User WHERE username = :username LIMIT 1");
+            $stmt = $pdo->prepare("SELECT id FROM Users WHERE username = :username LIMIT 1");
             $stmt->execute(['username' => $username]);
 
             if ($stmt->fetch()) {
@@ -144,7 +168,7 @@ final class userModel
 
             // 4. Insérer le nouvel utilisateur
             $stmt = $pdo->prepare(
-                "INSERT INTO User (username, email, mdp) 
+                "INSERT INTO Users (username, email, mdp) 
                  VALUES (:username, :email, :password)"
             );
 
@@ -190,7 +214,7 @@ final class userModel
             $pdo = self::getConnection();
 
             $sql = "SELECT id, username, email, mdp 
-                    FROM User 
+                    FROM Users 
                     WHERE username = :login OR email = :login 
                     LIMIT 1";
 
@@ -255,7 +279,7 @@ final class userModel
 
         try {
             $pdo = self::getConnection();
-            $sql = "UPDATE User SET mdp = :password WHERE id = :userId";
+            $sql = "UPDATE Users SET mdp = :password WHERE id = :userId";
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(':password', $hashedPassword, PDO::PARAM_STR);
             $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
@@ -275,7 +299,7 @@ final class userModel
     {
         try {
             $pdo = self::getConnection();
-            $sql = "DELETE FROM User WHERE id = :userId";
+            $sql = "DELETE FROM Users WHERE id = :userId";
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
 
@@ -300,7 +324,7 @@ final class userModel
 
         try {
             $pdo = self::getConnection();
-            $sql = "UPDATE User SET username = :newUsername WHERE username = :currentUsername";
+            $sql = "UPDATE Users SET username = :newUsername WHERE username = :currentUsername";
             $stmt = $pdo->prepare($sql);
 
             $stmt->bindValue(':newUsername', $newUsername, PDO::PARAM_STR);
@@ -336,7 +360,7 @@ final class userModel
 
         try {
             $pdo = self::getConnection();
-            $sql = "UPDATE User SET email = :newEmail WHERE username = :username";
+            $sql = "UPDATE Users SET email = :newEmail WHERE username = :username";
             $stmt = $pdo->prepare($sql);
 
             $stmt->bindValue(':newEmail', $newEmail, PDO::PARAM_STR);
@@ -356,6 +380,62 @@ final class userModel
             }
             error_log("Erreur updateEmail : " . $e->getMessage());
             return ['success' => false, 'message' => 'Erreur lors de la mise à jour.'];
+        }
+    }
+
+    /**
+     * Met à jour les moyennes de l'utilisateur
+     */
+    public function updateGrades(int $userId, array $gradesData): array
+    {
+        if (empty($gradesData)) {
+            return ['success' => false, 'message' => 'Aucune moyenne à mettre à jour.'];
+        }
+
+        // Valider que toutes les valeurs sont entre 0 et 20
+        foreach ($gradesData as $field => $value) {
+            if ($value < 0 || $value > 20) {
+                return [
+                    'success' => false,
+                    'message' => 'Les moyennes doivent être comprises entre 0 et 20.'
+                ];
+            }
+        }
+
+        try {
+            $pdo = self::getConnection();
+
+            // Construire dynamiquement la requête UPDATE
+            $fields = [];
+            $params = [':userId' => $userId];
+
+            $allowedFields = ['points_maths', 'points_programmation', 'points_reseaux', 'points_BD', 'points_autre'];
+
+            foreach ($gradesData as $field => $value) {
+                if (in_array($field, $allowedFields)) {
+                    $fields[] = "$field = :$field";
+                    $params[":$field"] = $value;
+                }
+            }
+
+            if (empty($fields)) {
+                return ['success' => false, 'message' => 'Aucune moyenne valide à mettre à jour.'];
+            }
+
+            $sql = "UPDATE Users SET " . implode(', ', $fields) . " WHERE id = :userId";
+            $stmt = $pdo->prepare($sql);
+
+            $result = $stmt->execute($params);
+
+            if ($result && $stmt->rowCount() > 0) {
+                return ['success' => true, 'message' => 'Moyenne(s) mise(s) à jour avec succès.'];
+            }
+
+            return ['success' => false, 'message' => 'Aucune modification effectuée.'];
+
+        } catch (PDOException $e) {
+            error_log("Erreur updateGrades : " . $e->getMessage());
+            return ['success' => false, 'message' => 'Erreur lors de la mise à jour des moyennes.'];
         }
     }
 }
