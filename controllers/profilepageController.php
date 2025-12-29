@@ -31,7 +31,12 @@ final class profilepageController
         // Utiliser les données fraîches de la BDD
         view::show('profilepageView', [
             'username' => $userExists['username'] ?? 'N/A',
-            'email' => $userExists['email'] ?? 'N/A'
+            'email' => $userExists['email'] ?? 'N/A',
+            'points_maths' => $userExists['points_maths'] ?? 0,
+            'points_programmation' => $userExists['points_programmation'] ?? 0,
+            'points_reseaux' => $userExists['points_reseaux'] ?? 0,
+            'points_BD' => $userExists['points_BD'] ?? 0,
+            'points_autre' => $userExists['points_autre'] ?? 0
         ]);
     }
 
@@ -86,6 +91,44 @@ final class profilepageController
                 $_SESSION['flash'] = ['success' => true, 'message' => 'Mot de passe mis à jour avec succès.'];
             } else {
                 $_SESSION['flash'] = ['success' => false, 'message' => 'Erreur lors de la mise à jour du mot de passe.'];
+            }
+        }
+        // Mise à jour des moyennes
+        $gradesUpdated = false;
+        $gradesData = [];
+
+        if (isset($_POST['new_points_maths']) && $_POST['new_points_maths'] !== '') {
+            $gradesData['points_maths'] = (float)$_POST['new_points_maths'];
+            $gradesUpdated = true;
+        }
+
+        if (isset($_POST['new_points_programmation']) && $_POST['new_points_programmation'] !== '') {
+            $gradesData['points_programmation'] = (float)$_POST['new_points_programmation'];
+            $gradesUpdated = true;
+        }
+
+        if (isset($_POST['new_points_reseaux']) && $_POST['new_points_reseaux'] !== '') {
+            $gradesData['points_reseaux'] = (float)$_POST['new_points_reseaux'];
+            $gradesUpdated = true;
+        }
+
+        if (isset($_POST['new_points_BD']) && $_POST['new_points_BD'] !== '') {
+            $gradesData['points_BD'] = (float)$_POST['new_points_BD'];
+            $gradesUpdated = true;
+        }
+
+        if (isset($_POST['new_points_autre']) && $_POST['new_points_autre'] !== '') {
+            $gradesData['points_autre'] = (float)$_POST['new_points_autre'];
+            $gradesUpdated = true;
+        }
+
+        if ($gradesUpdated) {
+            $result = $this->userModel->updateGrades($_SESSION['user']['id'], $gradesData);
+
+            if ($result['success']) {
+                $_SESSION['flash'] = ['success' => true, 'message' => $result['message']];
+            } else {
+                $_SESSION['flash'] = ['success' => false, 'message' => $result['message']];
             }
         }
 

@@ -107,11 +107,9 @@ final class userController
      */
     private function authenticate(string $login, string $password): array
     {
-        // Délègue l'authentification au modèle pour éviter la duplication
         try {
             $result = $this->userModel->authenticate($login, $password);
             if (!$result['success']) {
-                // Normalise le message d'erreur attendu côté UI/tests
                 $result['message'] = 'Identifiants incorrects.';
             }
             return $result;
