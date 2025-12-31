@@ -10,7 +10,8 @@ final class controller
     public function __construct(?string $S_controller, ?string $S_action)
     {
         $this->url['controller'] = $this->controllerName($S_controller);
-        $this->url['action'] = $this->actionName($S_action);
+        //$this->url['action'] = $this->actionName($S_action);
+        $this->url['action'] = $this->actionName($S_action, $this->url['controller']);
     }
 
     private function controllerName(?string $S_controller): string
@@ -22,10 +23,15 @@ final class controller
         return htmlspecialchars($S_name, ENT_QUOTES, 'UTF-8');
     }
 
-    private function actionName(?string $S_action): string
+    //private function actionName(?string $S_action): string
+    private function actionName(?string $S_action, string $controller): string
     {
         if (empty($S_action)) {
-            return 'login';
+            //return 'login';
+            if ($controller === 'userController') {
+                return 'login';
+            }
+            return 'index';
         }
         return htmlspecialchars($S_action, ENT_QUOTES, 'UTF-8');
     }
@@ -52,7 +58,13 @@ final class controller
             }
         } catch (\Throwable $e) {
             error_log("Erreur exécution action '$action': " . $e->getMessage());
-            throw new RuntimeException("Erreur lors de l'exécution de l'action '$action'.");
+            //throw new RuntimeException("Erreur lors de l'exécution de l'action '$action'.");
+
+            echo "<pre>";
+            echo "Erreur complète : " . $e->getMessage() . "\n";
+            echo $e->getTraceAsString();
+            echo "</pre>";
+            exit;
         }
 
         if (method_exists($controllerInstance, 'getParams')) {
