@@ -425,6 +425,15 @@ final class userModel
             $sql = "UPDATE Users SET " . implode(', ', $fields) . " WHERE id = :userId";
             $stmt = $pdo->prepare($sql);
 
+            foreach ($gradesData as $field => $value) {
+                if (in_array($field, $allowedFields)) {
+                    $stmt->bindValue(":$field", $field, PDO::PARAM_STR);
+                }
+            }
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_STR);
+            //var_dump($stmt, $params);
+            //exit;
+
             $result = $stmt->execute($params);
 
             if ($result && $stmt->rowCount() > 0) {
