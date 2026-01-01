@@ -132,7 +132,7 @@ final class profilepageController
             }
         }
 
-        header('Location: ?controller=profilepage');
+        header('Location: ?controller=profilepage&action=index');
         exit;
     }
 
@@ -169,7 +169,7 @@ final class profilepageController
                 'success' => false,
                 'message' => 'Une erreur est survenue lors de la suppression du compte.'
             ];
-            header('Location: ?controller=profilepage');
+            header('Location: ?controller=profilepage&action=index');
             exit;
         }
     }
