@@ -9,6 +9,7 @@ final class profilepageController
         $this->userModel = new userModel();
     }
 
+
     public function index(): void
     {
         if (!isset($_SESSION['user']) || !isset($_SESSION['logged_in'])) {
@@ -42,6 +43,12 @@ final class profilepageController
 
     public function updateProfile(): void
     {
+        // DEBUG - À RETIRER APRÈS
+        error_log("GET params: " . print_r($_GET, true));
+        error_log("POST params: " . print_r($_POST, true));
+        error_log("REQUEST_URI: " . $_SERVER['REQUEST_URI']);
+        // FIN DEBUG
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
             echo 'Méthode non autorisée';
