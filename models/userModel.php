@@ -80,7 +80,9 @@ final class userModel
     {
         try {
             $pdo = self::getConnection();
-            $stmt = $pdo->prepare("SELECT id, username, email FROM Users WHERE username = :username");
+            $stmt = $pdo->prepare("SELECT id, username, email, 
+                       points_maths, points_programmation, points_reseaux, 
+                       points_BD, points_autre FROM Users WHERE username = :username");
             $stmt->execute(['username' => $username]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -431,8 +433,6 @@ final class userModel
                 }
             }
             $stmt->bindValue(':userId', $userId, PDO::PARAM_STR);
-            //var_dump($stmt, $params);
-            //exit;
 
             $result = $stmt->execute($params);
 

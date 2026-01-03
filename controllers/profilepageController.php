@@ -44,9 +44,9 @@ final class profilepageController
     public function updateProfile(): void
     {
         // DEBUG - À RETIRER APRÈS
-        error_log("GET params: " . print_r($_GET, true));
-        error_log("POST params: " . print_r($_POST, true));
-        error_log("REQUEST_URI: " . $_SERVER['REQUEST_URI']);
+//        error_log("GET params: " . print_r($_GET, true));
+//        error_log("POST params: " . print_r($_POST, true));
+//        error_log("REQUEST_URI: " . $_SERVER['REQUEST_URI']);
         // FIN DEBUG
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
