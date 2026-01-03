@@ -45,7 +45,7 @@ final class userModel
         try {
             $pdo = self::getConnection();
 
-            // Vérifie si la table Users existe
+            // Vérifie si la table User existe
             $stmt = $pdo->query("SHOW TABLES LIKE 'Users'");
             $tableExists = $stmt !== false && $stmt->rowCount() > 0;
 
@@ -89,30 +89,6 @@ final class userModel
             return $user ?: null;
         } catch (PDOException $e) {
             error_log("Erreur getUserByUsername: " . $e->getMessage());
-            return null;
-        }
-    }
-
-    /**
-     * Récupère un utilisateur avec ses moyennes
-     */
-    public function getUserWithGrades(string $username): ?array
-    {
-        try {
-            $pdo = self::getConnection();
-            $stmt = $pdo->prepare("
-                SELECT id, username, email, 
-                       points_maths, points_programmation, points_reseaux, 
-                       points_BD, points_autre 
-                FROM Users 
-                WHERE username = :username
-            ");
-            $stmt->execute(['username' => $username]);
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            return $user ?: null;
-        } catch (PDOException $e) {
-            error_log("Erreur getUserWithGrades: " . $e->getMessage());
             return null;
         }
     }
@@ -216,7 +192,7 @@ final class userModel
             $pdo = self::getConnection();
 
             $sql = "SELECT id, username, email, mdp 
-                    FROM Users 
+                    FROM Users
                     WHERE username = :login OR email = :login 
                     LIMIT 1";
 
@@ -384,7 +360,6 @@ final class userModel
             return ['success' => false, 'message' => 'Erreur lors de la mise à jour.'];
         }
     }
-
     /**
      * Met à jour les moyennes de l'utilisateur
      */
