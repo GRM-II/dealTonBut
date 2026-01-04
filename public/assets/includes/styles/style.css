@@ -401,6 +401,25 @@ body.dark-theme .rectangle-title {
     box-shadow: var(--shadow-default);
 }
 
+/* Boutons de type submit avec style primaire */
+button[type="submit"].input-rectangle {
+    background: var(--primary-color);
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.2em;
+    padding: 0 16px;
+}
+
+button[type="submit"].input-rectangle:hover {
+    background: var(--primary-dark);
+}
+
+/* Style spécifique pour le bouton du modal mot de passe oublié */
+#forgot-password-form button[type="submit"] {
+    font-size: 1.1em;
+    margin-top: 10px;
+}
+
 .not-displayed {
     display: none;
 }

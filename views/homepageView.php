@@ -31,8 +31,7 @@
 
                         <button type="submit"
                                 name="submit"
-                                class="input-rectangle"
-                                style="background:#1360AA;color:#fff;cursor:pointer;font-size:1.2em;">
+                                class="input-rectangle">
                             Connexion
                         </button>
                     </form>
@@ -66,8 +65,7 @@
                            required>
                 </label>
                 <button type="submit"
-                        class="input-rectangle"
-                        style="background:#1360AA;color:#fff;cursor:pointer;font-size:1.1em;margin-top:10px;">
+                        class="input-rectangle">
                     Envoyer
                 </button>
             </form>
