@@ -7,6 +7,11 @@ class envReader
     private string $mdp;
     private string $port;
     private string $bd;
+    private string $smtpHost;
+    private string $smtpPort;
+    private string $smtpUsername;
+    private string $smtpPassword;
+    private string $smtpEncryption;
 
     public function __construct()
     {
@@ -68,6 +73,12 @@ class envReader
         $this->port = $env['port'] ?? $env['DB_PORT'] ?? '';
         $this->bd = $env['bd'] ?? $env['DB_NAME'] ?? '';
 
+        $this->smtpHost = $env['SMTP_HOST'] ?? '';
+        $this->smtpPort = $env['SMTP_PORT'] ?? '';
+        $this->smtpUsername = $env['SMTP_USERNAME'] ?? '';
+        $this->smtpPassword = $env['SMTP_PASSWORD'] ?? '';
+        $this->smtpEncryption = $env['SMTP_ENCRYPTION'] ?? '';
+
         // Vérifier que toutes les valeurs sont présentes
         if (empty($this->host) || empty($this->user) || empty($this->mdp) ||
             empty($this->port) || empty($this->bd)) {
@@ -82,4 +93,9 @@ class envReader
     public function getMdp(): string { return $this->mdp; }
     public function getPort(): string { return $this->port; }
     public function getBd(): string { return $this->bd; }
+    public function getSmtpHost(): string { return $this->smtpHost; }
+    public function getSmtpPort(): string { return $this->smtpPort; }
+    public function getSmtpUsername(): string { return $this->smtpUsername; }
+    public function getSmtpPassword(): string { return $this->smtpPassword; }
+    public function getSmtpEncryption(): string { return $this->smtpEncryption; }
 }
