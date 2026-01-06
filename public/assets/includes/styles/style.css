@@ -134,7 +134,7 @@ body.dark-theme #theme-toggle {
     flex: 1 0 auto;
     width: 100vw;
     max-width: 100vw;
-    padding: 76px 16px 64px 16px;
+    padding: 76px 0px 64px 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -395,7 +395,7 @@ body.dark-theme .rectangle-title {
     border-radius: var(--radius-default);
     background: var(--bg-light);
     padding: 0 20px;
-    font-size: 1em;
+    font-size: 1.2em;
     outline: none;
     transition: box-shadow var(--transition-fast);
     box-shadow: var(--shadow-default);
@@ -1028,14 +1028,6 @@ body.dark-theme #delete-modal .btn-cancel {
     color: var(--white-color);
 }
 
-.trade-place-content {
-    margin-top: 60px;
-    padding: 0;
-    min-height: calc(100vh - 50px);
-    overflow-x: hidden;
-    position: relative;
-}
-
 .nav-buttons {
     position: absolute;
     top: 5rem;
@@ -1046,7 +1038,6 @@ body.dark-theme #delete-modal .btn-cancel {
     z-index: 10;
 }
 
-/* Styles spécifiques pour la page de profil */
 .profile-wrapper {
     position: relative;
     width: 100%;
@@ -1238,7 +1229,7 @@ body.dark-theme .nav-btn {
     text-align: center;
     font-size: 2rem;
     margin-bottom: 30px;
-    padding: 1rem 15rem;
+    padding: 1rem;
     display: flex;
     align-items: center;
     background-color: var(--surface-light);
@@ -1246,6 +1237,8 @@ body.dark-theme .nav-btn {
     color: var(--text-light);
     box-shadow: var(--shadow-default);
     border-radius: var(--radius-default);
+    width: 50%;
+    max-width: 100%;
 }
 
 body.dark-theme .trade-place-title {
@@ -1257,6 +1250,7 @@ body.dark-theme .trade-place-title {
     display: flex;
     gap: 0;
     width: 100%;
+    max-width: 100%;
     height: calc(100vh - 180px);
     justify-content: space-between;
     overflow-x: hidden;
@@ -1266,7 +1260,7 @@ body.dark-theme .trade-place-title {
 .trade-place-sidebar {
     width: 35%;
     background: var(--surface-light);
-    border-radius: 0 20px 20px 0;
+    border-radius: 20px 20px 20px 20px;
     padding: 20px 10px;
     box-shadow: var(--shadow-default);
     overflow-y: auto;
@@ -1553,7 +1547,7 @@ body.dark-theme .detail-value {
 
 @media (max-width: 1400px) {
     .trade-place-title {
-        padding: 1rem 8rem;
+        padding: 1rem;
         font-size: 1.8rem;
     }
 
@@ -1569,7 +1563,7 @@ body.dark-theme .detail-value {
 
 @media (max-width: 1024px) {
     .trade-place-title {
-        padding: 1rem 4rem;
+        padding: 1rem;
         font-size: 1.6rem;
     }
 
@@ -1615,12 +1609,9 @@ body.dark-theme .detail-value {
 }
 
 @media (max-width: 768px) {
-    .trade-place-content {
-        margin-top: 50px;
-    }
 
     .trade-place-title {
-        padding: 0.8rem 2rem;
+        padding: 0.8rem;
         font-size: 1.4rem;
         margin-bottom: 20px;
     }
@@ -1697,12 +1688,9 @@ body.dark-theme .detail-value {
 }
 
 @media (max-width: 480px) {
-     .trade-place-content {
-        padding: 0 10px;
-    }
 
     .trade-place-title {
-        padding: 1rem 1.5rem;
+        padding: 1rem;
         font-size: 1.2rem;
         margin-bottom: 20px;
     }
@@ -1841,12 +1829,9 @@ body.dark-theme .detail-value {
 }
 
 @media (max-width: 360px) {
-    .trade-place-content {
-        padding: 0 8px;
-    }
 
     .trade-place-title {
-        padding: 0.8rem 1rem;
+        padding: 0.8rem;
         font-size: 1.05rem;
         margin-bottom: 15px;
     }
@@ -1967,6 +1952,8 @@ body.dark-theme .detail-value {
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.4s ease;
     align-items: center;
     justify-content: center;
 }
@@ -1980,6 +1967,8 @@ body.dark-theme .detail-value {
     position: relative;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     text-align: center;
+    transform: scale(0.9);
+    transition: transform 0.4s ease;
 }
 
 body.dark-theme #forgot-password-modal .modal-content {
@@ -2050,5 +2039,19 @@ body.dark-theme #forgot-password-modal .close:focus {
 #forgot-password-modal form button {
     width: 100%;
     max-width: 200px;
+    transition: all var(--transition-fast);
+    transform: scale(1);
+    box-shadow: var(--shadow-default);
+}
+
+#forgot-password-modal form button:hover {
+    background: var(--primary-dark);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(19, 96, 170, 0.3) !important;
+}
+
+#forgot-password-modal form button:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 6px rgba(19, 96, 170, 0.2) !important;
 }
 
