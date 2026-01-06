@@ -73,24 +73,57 @@ final class offerModel
         }
     }
 
-    public static function getAllOffers(): ?array {
+    public static function getAllOffers(): array {
         try {
             $pdo = self::getConnection();
 
-            $sql = "SELECT id, user_id
-                    FROM Offers";
+            $sql = "SELECT o.id, o.user_id, o.title, o.description, o.category, o.price, o.created_at, u.username
+                    FROM Offers o
+                    LEFT JOIN User u ON o.user_id = u.id
+                    ORDER BY o.created_at DESC";
 
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
 
-            $offers = $stmt->fetch();
+            $offers = $stmt->fetchAll();
 
-            return explode(' ',$offers) ?: null;
+            return $offers ?: [];
 
         } catch (PDOException $e) {
             error_log("Erreur getAllOffers : " . $e->getMessage());
-            return null;
+            return [];
         }
-        return null;
+    }
+
+    public static function createOffer(string $user_id, string $title, string $description, int $price, string $category): array {
+        try {
+            $pdo = self::getConnection();
+
+            $sql = "INSERT INTO Offers (user_id, title, description, price, category) VALUES (:user_id, :title, :description, :price, :category)";
+
+            $stmt = $pdo->prepare($sql);
+            $result = $stmt->execute(['user_id' => $user_id,
+                            'title' => $title,
+                            'description' => $description,
+                            'price' => $price,
+                            'category' => $category
+            ]);
+
+            if ($result) {
+                return [
+                    'success' => true,
+                    'message' => 'Offre créée avec succès !'
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'message' => 'Erreur lors de la création de l\'offre.'
+                ];
+            }
+
+        } catch (PDOException $e) {
+            error_log("Erreur getAllOffers : " . $e->getMessage());
+            return [];
+        }
     }
 }

@@ -51,13 +51,12 @@ final class marketpageController
             if (!class_exists('offerModel', false)) {
                 require_once constants::modelsRepository() . 'offerModel.php';
             }
-            /** @var bool $result */
             $result = offerModel::createOffer($_SESSION['user_id'], $title, $description, $price, $category);
 
-            if ($result) {
-                $_SESSION['flash'] = ['success' => true, 'message' => 'Offre créée avec succès !'];
+            if ($result['success']) {
+                $_SESSION['flash'] = ['success' => true, 'message' => $result['message']];
             } else {
-                $_SESSION['flash'] = ['success' => false, 'message' => 'Erreur lors de la création de l\'offre.'];
+                $_SESSION['flash'] = ['success' => false, 'message' => $result['message']];
             }
         }
 
