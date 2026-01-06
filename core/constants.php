@@ -7,6 +7,7 @@ final class constants
     private const CORE_REPOSITORY        = '/core/';
     private const EXCEPTIONS_REPOSITORY  = '/core/exception/';
     private const CONTROLLERS_REPOSITORY = '/controllers/';
+    private const SERVICES_REPOSITORY    = '/services/';
     private const STANDARD_REPOSITORY    = '/views/standard/';
 
     public static function rootRepository(): string {
@@ -31,6 +32,10 @@ final class constants
 
     public static function controllersRepository(): string {
         return self::rootRepository() . self::CONTROLLERS_REPOSITORY;
+    }
+
+    public static function servicesRepository(): string {
+        return self::rootRepository() . self::SERVICES_REPOSITORY;
     }
 
     public static function standardRepository(): string {

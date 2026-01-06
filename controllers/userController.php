@@ -1,6 +1,5 @@
 <?php
 
-require_once 'services/emailService.php';
 final class userController
 {
     private userModel $userModel;

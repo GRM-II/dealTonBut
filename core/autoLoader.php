@@ -49,6 +49,15 @@ final class autoLoader
     }
 
     /**
+     * Charge une classe depuis le répertoire des services
+     */
+    public static function loadClassService(string $S_className): void
+    {
+        $S_file = constants::servicesRepository() . "$S_className.php";
+        static::_load($S_file);
+    }
+
+    /**
      * Charge un fichier s'il existe et est lisible
      */
     private static function _load(string $S_fileToLoad): void
@@ -65,3 +74,4 @@ spl_autoload_register('autoLoader::loadClassException');
 spl_autoload_register('autoLoader::loadClassModel');
 spl_autoload_register('autoLoader::loadClassView');
 spl_autoload_register('autoLoader::loadClassController');
+spl_autoload_register('autoLoader::loadClassService');

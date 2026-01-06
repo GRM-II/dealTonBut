@@ -12,6 +12,13 @@
                         </div>
                     <?php endif; ?>
 
+                    <?php if (isset($_SESSION['flash_message'])): ?>
+                        <div class="<?= $_SESSION['flash_message']['success'] ? 'login-success-message' : 'login-error-message' ?>">
+                            <?= htmlspecialchars($_SESSION['flash_message']['message']) ?>
+                        </div>
+                        <?php unset($_SESSION['flash_message']); ?>
+                    <?php endif; ?>
+
                     <form class="input-rectangles" method="POST" action="?controller=user&action=login">
                         <label class="login-text" for="username">Identifiant</label>
                         <input type="text"
