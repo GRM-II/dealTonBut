@@ -31,8 +31,8 @@ final class profilepageController
 
         // Utiliser les données fraîches de la BDD
         view::show('profilepageView', [
-            'username' => $userExists['username'] ?? 'N/A',
-            'email' => $userExists['email'] ?? 'N/A',
+            'username' => $userExists['username'],
+            'email' => $userExists['email'],
             'points_maths' => $userExists['points_maths'] ?? 0,
             'points_programmation' => $userExists['points_programmation'] ?? 0,
             'points_reseaux' => $userExists['points_reseaux'] ?? 0,

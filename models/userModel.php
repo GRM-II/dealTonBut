@@ -1,6 +1,6 @@
 <?php
 
-require 'core/envReader.php';
+require_once 'core/envReader.php';
 
 final class userModel
 {
@@ -75,6 +75,7 @@ final class userModel
 
     /**
      * Récupère un utilisateur par son username
+     * @return array{id: int|string, username: string, email: string, points_maths: float|string|null, points_programmation: float|string|null, points_reseaux: float|string|null, points_BD: float|string|null, points_autre: float|string|null}|null
      */
     public function getUserByUsername(string $username): ?array
     {
@@ -113,6 +114,7 @@ final class userModel
 
     /**
      * Crée un nouvel utilisateur dans la base de données
+     * @return array{success: bool, message: string}
      */
     public function createUser(string $username, string $email, string $password): array
     {
@@ -179,6 +181,7 @@ final class userModel
 
     /**
      * Recherche un utilisateur par son username OU son email
+     * @return array{id: int|string, username: string, email: string, mdp: string}|null
      */
     public function findUserByLogin(string $login): ?array
     {
@@ -212,6 +215,7 @@ final class userModel
 
     /**
      * Authentifie un utilisateur
+     * @return array{success: bool, message: string, user?: array{id: int|string, username: string, email: string}}
      */
     public function authenticate(string $login, string $password): array
     {
@@ -291,6 +295,7 @@ final class userModel
 
     /**
      * Met à jour le nom d'utilisateur
+     * @return array{success: bool, message: string}
      */
     public function updateUsername(string $currentUsername, string $newUsername): array
     {
@@ -327,6 +332,7 @@ final class userModel
 
     /**
      * Met à jour l'email
+     * @return array{success: bool, message: string}
      */
     public function updateEmail(string $username, string $newEmail): array
     {
@@ -362,6 +368,8 @@ final class userModel
     }
     /**
      * Met à jour les moyennes de l'utilisateur
+     * @param array<string, float|int> $gradesData
+     * @return array{success: bool, message: string}
      */
     public function updateGrades(int $userId, array $gradesData): array
     {

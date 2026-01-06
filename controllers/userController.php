@@ -1,8 +1,11 @@
 <?php
 
+require_once 'services/emailService.php';
 final class userController
 {
     private userModel $userModel;
+    private PasswordResetModel $passwordResetModel;
+    private emailService $emailService;
 
     // Constructeur pour s'assurer que la session est démarrée et la connexion DB établie
 
@@ -14,6 +17,8 @@ final class userController
 
         // Instancier le modèle utilisateur (gestion DB centralisée dans userModel)
         $this->userModel = new userModel();
+        $this->passwordResetModel = new PasswordResetModel();
+        $this->emailService = new emailService();
     }
 
     /**
@@ -103,7 +108,7 @@ final class userController
     /**
      * Authentifie un utilisateur
      *
-     * @return array{success: bool, message: string, user?: array{username: string, email: string}}
+     * @return array{success: bool, message: string, user?: array{id: int|string, username: string, email: string}}
      */
     private function authenticate(string $login, string $password): array
     {
@@ -249,6 +254,148 @@ final class userController
                 'success' => false,
                 'message' => 'Une erreur est survenue lors de la création du compte.'
             ];
+        }
+    }
+
+    public function forgotPassword(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ?controller=user&action=homepage');
+            exit;
+        }
+
+        $email = isset($_POST['email']) ? trim((string)$_POST['email']) : '';
+
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $_SESSION['flash_message'] = [
+                'success' => false,
+                'message' => 'Adresse email invalide.'
+            ];
+            header('Location: ?controller=user&action=homepage');
+            exit;
+        }
+
+        try {
+            $user = $this->passwordResetModel->getUserByEmail($email);
+
+            $genericMessage = 'Si cette adresse email est enregistrée, vous recevrez un lien de réinitialisation dans quelques instants.';
+
+            if (!$user) {
+                $_SESSION['flash_message'] = [
+                    'success' => true,
+                    'message' => $genericMessage
+                ];
+                header('Location: ?controller=user&action=homepage');
+                exit;
+            }
+
+            $tokenResult = $this->passwordResetModel->createResetToken((int)$user['id']);
+
+            if (!$tokenResult['success'] || !isset($tokenResult['token'])) {
+                error_log("Erreur création token pour user {$user['id']}");
+                $_SESSION['flash_message'] = [
+                    'success' => false,
+                    'message' => 'Une erreur est survenue. Veuillez réessayer plus tard.'
+                ];
+                header('Location: ?controller=user&action=homepage');
+                exit;
+            }
+
+            $emailResult = $this->emailService->sendPasswordResetEmail($email, $tokenResult['token']);
+
+            if (!$emailResult['success']) {
+                error_log("Erreur envoi email à $email : {$emailResult['message']}");
+            }
+
+            $_SESSION['flash_message'] = [
+                'success' => true,
+                'message' => $genericMessage
+            ];
+            header('Location: ?controller=user&action=homepage');
+            exit;
+
+        } catch (Exception $e) {
+            error_log("Erreur forgotPassword: " . $e->getMessage());
+            $_SESSION['flash_message'] = [
+                'success' => false,
+                'message' => 'Une erreur est survenue. Veuillez réessayer plus tard.'
+            ];
+            header('Location: ?controller=user&action=homepage');
+            exit;
+        }
+    }
+
+    public function resetPassword(): void
+    {
+        $token = isset($_GET['token']) ? trim((string)$_GET['token']) : '';
+
+        if (empty($token)) {
+            view::show('user/resetPasswordView', [
+                'error' => 'Token manquant. Veuillez utiliser le lien reçu par email.'
+            ]);
+            return;
+        }
+
+        $tokenValidation = $this->passwordResetModel->validateToken($token);
+
+        if (!$tokenValidation['valid'] || !isset($tokenValidation['userId'])) {
+            view::show('user/resetPasswordView', [
+                'error' => $tokenValidation['message']
+            ]);
+            return;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            view::show('user/resetPasswordView', []);
+            return;
+        }
+
+        $password = isset($_POST['password']) ? (string)$_POST['password'] : '';
+        $confirmPassword = isset($_POST['confirm_password']) ? (string)$_POST['confirm_password'] : '';
+
+        if (empty($password) || empty($confirmPassword)) {
+            view::show('user/resetPasswordView', [
+                'error' => 'Veuillez remplir tous les champs.'
+            ]);
+            return;
+        }
+
+        if ($password !== $confirmPassword) {
+            view::show('user/resetPasswordView', [
+                'error' => 'Les mots de passe ne correspondent pas.'
+            ]);
+            return;
+        }
+
+        if (strlen($password) < 6) {
+            view::show('user/resetPasswordView', [
+                'error' => 'Le mot de passe doit contenir au moins 6 caractères.'
+            ]);
+            return;
+        }
+
+        try {
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $updateResult = userModel::updatePassword($tokenValidation['userId'], $hashedPassword);
+
+            if (!$updateResult) {
+                view::show('user/resetPasswordView', [
+                    'error' => 'Erreur lors de la mise à jour du mot de passe.'
+                ]);
+                return;
+            }
+
+            $this->passwordResetModel->deleteToken($token);
+
+            view::show('user/resetPasswordView', [
+                'success' => 'Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter.'
+            ]);
+
+        } catch (Exception $e) {
+            error_log("Erreur resetPassword: " . $e->getMessage());
+            view::show('user/resetPasswordView', [
+                'error' => 'Une erreur est survenue. Veuillez réessayer.'
+            ]);
         }
     }
 }
