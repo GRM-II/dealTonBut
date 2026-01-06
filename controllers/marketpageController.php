@@ -81,13 +81,12 @@ final class marketpageController
             if (!class_exists('offerModel', false)) {
                 require_once constants::modelsRepository() . 'offerModel.php';
             }
-            /** @var bool $result */
             $result = offerModel::deleteOffer((int)$offerId, $_SESSION['user_id']);
 
-            if ($result) {
-                $_SESSION['flash'] = ['success' => true, 'message' => 'Offre supprimée avec succès.'];
+            if ($result['success']) {
+                $_SESSION['flash'] = ['success' => true, 'message' => $result['message']];
             } else {
-                $_SESSION['flash'] = ['success' => false, 'message' => 'Erreur lors de la suppression de l\'offre.'];
+                $_SESSION['flash'] = ['success' => false, 'message' => $result['message']];
             }
         }
 
