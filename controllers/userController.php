@@ -3,7 +3,7 @@
 final class userController
 {
     private userModel $userModel;
-    private PasswordResetModel $passwordResetModel;
+    private passwordResetModel $passwordResetModel;
     private emailService $emailService;
 
     // Constructeur pour s'assurer que la session est démarrée et la connexion DB établie
@@ -16,7 +16,7 @@ final class userController
 
         // Instancier le modèle utilisateur (gestion DB centralisée dans userModel)
         $this->userModel = new userModel();
-        $this->passwordResetModel = new PasswordResetModel();
+        $this->passwordResetModel = new passwordResetModel();
         $this->emailService = new emailService();
     }
 

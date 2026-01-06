@@ -2,7 +2,7 @@
 
 require_once 'models/userModel.php';
 
-final class PasswordResetModel
+final class passwordResetModel
 {
     /**
      * @return array{success: bool, token?: string, message: string}
