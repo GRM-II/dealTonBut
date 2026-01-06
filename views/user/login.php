@@ -5,13 +5,13 @@
         <div class="rectangle-title">Connexion</div>
 
         <?php if (isset($A_view['success'])): ?>
-            <div style="margin:10px 0;padding:10px;border-radius:6px;background:#e6ffed;color:#03543f;border:1px solid #84e1bc;">
+            <div class="flash-message flash-success">
                 <?php echo htmlspecialchars($A_view['success'], ENT_QUOTES, 'UTF-8'); ?>
             </div>
         <?php endif; ?>
 
         <?php if (isset($A_view['error'])): ?>
-            <div style="color:red;padding:10px;background:#ffe0e0;margin:10px 0;border-radius:5px;">
+            <div class="flash-message flash-error">
                 <?php echo htmlspecialchars($A_view['error'], ENT_QUOTES, 'UTF-8'); ?>
             </div>
         <?php endif; ?>
@@ -35,8 +35,7 @@
 
             <button type="submit"
                     name="submit"
-                    class="input-rectangle"
-                    style="background:#1360AA;color:#fff;cursor:pointer;font-size:1.2em;">
+                    class="input-rectangle login-submit-btn">
                 Connexion
             </button>
         </form>

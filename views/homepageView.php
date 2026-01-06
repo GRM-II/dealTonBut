@@ -1,42 +1,52 @@
 <main>
     <div class="content">
         <div class="login-rectangle">
-            <img src="/public/assets/img/placeholder-meme.jpeg" alt="Image de connexion" class="log-img">
-            <div class="rectangle-title">Connexion</div>
+            <div class="login-grid">
+                <div class="login-left">
+                    <img src="/public/assets/img/placeholder-meme.jpeg" alt="Logo Deal Ton BUT" class="log-img">
+                    <div class="rectangle-title">Connexion</div>
 
-            <?php if (isset($error)): ?>
-                <div style="color: red; padding: 10px; background: #ffe0e0; margin: 10px 0; border-radius: 5px;">
-                    <?= htmlspecialchars($error) ?>
+                    <?php if (isset($error)): ?>
+                        <div class="login-error-message">
+                            <?= htmlspecialchars($error) ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <form class="input-rectangles" method="POST" action="?controller=user&action=login">
+                        <label class="login-text" for="username">Identifiant</label>
+                        <input type="text"
+                               id="username"
+                               placeholder="Nom d'utilisateur ou adresse mail"
+                               name="login"
+                               class="input-rectangle"
+                               required>
+
+                        <label class="login-text" for="password">Mot de passe</label>
+                        <input type="password"
+                               id="password"
+                               placeholder="********"
+                               name="password"
+                               class="input-rectangle"
+                               required>
+
+                        <button type="submit"
+                                name="submit"
+                                class="input-rectangle">
+                            Connexion
+                        </button>
+                    </form>
+
+                    <a href="#" class="text-link" id="forgot-password-link">Mot de passe oublié ?</a>
+                    <a href="/index.php?controller=user&action=register" class="text-link">Vous ne possédez pas de compte ?</a>
                 </div>
-            <?php endif; ?>
 
-            <form class="input-rectangles" method="POST" action="?controller=user&action=login">
-                <label for="username"></label>
-                <input type="text"
-                       id="username"
-                       name="login"
-                       placeholder="Nom d'utilisateur ou email"
-                       class="input-rectangle"
-                       required>
-
-                <label for="password"></label>
-                <input type="password"
-                       id="password"
-                       name="password"
-                       placeholder="Mot de passe"
-                       class="input-rectangle"
-                       required>
-
-                <button type="submit"
-                        name="submit"
-                        class="input-rectangle"
-                        style="background:#1360AA;color:#fff;cursor:pointer;font-size:1.2em;">
-                    Connexion
-                </button>
-            </form>
-
-            <a href="#" class="text-link" id="forgot-password-link">Mot de passe oublié ?</a>
-            <a href="index.php?controller=user&action=register" class="text-link">Vous ne possédez pas de compte ?</a>
+                <div class="login-right">
+                    <div class="login-right-placeholder">
+                        <h1>Deal tom BIOUT</h1>
+                        <h2>Commence ton nouveau chapitre de comédien !</h2>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -45,16 +55,17 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Réinitialiser le mot de passe</h2>
-            <p>Entrez votre adresse email pour recevoir un lien de réinitialisation.</p>
+            <p>C'est quand même balot, alors donnez nous votre adresse email pour recevoir un lien de réinitialisation.</p>
             <form id="forgot-password-form" method="POST" action="?controller=user&action=forgotPassword">
-                <input type="email"
-                       name="email"
-                       placeholder="Votre adresse email"
-                       class="input-rectangle"
-                       required>
+                <label>
+                    <input type="email"
+                           name="email"
+                           placeholder="Votre adresse email"
+                           class="input-rectangle"
+                           required>
+                </label>
                 <button type="submit"
-                        class="input-rectangle"
-                        style="background:#1360AA;color:#fff;cursor:pointer;font-size:1.1em;margin-top:10px;">
+                        class="input-rectangle">
                     Envoyer
                 </button>
             </form>

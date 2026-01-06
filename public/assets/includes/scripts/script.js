@@ -11,14 +11,18 @@ function setThemeIcon() {
 
 function updateNavigationIcons() {
     const isDark = document.body.classList.contains('dark-theme');
-    const homeIcon = document.getElementById('home-nav-icon');
+    const tradeIcon = document.getElementById('trade-nav-icon');
     const marketIcon = document.getElementById('market-nav-icon');
+    const homeIcon = document.getElementById('home-nav-icon');
 
-    if (homeIcon) {
-        homeIcon.src = isDark ? 'public/assets/img/Home_Night.svg' : 'public/assets/img/Home_Day.svg';
+    if (tradeIcon) {
+        tradeIcon.src = isDark ? '/public/assets/img/Trade_Night.svg' : '/public/assets/img/Trade_Day.svg';
     }
     if (marketIcon) {
-        marketIcon.src = isDark ? 'public/assets/img/Market_Night.svg' : 'public/assets/img/Market_Day.svg';
+        marketIcon.src = isDark ? '/public/assets/img/Market_Night.svg' : '/public/assets/img/Market_Day.svg';
+    }
+    if (homeIcon) {
+        homeIcon.src = isDark ? '/public/assets/img/Home_Night.svg' : '/public/assets/img/Home_Day.svg';
     }
 }
 
@@ -42,7 +46,7 @@ function toggleTheme() {
 
 function initRegisterForm(dbUnavailable, dbMessage) {
     applySavedTheme();
-    var form = document.getElementById('register-form');
+    const form = document.getElementById('register-form');
     if (!form) return;
 
     if (dbUnavailable) {
@@ -81,27 +85,56 @@ window.addEventListener('DOMContentLoaded', function() {
 
 // Gestion de la modale mot de passe oublié
 function initForgotPasswordModal() {
-    const modal = document.getElementById('forgot-password-modal');
-    const link = document.getElementById('forgot-password-link');
-    const closeBtn = modal ? modal.querySelector('.close') : null;
+    const forgotPasswordLink = document.getElementById('forgot-password-link');
+    const forgotPasswordModal = document.getElementById('forgot-password-modal');
+    const closeBtn = forgotPasswordModal ? forgotPasswordModal.querySelector('.close') : null;
 
-    if (link && modal) {
-        link.addEventListener('click', function(e) {
+    if (forgotPasswordLink && forgotPasswordModal) {
+        forgotPasswordLink.addEventListener('click', function(e) {
             e.preventDefault();
-            modal.style.display = 'block';
-        });
-    }
 
-    if (closeBtn && modal) {
-        closeBtn.addEventListener('click', function() {
-            modal.style.display = 'none';
-        });
-    }
+            // Afficher le modal avec display flex pour le centrage
+            forgotPasswordModal.style.display = 'flex';
 
-    if (modal) {
-        window.addEventListener('click', function(event) {
-            if (event.target === modal) {
-                modal.style.display = 'none';
+            // Force un reflow pour que la transition CSS fonctionne
+            void forgotPasswordModal.offsetHeight;
+
+            // Démarrer l'animation de fade-in
+            forgotPasswordModal.style.opacity = '1';
+            const modalContent = forgotPasswordModal.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.style.transform = 'scale(1)';
+            }
+        });
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function() {
+                // Animation de fade-out
+                forgotPasswordModal.style.opacity = '0';
+                const modalContent = forgotPasswordModal.querySelector('.modal-content');
+                if (modalContent) {
+                    modalContent.style.transform = 'scale(0.9)';
+                }
+                // Masquer après l'animation (400ms)
+                setTimeout(function() {
+                    forgotPasswordModal.style.display = 'none';
+                }, 400);
+            });
+        }
+
+        // Fermer le modal si on clique en dehors
+        forgotPasswordModal.addEventListener('click', function(e) {
+            if (e.target === forgotPasswordModal) {
+                // Animation de fade-out
+                forgotPasswordModal.style.opacity = '0';
+                const modalContent = forgotPasswordModal.querySelector('.modal-content');
+                if (modalContent) {
+                    modalContent.style.transform = 'scale(0.9)';
+                }
+                // Masquer après l'animation (400ms)
+                setTimeout(function() {
+                    forgotPasswordModal.style.display = 'none';
+                }, 400);
             }
         });
     }
@@ -311,3 +344,33 @@ function initProfilePage() {
         });
     }
 }
+
+// Bouton pour remonter en haut de la page
+function initScrollToTop() {
+    const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
+
+    if (scrollToTopBtn) {
+        // Afficher/masquer le bouton lors du scroll
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                scrollToTopBtn.style.opacity = '1';
+                scrollToTopBtn.style.pointerEvents = 'auto';
+            } else {
+                scrollToTopBtn.style.opacity = '0';
+                scrollToTopBtn.style.pointerEvents = 'none';
+            }
+        });
+
+        // Remonter en haut au clic
+        scrollToTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+}
+
+// Initialiser le bouton de remontée
+initScrollToTop();
+

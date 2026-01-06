@@ -6,17 +6,18 @@ $offers = $A_view['offers'] ?? [];
 $selectedOffer = $A_view['selectedOffer'] ?? null;
 ?>
 
-<div class="content trade-place-content">
-    <?php if ($isLoggedIn): ?>
-        <div class="trade-nav-buttons">
-            <a href="?controller=marketpage&action=index" class="trade-nav-btn trade-nav-btn-market" title="Marché">
-                <img id="market-nav-icon" src="public/assets/img/Market_Day.svg" alt="Marché" class="trade-nav-icon">
+<div class="content">
+        <div class="nav-buttons trade-nav-buttons">
+            <a href="?controller=marketpage&action=index" class="nav-btn nav-btn-market" title="Marché">
+                <img id="market-nav-icon" src="/public/assets/img/Market_Day.svg" alt="Marché" class="nav-icon">
             </a>
-            <a href="?controller=homepage&action=index" class="trade-nav-btn trade-nav-btn-home" title="Accueil">
-                <img id="home-nav-icon" src="public/assets/img/Home_Day.svg" alt="Accueil" class="trade-nav-icon">
+            <a href="?controller=homepage&action=index" class="nav-btn nav-btn-home" title="Accueil">
+                <img id="home-nav-icon" src="/public/assets/img/Home_Day.svg" alt="Accueil" class="nav-icon">
             </a>
+            <button id="scroll-to-top-btn" class="nav-btn scroll-to-top-btn" title="Remonter en haut">
+                <img src="/public/assets/img/placeholder-meme.jpeg" alt="Remonter" class="nav-icon">
+            </button>
         </div>
-    <?php endif; ?>
 
     <h1 class="trade-place-title">Trade place</h1>
 
@@ -98,6 +99,7 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
                 </div>
             <?php endif; ?>
         </main>
+    </div>
     </div>
 </div>
 
