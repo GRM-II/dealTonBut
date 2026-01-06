@@ -134,7 +134,7 @@ body.dark-theme #theme-toggle {
     flex: 1 0 auto;
     width: 100vw;
     max-width: 100vw;
-    padding: 76px 16px 64px 16px;
+    padding: 76px 0px 64px 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -218,18 +218,13 @@ body.dark-theme footer p {
 
 .login-rectangle {
     width: 80%;
-    max-width: 500px;
+    max-width: 1200px;
     min-width: 220px;
-    height: 100%;
+    height: auto;
     min-height: 400px;
     background: var(--surface-light);
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 5vh 4vw;
-    flex: 1;
+    padding: 3vh 3vw;
     box-shadow: var(--shadow-default);
     border-radius: var(--radius-default);
 }
@@ -238,10 +233,140 @@ body.dark-theme .login-rectangle {
     background: var(--surface-dark);
 }
 
+.login-text {
+    color: var(--text-light);
+    width: 100%;
+}
+
+body.dark-theme .login-text {
+    color: var(--text-dark);
+}
+
+/* Grille de connexion en deux colonnes */
+.login-grid {
+    display: grid;
+    grid-template-columns: 0.54fr 1fr;
+    gap: 25px;
+    height: 100%;
+    align-items: center;
+}
+
+/* Colonne gauche : formulaire */
+.login-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-right: 20px;
+}
+
+.login-left .log-img {
+    align-self: center;
+}
+
+.login-left .rectangle-title {
+    align-self: center;
+    width: 100%;
+    text-align: center;
+    text-decoration: underline;
+}
+
+.login-left .input-rectangles {
+    width: 100%;
+    align-items: center;
+}
+
+.login-left .input-rectangle {
+    align-self: center;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.login-left .text-link {
+    align-self: center;
+}
+
+/* Message d'erreur de connexion */
+.login-error-message {
+    color: var(--red-color);
+    padding: 8px;
+    background: #ffe0e0;
+    margin: 5px 0;
+    border-radius: var(--radius-button);
+    text-align: center;
+    width: 100%;
+}
+
+body.dark-theme .login-error-message {
+    background: #5a1a1a;
+    color: #ff6b6b;
+}
+
+/* Colonne droite : contenu supplémentaire */
+.login-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-left: 20px;
+    border-left: 2px solid var(--grey-color);
+    min-height: 300px;
+}
+
+body.dark-theme .login-right {
+    border-left-color: var(--text-dark);
+}
+
+.login-right-placeholder {
+    text-align: center;
+    color: var(--text-light-secondary);
+}
+
+body.dark-theme .login-right-placeholder {
+    color: var(--text-dark);
+}
+
+.login-right-placeholder p {
+    margin: 8px 0;
+    font-size: 1.1em;
+}
+
+/* Responsive : sur petits écrans, passer en une colonne */
+@media (max-width: 768px) {
+    .login-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .login-left {
+        padding-right: 0;
+        align-items: center;
+    }
+
+    .login-left .rectangle-title {
+        text-align: center;
+    }
+
+    .login-left .text-link {
+        align-self: center;
+    }
+
+    .login-right {
+        border-left: none;
+        border-top: 2px solid var(--grey-color);
+        padding-left: 0;
+        padding-top: 20px;
+    }
+
+    body.dark-theme .login-right {
+        border-top-color: var(--text-dark);
+    }
+}
+
 .rectangle-title {
     font-size: 2em;
     font-weight: bold;
-    margin-bottom: 5vh;
+    margin-bottom: 2vh;
     text-align: center;
     color: var(--text-light);
     box-shadow: none;
@@ -259,7 +384,7 @@ body.dark-theme .rectangle-title {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 0.5em;
+    gap: 0.2em;
 }
 
 .input-rectangle {
@@ -270,10 +395,29 @@ body.dark-theme .rectangle-title {
     border-radius: var(--radius-default);
     background: var(--bg-light);
     padding: 0 20px;
-    font-size: 1em;
+    font-size: 1.2em;
     outline: none;
     transition: box-shadow var(--transition-fast);
     box-shadow: var(--shadow-default);
+}
+
+/* Boutons de type submit avec style primaire */
+button[type="submit"].input-rectangle {
+    background: var(--primary-color);
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.2em;
+    padding: 0 16px;
+}
+
+button[type="submit"].input-rectangle:hover {
+    background: var(--primary-dark);
+}
+
+/* Style spécifique pour le bouton du modal mot de passe oublié */
+#forgot-password-form button[type="submit"] {
+    font-size: 1.1em;
+    margin-top: 10px;
 }
 
 .not-displayed {
@@ -421,7 +565,7 @@ body.dark-theme .submit-rectangle {
 
 .text-link {
     display: block;
-    margin-top: 4vh;
+    margin-top: 2vh;
     text-align: center;
     color: var(--primary-color);
     text-decoration: underline;
@@ -445,7 +589,7 @@ body.dark-theme .submit-rectangle {
 
 .log-img {
     display: block;
-    margin: 0 auto 4vh auto;
+    margin: 0 auto 2vh auto;
     width: 100px;
     height: 100px;
     object-fit: contain;
@@ -586,12 +730,17 @@ body.dark-theme .text-link:hover {
 @media (max-width: 1024px) {
     .login-rectangle {
         max-width: 90vw;
+        width: 90%;
         min-height: 300px;
         padding: 4vh 2vw;
     }
 
+    .login-grid {
+        gap: 30px;
+    }
+
     .rectangle-title {
-        font-size: 2em;
+        font-size: 1.8em;
         margin-bottom: 3vh;
     }
 
@@ -673,11 +822,37 @@ body.dark-theme .text-link:hover {
 /* Phone */
 @media (max-width: 600px) {
     .login-rectangle {
-        max-width: 70vw;
+        width: 95%;
+        max-width: 95vw;
         min-width: 0;
-        max-height: 80vw;
         min-height: 200px;
-        padding: 2vh 2vw;
+        padding: 3vh 3vw;
+    }
+
+    .login-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .login-left {
+        padding-right: 0;
+    }
+
+    .login-right {
+        border-left: none;
+        border-top: 1px solid var(--grey-color);
+        padding-left: 0;
+        padding-top: 15px;
+        min-height: auto;
+    }
+
+    body.dark-theme .login-right {
+        border-top-color: var(--text-dark);
+    }
+
+    .login-right-placeholder p {
+        font-size: 0.95em;
+        margin: 10px 0;
     }
 
     .rectangle-title {
@@ -853,24 +1028,178 @@ body.dark-theme #delete-modal .btn-cancel {
     color: var(--white-color);
 }
 
-.trade-place-content {
-    margin-top: 60px;
-    padding: 0;
-    min-height: calc(100vh - 50px);
-    overflow-x: hidden;
-    position: relative;
-}
-
-.trade-nav-buttons {
+.nav-buttons {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 5rem;
+    left: 40px;
     display: flex;
-    gap: 20px;
+    flex-direction: row;
+    gap: 15px;
     z-index: 10;
 }
 
-.trade-nav-btn {
+.profile-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.profile-nav-buttons {
+    position: fixed;
+    left: calc((100vw - 80%) / 4 - 40px);
+    top: 76px;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.scroll-to-top-btn {
+    cursor: pointer;
+    border: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.scroll-to-top-btn.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.db-unavailable-message {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 6px;
+    background: #fff4e5;
+    color: #92400e;
+    border: 1px solid #f6ad55;
+}
+
+body.dark-theme .db-unavailable-message {
+    background: #5a3e1a;
+    color: #fbbf24;
+    border: 1px solid #d97706;
+}
+
+.profile-forms-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.profile-edit-form {
+    display: inline;
+}
+
+.profile-edit-input {
+    display: none;
+    width: 140px;
+}
+
+.profile-edit-input[type="email"] {
+    width: 180px;
+}
+
+.profile-edit-input[type="password"] {
+    width: 180px;
+}
+
+.profile-edit-btn,
+.profile-cancel-btn {
+    padding: 2px 8px;
+    font-size: 0.95em;
+}
+
+.profile-save-btn {
+    display: none;
+    padding: 2px 8px;
+    font-size: 0.95em;
+    background: #1360AA;
+    color: #fff;
+}
+
+.profile-logout-container {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.profile-logout-btn {
+    background: #1360AA;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px 20px;
+}
+
+.profile-danger-zone {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+}
+
+body.dark-theme .profile-danger-zone {
+    border-top-color: var(--surface-dark);
+}
+
+.profile-delete-btn {
+    background: #dc2626;
+    color: #fff;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.login-right-top,
+.login-right-bottom {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-right-separator {
+    width: 100%;
+    height: 2px;
+    background-color: var(--grey-color);
+    margin: 20px 0;
+}
+
+body.dark-theme .login-right-separator {
+    background-color: var(--text-dark);
+}
+
+/* Styles spécifiques pour la page tradeplace */
+.trade-nav-buttons {
+    position: fixed;
+    left: calc((100vw - 80%) / 4 - 40px);
+    top: 76px;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+/* Styles pour les pages login et register */
+.login-submit-btn,
+.register-submit-btn {
+    background: #1360AA;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.2em;
+}
+
+.login-submit-btn:hover,
+.register-submit-btn:hover {
+    background: var(--primary-dark);
+}
+
+.register-db-warning .warning-details {
+    margin-top: 8px;
+    font-size: 0.95em;
+}
+
+.register-db-warning .warning-details ul {
+    margin: 6px 0 0 18px;
+}
+
+.nav-btn {
     width: 64px;
     height: 64px;
     display: flex;
@@ -882,15 +1211,15 @@ body.dark-theme #delete-modal .btn-cancel {
     transition: all var(--transition-fast);
 }
 
-body.dark-theme .trade-nav-btn {
-    background: var(--bg-dark);
+body.dark-theme .nav-btn {
+    background: #343434;
 }
 
-.trade-nav-btn:hover {
+.nav-btn:hover {
     transform: scale(1.1);
 }
 
-.trade-nav-icon {
+.nav-icon {
     width: 60px;
     height: 60px;
     object-fit: contain;
@@ -900,7 +1229,7 @@ body.dark-theme .trade-nav-btn {
     text-align: center;
     font-size: 2rem;
     margin-bottom: 30px;
-    padding: 1rem 15rem;
+    padding: 1rem;
     display: flex;
     align-items: center;
     background-color: var(--surface-light);
@@ -908,6 +1237,8 @@ body.dark-theme .trade-nav-btn {
     color: var(--text-light);
     box-shadow: var(--shadow-default);
     border-radius: var(--radius-default);
+    width: 50%;
+    max-width: 100%;
 }
 
 body.dark-theme .trade-place-title {
@@ -919,6 +1250,7 @@ body.dark-theme .trade-place-title {
     display: flex;
     gap: 0;
     width: 100%;
+    max-width: 100%;
     height: calc(100vh - 180px);
     justify-content: space-between;
     overflow-x: hidden;
@@ -928,7 +1260,7 @@ body.dark-theme .trade-place-title {
 .trade-place-sidebar {
     width: 35%;
     background: var(--surface-light);
-    border-radius: 0 20px 20px 0;
+    border-radius: 20px 20px 20px 20px;
     padding: 20px 10px;
     box-shadow: var(--shadow-default);
     overflow-y: auto;
@@ -1215,7 +1547,7 @@ body.dark-theme .detail-value {
 
 @media (max-width: 1400px) {
     .trade-place-title {
-        padding: 1rem 8rem;
+        padding: 1rem;
         font-size: 1.8rem;
     }
 
@@ -1231,22 +1563,22 @@ body.dark-theme .detail-value {
 
 @media (max-width: 1024px) {
     .trade-place-title {
-        padding: 1rem 4rem;
+        padding: 1rem;
         font-size: 1.6rem;
     }
 
-    .trade-nav-buttons {
+    .nav-buttons {
         top: 15px;
         left: 15px;
         gap: 10px;
     }
 
-    .trade-nav-btn {
+    .nav-btn {
         width: 50px;
         height: 50px;
     }
 
-    .trade-nav-icon {
+    .nav-icon {
         width: 45px;
         height: 45px;
     }
@@ -1277,28 +1609,25 @@ body.dark-theme .detail-value {
 }
 
 @media (max-width: 768px) {
-    .trade-place-content {
-        margin-top: 50px;
-    }
 
     .trade-place-title {
-        padding: 0.8rem 2rem;
+        padding: 0.8rem;
         font-size: 1.4rem;
         margin-bottom: 20px;
     }
 
-    .trade-nav-buttons {
+    .nav-buttons {
         top: 10px;
         left: 10px;
         gap: 8px;
     }
 
-    .trade-nav-btn {
+    .nav-btn {
         width: 40px;
         height: 40px;
     }
 
-    .trade-nav-icon {
+    .nav-icon {
         width: 35px;
         height: 35px;
     }
@@ -1359,29 +1688,26 @@ body.dark-theme .detail-value {
 }
 
 @media (max-width: 480px) {
-     .trade-place-content {
-        padding: 0 10px;
-    }
 
     .trade-place-title {
-        padding: 1rem 1.5rem;
+        padding: 1rem;
         font-size: 1.2rem;
         margin-bottom: 20px;
     }
 
-    .trade-nav-buttons {
+    .nav-buttons {
         top: 12px;
         left: 12px;
         gap: 10px;
         flex-wrap: wrap;
     }
 
-    .trade-nav-btn {
+    .nav-btn {
         width: 40px;
         height: 40px;
     }
 
-    .trade-nav-icon {
+    .nav-icon {
         width: 35px;
         height: 35px;
     }
@@ -1503,28 +1829,25 @@ body.dark-theme .detail-value {
 }
 
 @media (max-width: 360px) {
-    .trade-place-content {
-        padding: 0 8px;
-    }
 
     .trade-place-title {
-        padding: 0.8rem 1rem;
+        padding: 0.8rem;
         font-size: 1.05rem;
         margin-bottom: 15px;
     }
 
-    .trade-nav-buttons {
+    .nav-buttons {
         top: 8px;
         left: 8px;
         gap: 8px;
     }
 
-    .trade-nav-btn {
+    .nav-btn {
         width: 35px;
         height: 35px;
     }
 
-    .trade-nav-icon {
+    .nav-icon {
         width: 28px;
         height: 28px;
     }
@@ -1617,5 +1940,118 @@ body.dark-theme .detail-value {
         margin: 12px 8px;
         padding: 12px;
     }
+}
+
+/* Modal mot de passe oublié */
+#forgot-password-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    align-items: center;
+    justify-content: center;
+}
+
+#forgot-password-modal .modal-content {
+    background: var(--bg-light);
+    padding: 30px;
+    border-radius: var(--radius-button);
+    max-width: 450px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    transform: scale(0.9);
+    transition: transform 0.4s ease;
+}
+
+body.dark-theme #forgot-password-modal .modal-content {
+    background: var(--bg-dark);
+    color: var(--text-dark);
+}
+
+#forgot-password-modal h2 {
+    margin-top: 0;
+    color: var(--text-light);
+    font-size: 1.5em;
+    text-align: center;
+}
+
+body.dark-theme #forgot-password-modal h2 {
+    color: var(--text-dark);
+}
+
+#forgot-password-modal p {
+    color: var(--text-light-secondary);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+body.dark-theme #forgot-password-modal p {
+    color: var(--text-dark);
+}
+
+#forgot-password-modal .close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--grey-color);
+    cursor: pointer;
+    transition: color var(--transition-fast);
+}
+
+#forgot-password-modal .close:hover,
+#forgot-password-modal .close:focus {
+    color: var(--text-light);
+}
+
+body.dark-theme #forgot-password-modal .close:hover,
+body.dark-theme #forgot-password-modal .close:focus {
+    color: var(--text-dark);
+}
+
+#forgot-password-modal form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+#forgot-password-modal form label {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#forgot-password-modal form input[type="email"] {
+    width: 100%;
+    text-align: center;
+}
+
+#forgot-password-modal form button {
+    width: 100%;
+    max-width: 200px;
+    transition: all var(--transition-fast);
+    transform: scale(1);
+    box-shadow: var(--shadow-default);
+}
+
+#forgot-password-modal form button:hover {
+    background: var(--primary-dark);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(19, 96, 170, 0.3) !important;
+}
+
+#forgot-password-modal form button:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 6px rgba(19, 96, 170, 0.2) !important;
 }
 

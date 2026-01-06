@@ -6,8 +6,7 @@ $offers = $A_view['offers'] ?? [];
 $selectedOffer = $A_view['selectedOffer'] ?? null;
 ?>
 
-<div class="content trade-place-content">
-    <?php if ($isLoggedIn): ?>
+<div class="content">
         <div class="nav-buttons trade-nav-buttons">
             <a href="?controller=marketpage&action=index" class="nav-btn nav-btn-market" title="Marché">
                 <img id="market-nav-icon" src="/public/assets/img/Market_Day.svg" alt="Marché" class="nav-icon">
@@ -19,7 +18,6 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
                 <img src="/public/assets/img/placeholder-meme.jpeg" alt="Remonter" class="nav-icon">
             </button>
         </div>
-    <?php endif; ?>
 
     <h1 class="trade-place-title">Trade place</h1>
 
@@ -101,6 +99,7 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
                 </div>
             <?php endif; ?>
         </main>
+    </div>
     </div>
 </div>
 

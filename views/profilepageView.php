@@ -3,6 +3,7 @@ $dbUnavailable = isset($A_view['db_status']) && isset($A_view['db_status']['avai
 $dbMessage = $dbUnavailable ? ($A_view['db_status']['message'] . (isset($A_view['db_status']['details']) ? ' – ' . $A_view['db_status']['details'] : '')) : '';
 $disabledAttr = $dbUnavailable ? 'disabled' : '';
 ?>
+
 <div class="content">
     <div class="login-rectangle" style="position:relative;">
         <div style="position:absolute;top:10px;left:10px;z-index:10;">
