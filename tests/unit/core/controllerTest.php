@@ -3,32 +3,32 @@
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test unitaire pour la classe controller
+ * Unit test for the controller class
  *
- * Teste le routage, l'exécution des actions, la gestion des erreurs
- * et la manipulation des contrôleurs et actions
+ * Tests routing, action execution, error handling,
+ * and controller/action manipulation
  */
 class controllerTest extends TestCase
 {
     /**
-     * Test que la classe controller existe et est finale
+     * Test that the controller class exists and is final
      */
     public function testControllerClassExists(): void
     {
         $this->assertTrue(
             class_exists('controller'),
-            'La classe controller doit exister'
+            'The controller class must exist'
         );
 
         $reflection = new ReflectionClass('controller');
         $this->assertTrue(
             $reflection->isFinal(),
-            'La classe controller doit être finale (final class)'
+            'The controller class must be final (final class)'
         );
     }
 
     /**
-     * Test du constructeur avec un contrôleur et une action valides
+     * Test the constructor with a valid controller and action
      */
     public function testConstructorWithValidControllerAndAction(): void
     {
@@ -37,12 +37,12 @@ class controllerTest extends TestCase
         $this->assertInstanceOf(
             controller::class,
             $controller,
-            'Le constructeur doit créer une instance de controller'
+            'The constructor must create a controller instance'
         );
     }
 
     /**
-     * Test du constructeur avec des valeurs null (valeurs par défaut)
+     * Test the constructor with null values (default values)
      */
     public function testConstructorWithNullValues(): void
     {
@@ -51,24 +51,24 @@ class controllerTest extends TestCase
         $this->assertInstanceOf(
             controller::class,
             $controller,
-            'Le constructeur doit accepter les valeurs null'
+            'The constructor must accept null values'
         );
     }
 
     /**
-     * Test du constructeur avec un contrôleur null (doit utiliser homepage par défaut)
+     * Test the constructor with a null controller (should use homepage by default)
      */
     public function testConstructorWithNullControllerUsesDefault(): void
     {
         $controller = new controller(null, 'index');
 
-        // On ne peut pas tester directement la valeur privée,
-        // mais on peut tester que ça ne plante pas
+        // We cannot directly test the private value,
+        // but we can check that it does not fail
         $this->assertInstanceOf(controller::class, $controller);
     }
 
     /**
-     * Test du constructeur avec une action null (doit utiliser login par défaut)
+     * Test the constructor with a null action (should use login by default)
      */
     public function testConstructorWithNullActionUsesDefault(): void
     {
@@ -78,41 +78,41 @@ class controllerTest extends TestCase
     }
 
     /**
-     * Test que la méthode execute existe
+     * Test that the execute method exists
      */
     public function testExecuteMethodExists(): void
     {
         $this->assertTrue(
             method_exists('controller', 'execute'),
-            'La méthode execute doit exister'
+            'The execute method must exist'
         );
 
         $reflection = new ReflectionMethod('controller', 'execute');
         $this->assertTrue(
             $reflection->isPublic(),
-            'La méthode execute doit être publique'
+            'The execute method must be public'
         );
     }
 
     /**
-     * Test que la méthode getParams existe
+     * Test that the getParams method exists
      */
     public function testGetParamsMethodExists(): void
     {
         $this->assertTrue(
             method_exists('controller', 'getParams'),
-            'La méthode getParams doit exister'
+            'The getParams method must exist'
         );
 
         $reflection = new ReflectionMethod('controller', 'getParams');
         $this->assertTrue(
             $reflection->isPublic(),
-            'La méthode getParams doit être publique'
+            'The getParams method must be public'
         );
     }
 
     /**
-     * Test de getParams retourne un tableau vide par défaut
+     * Test that getParams returns an empty array by default
      */
     public function testGetParamsReturnsEmptyArrayByDefault(): void
     {
@@ -120,96 +120,96 @@ class controllerTest extends TestCase
 
         $params = $controller->getParams();
 
-        $this->assertIsArray($params, 'getParams doit retourner un tableau');
-        $this->assertEmpty($params, 'getParams doit retourner un tableau vide par défaut');
+        $this->assertIsArray($params, 'getParams must return an array');
+        $this->assertEmpty($params, 'getParams must return an empty array by default');
     }
 
     /**
-     * Test d'exécution avec un contrôleur valide
+     * Test execution with a valid controller
      */
     public function testExecuteWithValidController(): void
     {
-        // homepageController existe et a une méthode index
+        // homepageController exists and has an index method
         $controller = new controller('homepage', 'index');
 
-        // Note: On ne peut pas vraiment exécuter car ça fait des redirections
-        // On vérifie juste que l'objet est bien créé
+        // Note: We cannot really execute it because it performs redirects
+        // We only verify that the object is correctly created
         $this->assertInstanceOf(controller::class, $controller);
         $this->assertTrue(class_exists('homepageController'));
         $this->assertTrue(method_exists('homepageController', 'index'));
     }
 
     /**
-     * Test d'exécution avec un contrôleur inexistant
+     * Test execution with a non-existent controller
      */
     public function testExecuteWithNonExistentControllerThrowsException(): void
     {
         $controller = new controller('NonExistentController999', 'index');
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('est introuvable');
+        $this->expectExceptionMessage('is not found');
 
         $controller->execute();
     }
 
     /**
-     * Test d'exécution avec une action inexistante
+     * Test execution with a non-existent action
      */
     public function testExecuteWithNonExistentActionThrowsException(): void
     {
         $controller = new controller('homepage', 'nonExistentAction999');
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('est introuvable dans le contrôleur');
+        $this->expectExceptionMessage('is not found in the controller');
 
         $controller->execute();
     }
 
     /**
-     * Test que les noms de contrôleurs sont correctement formatés
-     * (test indirect via l'existence de la classe)
+     * Test that controller names are correctly formatted
+     * (indirect test via class existence)
      */
     public function testControllerNameFormatting(): void
     {
-        // Le contrôleur 'homepage' doit être transformé en 'homepageController'
+        // The 'homepage' controller must be transformed into 'homepageController'
         $controller = new controller('homepage', 'index');
 
-        // Vérifier que l'objet est bien créé (le formatage est correct)
+        // Check that the object is correctly created (formatting is correct)
         $this->assertInstanceOf(controller::class, $controller);
 
-        // Vérifier que le contrôleur cible existe
+        // Check that the target controller exists
         $this->assertTrue(class_exists('homepageController'));
     }
 
     /**
-     * Test que les espaces dans les noms de contrôleurs sont gérés
+     * Test that spaces in controller names are handled
      */
     public function testControllerNameWithSpacesIsTrimmed(): void
     {
-        // Les espaces doivent être supprimés
+        // Spaces must be removed
         $controller = new controller('  homepage  ', 'index');
 
-        // Si le trim fonctionne, l'instance est créée correctement
+        // If trim works, the instance is created correctly
         $this->assertInstanceOf(controller::class, $controller);
 
-        // Vérifier que le contrôleur cible existe (les espaces ont été supprimés)
+        // Check that the target controller exists (spaces were removed)
         $this->assertTrue(class_exists('homepageController'));
     }
 
     /**
-     * Test que les caractères spéciaux sont échappés (htmlspecialchars)
+     * Test that special characters are escaped (htmlspecialchars)
      */
     public function testControllerNameEscapesSpecialCharacters(): void
     {
-        // htmlspecialchars doit échapper les caractères spéciaux
+        // htmlspecialchars must escape special characters
         $controller = new controller('homepage', 'index');
 
-        // Le nom ne doit pas contenir de HTML malveillant
+        // The name must not contain malicious HTML
         $this->assertInstanceOf(controller::class, $controller);
     }
 
     /**
-     * Test d'une chaîne vide pour le contrôleur (doit utiliser homepage par défaut)
+     * Test an empty string for the controller (should use homepage by default)
      */
     public function testEmptyStringControllerUsesDefault(): void
     {
@@ -219,7 +219,7 @@ class controllerTest extends TestCase
     }
 
     /**
-     * Test d'une chaîne vide pour l'action (doit utiliser login par défaut)
+     * Test an empty string for the action (should use login by default)
      */
     public function testEmptyStringActionUsesDefault(): void
     {
@@ -229,23 +229,23 @@ class controllerTest extends TestCase
     }
 
     /**
-     * Test que l'exécution gère les exceptions lancées par les actions
+     * Test that execution handles exceptions thrown by actions
      */
     public function testExecuteWrapsActionExceptions(): void
     {
-        // Créer un contrôleur de test qui lance une exception
-        // (on teste avec un contrôleur existant qui pourrait lancer une exception)
+        // Create a test controller that throws an exception
+        // (we test with an existing controller that could throw an exception)
 
-        // Note: Ce test nécessiterait un mock ou un contrôleur de test spécifique
-        // Pour l'instant, on vérifie juste que le mécanisme existe
+        // Note: This test would require a mock or a specific test controller
+        // For now, we just verify that the mechanism exists
         $this->assertTrue(
             method_exists('controller', 'execute'),
-            'La méthode execute existe pour gérer les exceptions'
+            'The execute method exists to handle exceptions'
         );
     }
 
     /**
-     * Test que les méthodes privées existent (via Reflection)
+     * Test that private methods exist (via Reflection)
      */
     public function testPrivateMethodsExist(): void
     {
@@ -253,17 +253,17 @@ class controllerTest extends TestCase
 
         $this->assertTrue(
             $reflection->hasMethod('controllerName'),
-            'La méthode privée controllerName doit exister'
+            'The private method controllerName must exist'
         );
 
         $this->assertTrue(
             $reflection->hasMethod('actionName'),
-            'La méthode privée actionName doit exister'
+            'The private method actionName must exist'
         );
     }
 
     /**
-     * Test que les méthodes privées sont bien privées
+     * Test that private methods are actually private
      */
     public function testPrivateMethodsArePrivate(): void
     {
@@ -272,18 +272,18 @@ class controllerTest extends TestCase
         $controllerNameMethod = $reflection->getMethod('controllerName');
         $this->assertTrue(
             $controllerNameMethod->isPrivate(),
-            'La méthode controllerName doit être privée'
+            'The controllerName method must be private'
         );
 
         $actionNameMethod = $reflection->getMethod('actionName');
         $this->assertTrue(
             $actionNameMethod->isPrivate(),
-            'La méthode actionName doit être privée'
+            'The actionName method must be private'
         );
     }
 
     /**
-     * Test que la propriété url est privée et existe
+     * Test that the url property is private and exists
      */
     public function testUrlPropertyIsPrivate(): void
     {
@@ -291,18 +291,18 @@ class controllerTest extends TestCase
 
         $this->assertTrue(
             $reflection->hasProperty('url'),
-            'La propriété url doit exister'
+            'The url property must exist'
         );
 
         $urlProperty = $reflection->getProperty('url');
         $this->assertTrue(
             $urlProperty->isPrivate(),
-            'La propriété url doit être privée'
+            'The url property must be private'
         );
     }
 
     /**
-     * Test que la propriété params est privée et existe
+     * Test that the params property is private and exists
      */
     public function testParamsPropertyIsPrivate(): void
     {
@@ -310,18 +310,18 @@ class controllerTest extends TestCase
 
         $this->assertTrue(
             $reflection->hasProperty('params'),
-            'La propriété params doit exister'
+            'The params property must exist'
         );
 
         $paramsProperty = $reflection->getProperty('params');
         $this->assertTrue(
             $paramsProperty->isPrivate(),
-            'La propriété params doit être privée'
+            'The params property must be private'
         );
     }
 
     /**
-     * Test d'intégration : exécution complète avec plusieurs contrôleurs
+     * Integration test: full execution with multiple controllers
      */
     public function testExecuteWithMultipleControllers(): void
     {
@@ -334,17 +334,17 @@ class controllerTest extends TestCase
         foreach ($controllers as [$controllerName, $action]) {
             $controller = new controller($controllerName, $action);
 
-            // Vérifier que le contrôleur est bien créé
+            // Check that the controller is correctly created
             $this->assertInstanceOf(controller::class, $controller);
 
-            // Note: On ne peut pas vraiment exécuter les contrôleurs dans les tests
-            // car ils font des redirections, manipulent les sessions, etc.
-            // Ce test vérifie juste que les instances sont créées correctement
+            // Note: We cannot really execute the controllers in tests
+            // because they perform redirects, manipulate sessions, etc.
+            // This test only verifies that instances are created correctly
         }
     }
 
     /**
-     * Test que le type de retour de getParams est toujours un tableau
+     * Test that the return type of getParams is always an array
      */
     public function testGetParamsAlwaysReturnsArray(): void
     {
@@ -353,25 +353,25 @@ class controllerTest extends TestCase
         $params1 = $controller->getParams();
         $this->assertIsArray($params1);
 
-        // Vérifier plusieurs fois pour la cohérence
+        // Check multiple times for consistency
         $params2 = $controller->getParams();
         $this->assertIsArray($params2);
-        $this->assertSame($params1, $params2, 'getParams doit retourner la même référence');
+        $this->assertSame($params1, $params2, 'getParams must return the same reference');
     }
 
     /**
-     * Test de robustesse : contrôleur avec des caractères Unicode
+     * Robustness test: controller with Unicode characters
      */
     public function testControllerWithUnicodeCharacters(): void
     {
-        // htmlspecialchars doit gérer les caractères UTF-8
+        // htmlspecialchars must handle UTF-8 characters
         $controller = new controller('homepage', 'index');
 
         $this->assertInstanceOf(controller::class, $controller);
     }
 
     /**
-     * Test du nombre de méthodes publiques (API publique)
+     * Test the number of public methods (public API)
      */
     public function testPublicApiMethodCount(): void
     {

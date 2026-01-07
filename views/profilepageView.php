@@ -27,7 +27,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             </div>
         <?php endif; ?>
 
-        <!-- Section Informations du compte -->
+        <!-- Section Account informations -->
         <div style="margin-top:20px;text-align:center;">
             <div style="font-size:1.1em;font-weight:bold;color:#1360AA;margin-bottom:15px;border-bottom:2px solid #1360AA;padding-bottom:5px;">
                 📋 Informations du compte
@@ -61,13 +61,13 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             </form>
         </div>
 
-        <!-- Section Moyennes par matière -->
+        <!-- Section Averages -->
         <div style="margin-top:40px;text-align:center;">
             <div style="font-size:1.1em;font-weight:bold;color:#1360AA;margin-bottom:15px;border-bottom:2px solid #1360AA;padding-bottom:5px;">
                 📊 Mes moyennes du semestre
             </div>
 
-            <!-- Mathématiques -->
+            <!-- Maths -->
             <form id="edit-maths-form" method="post" action="?controller=profilepage&action=updateProfile" style="margin-bottom:15px;">
                 <div style="display:inline-block;text-align:center;min-width:400px;">
                     <strong>Mathématiques :</strong>
@@ -97,7 +97,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                 </div>
             </form>
 
-            <!-- Réseaux -->
+            <!-- Network -->
             <form id="edit-reseaux-form" method="post" action="?controller=profilepage&action=updateProfile" style="margin-bottom:15px;">
                 <div style="display:inline-block;text-align:center;min-width:400px;">
                     <strong>Réseaux :</strong>
@@ -112,7 +112,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                 </div>
             </form>
 
-            <!-- Base de données -->
+            <!-- Database -->
             <form id="edit-bd-form" method="post" action="?controller=profilepage&action=updateProfile" style="margin-bottom:15px;">
                 <div style="display:inline-block;text-align:center;min-width:400px;">
                     <strong>Base de données :</strong>
@@ -127,7 +127,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                 </div>
             </form>
 
-            <!-- Autre -->
+            <!-- Other -->
             <form id="edit-autre-form" method="post" action="?controller=profilepage&action=updateProfile" style="margin-bottom:15px;">
                 <div style="display:inline-block;text-align:center;min-width:400px;">
                     <strong>Autre :</strong>
@@ -159,7 +159,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
     </div>
 </div>
 
-<!-- Modal de confirmation de suppression -->
+<!-- Deletion confirmation method -->
 <div id="delete-modal">
     <div class="modal-content">
         <h3>Confirmer la suppression</h3>
@@ -172,7 +172,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
 </div>
 
 <script>
-    // JavaScript pour gérer l'édition des champs (username, email, password)
+    // JavaScript to manage field editing (username, email, password)
     document.getElementById('edit-username-btn').addEventListener('click', function() {
         document.getElementById('username-display').style.display = 'none';
         document.getElementById('new_username').style.display = 'inline';
@@ -221,7 +221,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         document.getElementById('cancel-password-btn').style.display = 'none';
     });
 
-    // JavaScript pour gérer l'édition des moyennes
+    // JavaScript to manage the editing of averages
     const subjects = ['maths', 'prog', 'reseaux', 'bd', 'autre'];
 
     subjects.forEach(function(subject) {
@@ -242,7 +242,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         });
     });
 
-    // Modal de suppression
+    // Deletion Modal
     document.getElementById('delete-account-btn').addEventListener('click', function() {
         document.getElementById('delete-modal').style.display = 'flex';
     });

@@ -4,7 +4,7 @@ $dbMessage = $dbUnavailable ? ($A_view['db_status']['message'] . (isset($A_view[
 $disabledAttr = $dbUnavailable ? 'disabled' : '';
 $isLoggedIn = $A_view['isLoggedIn'] ?? false;
 
-// Organiser les offres par catégorie
+// Organize offers by category
 $offersByCategory = [];
 $categories = ['Services', 'Maths', 'Informatique', 'Électronique', 'Mode', 'Maison', 'Sports', 'Alimentation', 'Autre'];
 foreach ($categories as $cat) {
@@ -23,7 +23,7 @@ if (!empty($A_view['offers'])) {
 ?>
 
 <div class="content">
-    <!-- Bouton retour au profil -->
+    <!-- Back to profile button -->
     <div class="marketplace-header">
         <a href="?controller=profilepage&action=index" class="btn-back-profile">
             ← Profil
@@ -46,7 +46,7 @@ if (!empty($A_view['offers'])) {
         </div>
     <?php endif; ?>
 
-    <!-- Barre de recherche -->
+    <!-- Search bar -->
     <div class="market-search-container">
         <input type="text" id="search-input" placeholder="Recherche" class="input-rectangle">
     </div>
@@ -66,7 +66,7 @@ if (!empty($A_view['offers'])) {
                     <div class="products-carousel" data-carousel="<?php echo htmlspecialchars($category, ENT_QUOTES, 'UTF-8'); ?>">
                         <?php if (empty($offers)): ?>
                             <div class="empty-category">
-                                <p>Aucune offre dans cette catégorie</p>
+                                <p>No offers in this category</p>
                             </div>
                         <?php else: ?>
                             <?php foreach ($offers as $offer): ?>
@@ -78,7 +78,7 @@ if (!empty($A_view['offers'])) {
                                     <?php if ($isLoggedIn && $offer['user_id'] == $_SESSION['user_id']): ?>
                                         <form method="post" action="?controller=marketpage&action=deleteOffer" class="product-delete-form" onclick="event.stopPropagation();">
                                             <input type="hidden" name="offer_id" value="<?php echo $offer['id']; ?>">
-                                            <button type="submit" class="btn-delete-small" onclick="return confirm('Supprimer cette offre ?');" <?php echo $disabledAttr; ?>>
+                                            <button type="submit" class="btn-delete-small" onclick="return confirm('Delete this offer?');" <?php echo $disabledAttr; ?>>
                                                 ✕
                                             </button>
                                         </form>
@@ -92,28 +92,28 @@ if (!empty($A_view['offers'])) {
         <?php endforeach; ?>
     </div>
 
-    <!-- Bouton flottant pour ajouter une offre -->
+    <!-- Floating button to add an offer -->
     <?php if ($isLoggedIn): ?>
         <button class="add-offer-btn" id="open-modal-btn" <?php echo $disabledAttr; ?>>+</button>
     <?php endif; ?>
 </div>
 
-<!-- Modal pour créer une offre -->
+<!-- Modal to create an offer -->
 <?php if ($isLoggedIn): ?>
     <div id="offer-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal" id="close-modal">&times;</span>
-            <h2 class="rectangle-title">Créer une offre</h2>
+            <h2 class="rectangle-title">Create an offer</h2>
             <form method="post" action="?controller=marketpage&action=createOffer">
                 <div class="input-rectangles">
-                    <input type="text" name="title" class="input-rectangle" placeholder="Titre de l'offre" required <?php echo $disabledAttr; ?>>
+                    <input type="text" name="title" class="input-rectangle" placeholder="Offer title" required <?php echo $disabledAttr; ?>>
 
-                    <textarea name="description" class="input-rectangle textarea-field" placeholder="Description de l'offre" rows="4" required <?php echo $disabledAttr; ?>></textarea>
+                    <textarea name="description" class="input-rectangle textarea-field" placeholder="Offer description" rows="4" required <?php echo $disabledAttr; ?>></textarea>
 
-                    <input type="number" name="price" class="input-rectangle" placeholder="Prix (points)" step="0.01" min="0" required <?php echo $disabledAttr; ?>>
+                    <input type="number" name="price" class="input-rectangle" placeholder="Price (points)" step="0.01" min="0" required <?php echo $disabledAttr; ?>>
 
                     <select name="category" class="input-rectangle" required <?php echo $disabledAttr; ?>>
-                        <option value="">-- Catégorie --</option>
+                        <option value="">-- Category --</option>
                         <option value="Services">Services</option>
                         <option value="Maths">Maths</option>
                         <option value="Informatique">Informatique</option>
@@ -122,10 +122,10 @@ if (!empty($A_view['offers'])) {
                         <option value="Maison">Maison</option>
                         <option value="Sports">Sports</option>
                         <option value="Alimentation">Alimentation</option>
-                        <option value="Autre">Autre</option>
+                        <option value="Autre">Other</option>
                     </select>
 
-                    <button type="submit" class="input-rectangle btn-submit">Publier l'offre</button>
+                    <button type="submit" class="input-rectangle btn-submit">Publish offer</button>
                 </div>
             </form>
         </div>

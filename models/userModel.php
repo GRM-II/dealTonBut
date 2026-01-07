@@ -7,7 +7,7 @@ final class userModel
     private static ?PDO $connection = null;
 
     /**
-     * Récupère ou crée la connexion PDO unique (pattern Singleton)
+     * Retrieves or creates the single PDO connection (Singleton pattern)
      */
     public static function getConnection(): PDO
     {
@@ -36,7 +36,7 @@ final class userModel
     }
 
     /**
-     * Vérifie le statut de la connexion à la base de données
+     * Checks the database connection status
      *
      * @return array{available: bool, message: string, details?: string}
      */
@@ -45,7 +45,7 @@ final class userModel
         try {
             $pdo = self::getConnection();
 
-            // Vérifie si la table User existe
+            // Checks if the User table exists
             $stmt = $pdo->query("SHOW TABLES LIKE 'Users'");
             $tableExists = $stmt !== false && $stmt->rowCount() > 0;
 
@@ -74,7 +74,7 @@ final class userModel
     }
 
     /**
-     * Récupère un utilisateur par son username
+     * Retrieves a user by their username
      * @return array{id: int|string, username: string, email: string, points_maths: float|string|null, points_programmation: float|string|null, points_reseaux: float|string|null, points_BD: float|string|null, points_autre: float|string|null}|null
      */
     public function getUserByUsername(string $username): ?array
@@ -95,7 +95,7 @@ final class userModel
     }
 
     /**
-     * Récupère l'ID d'un utilisateur par son username
+     * Retrieves a user's ID from their username
      */
     public function getUserIdByUsername(string $username): ?int
     {
@@ -113,7 +113,7 @@ final class userModel
     }
 
     /**
-     * Crée un nouvel utilisateur dans la base de données
+     * Create a new user in the database
      * @return array{success: bool, message: string}
      */
     public function createUser(string $username, string $email, string $password): array
@@ -121,7 +121,7 @@ final class userModel
         try {
             $pdo = self::getConnection();
 
-            // 1. Vérifier si l'email existe déjà
+            // 1. Check if the email address already exists.
             $stmt = $pdo->prepare("SELECT id FROM Users WHERE email = :email LIMIT 1");
             $stmt->execute(['email' => $email]);
 
@@ -132,7 +132,7 @@ final class userModel
                 ];
             }
 
-            // 2. Vérifier si le nom d'utilisateur existe déjà
+            // 2. Check if the username already exists
             $stmt = $pdo->prepare("SELECT id FROM Users WHERE username = :username LIMIT 1");
             $stmt->execute(['username' => $username]);
 
@@ -143,10 +143,10 @@ final class userModel
                 ];
             }
 
-            // 3. Hasher le mot de passe
+            // 3. Hasher the password
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            // 4. Insérer le nouvel utilisateur
+            // 4. Insert the new user
             $stmt = $pdo->prepare(
                 "INSERT INTO Users (username, email, mdp) 
                  VALUES (:username, :email, :password)"
@@ -180,7 +180,7 @@ final class userModel
     }
 
     /**
-     * Recherche un utilisateur par son username OU son email
+     * Search for a user by their username OR their email
      * @return array{id: int|string, username: string, email: string, mdp: string}|null
      */
     public function findUserByLogin(string $login): ?array
@@ -214,7 +214,7 @@ final class userModel
     }
 
     /**
-     * Authentifie un utilisateur
+     * Authenticates a user
      * @return array{success: bool, message: string, user?: array{id: int|string, username: string, email: string}}
      */
     public function authenticate(string $login, string $password): array
@@ -225,14 +225,14 @@ final class userModel
             return ['success' => false, 'message' => 'Identifiants manquants.'];
         }
 
-        // Recherche l'utilisateur
+        // Search for user
         $user = $this->findUserByLogin($login);
 
         if (!$user) {
             return ['success' => false, 'message' => 'Identifiant ou mot de passe incorrect.'];
         }
 
-        // Vérifie le mot de passe
+        // Check the password
         $passwordMatch = password_verify($password, $user['mdp']);
 
         if (!$passwordMatch) {
@@ -251,7 +251,7 @@ final class userModel
     }
 
     /**
-     * Met à jour le mot de passe
+     * Updates the password
      */
     public static function updatePassword(int $userId, string $hashedPassword): bool
     {
@@ -275,7 +275,7 @@ final class userModel
     }
 
     /**
-     * Supprime un utilisateur
+     * Deletes the user
      */
     public static function deleteUser(int $userId): bool
     {
@@ -294,7 +294,7 @@ final class userModel
     }
 
     /**
-     * Met à jour le nom d'utilisateur
+     * Updates the username
      * @return array{success: bool, message: string}
      */
     public function updateUsername(string $currentUsername, string $newUsername): array
@@ -331,7 +331,7 @@ final class userModel
     }
 
     /**
-     * Met à jour l'email
+     * Updates the email
      * @return array{success: bool, message: string}
      */
     public function updateEmail(string $username, string $newEmail): array
@@ -367,7 +367,7 @@ final class userModel
         }
     }
     /**
-     * Met à jour les moyennes de l'utilisateur
+     * Updates the averages
      * @param array<string, float|int> $gradesData
      * @return array{success: bool, message: string}
      */
@@ -377,7 +377,7 @@ final class userModel
             return ['success' => false, 'message' => 'Aucune moyenne à mettre à jour.'];
         }
 
-        // Valider que toutes les valeurs sont entre 0 et 20
+        // Checks that all the values are between 0 and 20
         foreach ($gradesData as $field => $value) {
             if ($value < 0 || $value > 20) {
                 return [
@@ -390,7 +390,7 @@ final class userModel
         try {
             $pdo = self::getConnection();
 
-            // Construire dynamiquement la requête UPDATE
+            // Dynamically construct the UPDATE query
             $fields = [];
             $params = [':userId' => $userId];
 

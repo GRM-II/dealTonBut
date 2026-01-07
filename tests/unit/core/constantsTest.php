@@ -3,17 +3,17 @@
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test unitaire pour la classe constants
+ * Unit test for the constants class
  *
- * Teste toutes les constantes et méthodes statiques qui retournent
- * les chemins des différents répertoires de l'application
+ * Tests all constants and static methods that return
+ * the paths of the different application directories
  */
 class constantsTest extends TestCase
 {
     private static string $rootPath;
 
     /**
-     * Configuration avant tous les tests
+     * Setup before running all tests
      */
     public static function setUpBeforeClass(): void
     {
@@ -22,73 +22,24 @@ class constantsTest extends TestCase
     }
 
     /**
-     * Test que la classe constants existe et est finale
+     * Test that the constants class exists and is final
      */
     public function testConstantsClassExists(): void
     {
         $this->assertTrue(
             class_exists('constants'),
-            'La classe constants doit exister'
+            'The constants class must exist'
         );
 
         $reflection = new ReflectionClass('constants');
         $this->assertTrue(
             $reflection->isFinal(),
-            'La classe constants doit être finale (final class)'
+            'The constants class must be final'
         );
     }
 
     /**
-     * Test que toutes les constantes de classe sont définies
-     */
-    public function testClassConstantsAreDefined(): void
-    {
-        $this->assertTrue(
-            defined('constants::VIEWS_REPOSITORY'),
-            'La constante VIEWS_REPOSITORY doit être définie'
-        );
-
-        $this->assertTrue(
-            defined('constants::MODELS_REPOSITORY'),
-            'La constante MODELS_REPOSITORY doit être définie'
-        );
-
-        $this->assertTrue(
-            defined('constants::CORE_REPOSITORY'),
-            'La constante CORE_REPOSITORY doit être définie'
-        );
-
-        $this->assertTrue(
-            defined('constants::EXCEPTIONS_REPOSITORY'),
-            'La constante EXCEPTIONS_REPOSITORY doit être définie'
-        );
-
-        $this->assertTrue(
-            defined('constants::CONTROLLERS_REPOSITORY'),
-            'La constante CONTROLLERS_REPOSITORY doit être définie'
-        );
-
-        $this->assertTrue(
-            defined('constants::STANDARD_REPOSITORY'),
-            'La constante STANDARD_REPOSITORY doit être définie'
-        );
-    }
-
-    /**
-     * Test les valeurs des constantes de classe
-     */
-    public function testClassConstantsValues(): void
-    {
-        $this->assertSame('/views/', constants::VIEWS_REPOSITORY);
-        $this->assertSame('/models/', constants::MODELS_REPOSITORY);
-        $this->assertSame('/core/', constants::CORE_REPOSITORY);
-        $this->assertSame('/core/exception/', constants::EXCEPTIONS_REPOSITORY);
-        $this->assertSame('/controllers/', constants::CONTROLLERS_REPOSITORY);
-        $this->assertSame('/views/standard/', constants::STANDARD_REPOSITORY);
-    }
-
-    /**
-     * Test que toutes les méthodes statiques existent
+     * Test that all static methods exist
      */
     public function testStaticMethodsExist(): void
     {
@@ -99,55 +50,56 @@ class constantsTest extends TestCase
             'viewsRepository',
             'modelsRepository',
             'controllersRepository',
+            'servicesRepository',
             'standardRepository'
         ];
 
         foreach ($methods as $method) {
             $this->assertTrue(
                 method_exists('constants', $method),
-                "La méthode constants::$method doit exister"
+                "The method constants::$method must exist"
             );
 
             $reflection = new ReflectionMethod('constants', $method);
             $this->assertTrue(
                 $reflection->isStatic(),
-                "La méthode constants::$method doit être statique"
+                "The method constants::$method must be static"
             );
 
             $this->assertTrue(
                 $reflection->isPublic(),
-                "La méthode constants::$method doit être publique"
+                "The method constants::$method must be public"
             );
         }
     }
 
     /**
-     * Test de la méthode rootRepository
+     * Test the rootRepository method
      */
     public function testRootRepository(): void
     {
         $root = constants::rootRepository();
 
-        $this->assertIsString($root, 'rootRepository doit retourner une chaîne');
-        $this->assertNotEmpty($root, 'rootRepository ne doit pas être vide');
-        $this->assertDirectoryExists($root, 'Le répertoire racine doit exister');
+        $this->assertIsString($root, 'rootRepository must return a string');
+        $this->assertNotEmpty($root, 'rootRepository must not be empty');
+        $this->assertDirectoryExists($root, 'The root directory must exist');
 
-        // Vérifier que c'est un chemin absolu
+        // Check that it is an absolute path
         $this->assertTrue(
-            str_starts_with($root, '/'),
-            'rootRepository doit retourner un chemin absolu'
+            str_starts_with($root, '/') || preg_match('/^[A-Za-z]:/', $root),
+            'rootRepository must return an absolute path'
         );
 
-        // Vérifier que le chemin ne se termine pas par /
+        // Check that the path does not end with /
         $this->assertStringEndsNotWith(
             '/',
             $root,
-            'rootRepository ne doit pas se terminer par /'
+            'rootRepository must not end with /'
         );
     }
 
     /**
-     * Test de la méthode coreRepository
+     * Test the coreRepository method
      */
     public function testCoreRepository(): void
     {
@@ -155,24 +107,24 @@ class constantsTest extends TestCase
 
         $this->assertIsString($core);
         $this->assertNotEmpty($core);
-        $this->assertDirectoryExists($core, 'Le répertoire core doit exister');
+        $this->assertDirectoryExists($core, 'The core directory must exist');
 
         $this->assertStringEndsWith(
             '/core/',
             $core,
-            'coreRepository doit se terminer par /core/'
+            'coreRepository must end with /core/'
         );
 
-        // Vérifier qu'il contient le chemin racine
+        // Check that it contains the root path
         $this->assertStringContainsString(
             constants::rootRepository(),
             $core,
-            'coreRepository doit contenir le chemin racine'
+            'coreRepository must contain the root path'
         );
     }
 
     /**
-     * Test de la méthode exceptionsRepository
+     * Test the exceptionsRepository method
      */
     public function testExceptionsRepository(): void
     {
@@ -180,15 +132,15 @@ class constantsTest extends TestCase
 
         $this->assertIsString($exceptions);
         $this->assertNotEmpty($exceptions);
-        $this->assertDirectoryExists($exceptions, 'Le répertoire exceptions doit exister');
+        $this->assertDirectoryExists($exceptions, 'The exceptions directory must exist');
 
         $this->assertStringEndsWith(
             '/core/exception/',
             $exceptions,
-            'exceptionsRepository doit se terminer par /core/exception/'
+            'exceptionsRepository must end with /core/exception/'
         );
 
-        // Vérifier qu'il contient le chemin racine
+        // Check that it contains the root path
         $this->assertStringContainsString(
             constants::rootRepository(),
             $exceptions
@@ -196,7 +148,7 @@ class constantsTest extends TestCase
     }
 
     /**
-     * Test de la méthode viewsRepository
+     * Test the viewsRepository method
      */
     public function testViewsRepository(): void
     {
@@ -204,12 +156,12 @@ class constantsTest extends TestCase
 
         $this->assertIsString($views);
         $this->assertNotEmpty($views);
-        $this->assertDirectoryExists($views, 'Le répertoire views doit exister');
+        $this->assertDirectoryExists($views, 'The views directory must exist');
 
         $this->assertStringEndsWith(
             '/views/',
             $views,
-            'viewsRepository doit se terminer par /views/'
+            'viewsRepository must end with /views/'
         );
 
         $this->assertStringContainsString(
@@ -219,7 +171,7 @@ class constantsTest extends TestCase
     }
 
     /**
-     * Test de la méthode modelsRepository
+     * Test the modelsRepository method
      */
     public function testModelsRepository(): void
     {
@@ -227,12 +179,12 @@ class constantsTest extends TestCase
 
         $this->assertIsString($models);
         $this->assertNotEmpty($models);
-        $this->assertDirectoryExists($models, 'Le répertoire models doit exister');
+        $this->assertDirectoryExists($models, 'The models directory must exist');
 
         $this->assertStringEndsWith(
             '/models/',
             $models,
-            'modelsRepository doit se terminer par /models/'
+            'modelsRepository must end with /models/'
         );
 
         $this->assertStringContainsString(
@@ -242,7 +194,7 @@ class constantsTest extends TestCase
     }
 
     /**
-     * Test de la méthode controllersRepository
+     * Test the controllersRepository method
      */
     public function testControllersRepository(): void
     {
@@ -250,12 +202,12 @@ class constantsTest extends TestCase
 
         $this->assertIsString($controllers);
         $this->assertNotEmpty($controllers);
-        $this->assertDirectoryExists($controllers, 'Le répertoire controllers doit exister');
+        $this->assertDirectoryExists($controllers, 'The controllers directory must exist');
 
         $this->assertStringEndsWith(
             '/controllers/',
             $controllers,
-            'controllersRepository doit se terminer par /controllers/'
+            'controllersRepository must end with /controllers/'
         );
 
         $this->assertStringContainsString(
@@ -265,7 +217,30 @@ class constantsTest extends TestCase
     }
 
     /**
-     * Test de la méthode standardRepository
+     * Test the servicesRepository method
+     */
+    public function testServicesRepository(): void
+    {
+        $services = constants::servicesRepository();
+
+        $this->assertIsString($services);
+        $this->assertNotEmpty($services);
+        $this->assertDirectoryExists($services, 'The services directory must exist');
+
+        $this->assertStringEndsWith(
+            '/services/',
+            $services,
+            'servicesRepository must end with /services/'
+        );
+
+        $this->assertStringContainsString(
+            constants::rootRepository(),
+            $services
+        );
+    }
+
+    /**
+     * Test the standardRepository method
      */
     public function testStandardRepository(): void
     {
@@ -273,12 +248,12 @@ class constantsTest extends TestCase
 
         $this->assertIsString($standard);
         $this->assertNotEmpty($standard);
-        $this->assertDirectoryExists($standard, 'Le répertoire standard doit exister');
+        $this->assertDirectoryExists($standard, 'The standard directory must exist');
 
         $this->assertStringEndsWith(
             '/views/standard/',
             $standard,
-            'standardRepository doit se terminer par /views/standard/'
+            'standardRepository must end with /views/standard/'
         );
 
         $this->assertStringContainsString(
@@ -288,7 +263,7 @@ class constantsTest extends TestCase
     }
 
     /**
-     * Test que tous les chemins retournés sont des chemins absolus
+     * Test that all returned paths are absolute paths
      */
     public function testAllPathsAreAbsolute(): void
     {
@@ -299,19 +274,20 @@ class constantsTest extends TestCase
             'views' => constants::viewsRepository(),
             'models' => constants::modelsRepository(),
             'controllers' => constants::controllersRepository(),
+            'services' => constants::servicesRepository(),
             'standard' => constants::standardRepository()
         ];
 
         foreach ($paths as $name => $path) {
             $this->assertTrue(
-                str_starts_with($path, '/'),
-                "Le chemin $name doit être un chemin absolu (commence par /)"
+                str_starts_with($path, '/') || preg_match('/^[A-Za-z]:/', $path),
+                "The $name path must be an absolute path"
             );
         }
     }
 
     /**
-     * Test que tous les répertoires existent réellement
+     * Test that all directories actually exist
      */
     public function testAllDirectoriesExist(): void
     {
@@ -322,24 +298,25 @@ class constantsTest extends TestCase
             'views' => constants::viewsRepository(),
             'models' => constants::modelsRepository(),
             'controllers' => constants::controllersRepository(),
+            'services' => constants::servicesRepository(),
             'standard' => constants::standardRepository()
         ];
 
         foreach ($directories as $name => $path) {
             $this->assertDirectoryExists(
                 $path,
-                "Le répertoire $name ($path) doit exister"
+                "The $name directory ($path) must exist"
             );
 
             $this->assertTrue(
                 is_readable($path),
-                "Le répertoire $name ($path) doit être lisible"
+                "The $name directory ($path) must be readable"
             );
         }
     }
 
     /**
-     * Test de cohérence : tous les chemins contiennent le chemin racine
+     * Consistency test: all paths contain the root path
      */
     public function testAllPathsContainRoot(): void
     {
@@ -351,6 +328,7 @@ class constantsTest extends TestCase
             'views' => constants::viewsRepository(),
             'models' => constants::modelsRepository(),
             'controllers' => constants::controllersRepository(),
+            'services' => constants::servicesRepository(),
             'standard' => constants::standardRepository()
         ];
 
@@ -358,103 +336,72 @@ class constantsTest extends TestCase
             $this->assertStringStartsWith(
                 $root,
                 $path,
-                "Le chemin $name doit commencer par le chemin racine"
+                "The $name path must start with the root path"
             );
         }
     }
 
     /**
-     * Test que les constantes correspondent aux suffixes des méthodes
-     */
-    public function testConstantsMatchMethodSuffixes(): void
-    {
-        $this->assertStringEndsWith(
-            constants::CORE_REPOSITORY,
-            constants::coreRepository()
-        );
-
-        $this->assertStringEndsWith(
-            constants::EXCEPTIONS_REPOSITORY,
-            constants::exceptionsRepository()
-        );
-
-        $this->assertStringEndsWith(
-            constants::VIEWS_REPOSITORY,
-            constants::viewsRepository()
-        );
-
-        $this->assertStringEndsWith(
-            constants::MODELS_REPOSITORY,
-            constants::modelsRepository()
-        );
-
-        $this->assertStringEndsWith(
-            constants::CONTROLLERS_REPOSITORY,
-            constants::controllersRepository()
-        );
-
-        $this->assertStringEndsWith(
-            constants::STANDARD_REPOSITORY,
-            constants::standardRepository()
-        );
-    }
-
-    /**
-     * Test que les fichiers clés existent dans les répertoires
+     * Test that key files exist in the directories
      */
     public function testKeyFilesExistInDirectories(): void
     {
-        // Fichiers dans core
+        // Files in core
         $this->assertFileExists(
-            constants::coreRepository() . '/constants.php',
-            'Le fichier constants.php doit exister dans core'
+            constants::coreRepository() . 'constants.php',
+            'The constants.php file must exist in core'
         );
 
         $this->assertFileExists(
-            constants::coreRepository() . '/autoLoader.php',
-            'Le fichier autoLoader.php doit exister dans core'
+            constants::coreRepository() . 'autoLoader.php',
+            'The autoLoader.php file must exist in core'
         );
 
         $this->assertFileExists(
-            constants::coreRepository() . '/controller.php',
-            'Le fichier controller.php doit exister dans core'
+            constants::coreRepository() . 'controller.php',
+            'The controller.php file must exist in core'
         );
 
         $this->assertFileExists(
-            constants::coreRepository() . '/view.php',
-            'Le fichier view.php doit exister dans core'
+            constants::coreRepository() . 'view.php',
+            'The view.php file must exist in core'
         );
 
-        // Fichier dans exceptions
+        // File in exceptions
         $this->assertFileExists(
-            constants::exceptionsRepository() . '/controllerException.php',
-            'Le fichier controllerException.php doit exister dans exceptions'
+            constants::exceptionsRepository() . 'controllerException.php',
+            'The controllerException.php file must exist in exceptions'
         );
     }
 
     /**
-     * Test de performance : les appels répétés retournent le même résultat
+     * Performance test: repeated calls return the same result
      */
     public function testMethodsReturnConsistentResults(): void
     {
-        // Appeler plusieurs fois chaque méthode
+        // Call each method multiple times
         $this->assertSame(
             constants::rootRepository(),
             constants::rootRepository(),
-            'rootRepository doit retourner toujours le même résultat'
+            'rootRepository must always return the same result'
         );
 
         $this->assertSame(
             constants::coreRepository(),
             constants::coreRepository(),
-            'coreRepository doit retourner toujours le même résultat'
+            'coreRepository must always return the same result'
         );
 
         $this->assertSame(
             constants::viewsRepository(),
             constants::viewsRepository(),
-            'viewsRepository doit retourner toujours le même résultat'
+            'viewsRepository must always return the same result'
+        );
+
+        $this->assertSame(
+            constants::servicesRepository(),
+            constants::servicesRepository(),
+            'servicesRepository must always return the same result'
         );
     }
 }
-

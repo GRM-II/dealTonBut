@@ -15,7 +15,7 @@ $offer = $A_view['offer'];
 </head>
 <body>
 <div class="content">
-    <!-- Header avec navigation -->
+    <!-- Header with navigation -->
     <div class="marketplace-header">
         <div class="header-left">
             <a href="?controller=profilepage&action=index" class="icon-button">
