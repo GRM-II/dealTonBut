@@ -95,7 +95,7 @@ final class offerModel
         }
     }
 
-    public static function createOffer(int $user_id, string $title, string $description, int $price, string $category): array {
+    public static function createOffer(int $user_id, string $title, string $description, float $price, string $category): array {
         try {
             $pdo = self::getConnection();
 
@@ -110,19 +110,17 @@ final class offerModel
             ]);
 
             if ($result) {
-                return [
-                    'success' => true,
-                    'message' => 'Offre créée avec succès !'
+                return ['success' => true,
+                        'message' => 'Offre créée avec succès !'
                 ];
             } else {
-                return [
-                    'success' => false,
-                    'message' => 'Erreur lors de la création de l\'offre.'
+                return ['success' => false,
+                        'message' => 'Erreur lors de la création de l\'offre.'
                 ];
             }
 
         } catch (PDOException $e) {
-            error_log("Erreur getAllOffers : " . $e->getMessage());
+            error_log("Erreur createOffer : " . $e->getMessage());
             return [];
         }
     }
@@ -130,7 +128,7 @@ final class offerModel
     public static function deleteOffer(int $id, int $user_id): array {
         try {
             $pdo = self::getConnection();
-            $sql = "DELETE FROM Offers WHERE id = :id and  user_id = :user_id";
+            $sql = "DELETE FROM Offers WHERE id = :id AND  user_id = :user_id";
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(':id', $id, PDO::PARAM_INT);
             $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
@@ -150,7 +148,7 @@ final class offerModel
             }
 
         } catch (PDOException $e) {
-            error_log("Erreur deleteUser : " . $e->getMessage());
+            error_log("Erreur deleteOffer : " . $e->getMessage());
             return [];
         }
     }
