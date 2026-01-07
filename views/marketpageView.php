@@ -23,35 +23,73 @@ if (!empty($A_view['offers'])) {
 ?>
 
 <div class="content">
-    <!-- Bouton retour au profil -->
-    <div class="marketplace-header">
-        <a href="?controller=profilepage&action=index" class="btn-back-profile">
-            ← Profil
+    <!-- Boutons de navigation -->
+    <div class="nav-buttons market-nav-buttons">
+        <a href="?controller=tradeplace&action=index" class="nav-btn nav-btn-trade" title="Trade Place">
+            <img id="trade-nav-icon" src="/public/assets/img/Trade_Day.svg" alt="Trade Place" class="nav-icon">
         </a>
+        <a href="?controller=profilepage&action=index" class="nav-btn nav-btn-profile" title="Profil">
+            <img id="home-nav-icon" src="/public/assets/img/Home_Day.svg" alt="Profil" class="nav-icon">
+        </a>
+        <button id="scroll-to-top-btn" class="nav-btn scroll-to-top-btn" title="Remonter en haut">
+            <img src="/public/assets/img/placeholder-meme.jpeg" alt="Remonter" class="nav-icon">
+        </button>
     </div>
 
-    <div class="marketplace-title-container">
-        <h1 class="marketplace-title">Market place</h1>
-    </div>
-
-    <?php if ($dbUnavailable): ?>
-        <div class="dbunavailable">
-            <?php echo htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8'); ?>
+    <div class="marketplace-wrapper">
+        <div class="marketplace-title-container">
+            <h1 class="marketplace-title">Market place</h1>
         </div>
-    <?php endif; ?>
 
-    <?php if (isset($A_view['flash'])): ?>
-        <div class="<?php echo $A_view['flash']['success'] ? 'flash-success' : 'flash-error'; ?>">
-            <?php echo htmlspecialchars($A_view['flash']['message'], ENT_QUOTES, 'UTF-8'); ?>
+        <?php if ($dbUnavailable): ?>
+            <div class="dbunavailable">
+                <?php echo htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8'); ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($A_view['flash'])): ?>
+            <div class="<?php echo $A_view['flash']['success'] ? 'flash-success' : 'flash-error'; ?>">
+                <?php echo htmlspecialchars($A_view['flash']['message'], ENT_QUOTES, 'UTF-8'); ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Barre de recherche -->
+        <div class="market-search-container">
+            <input type="text" id="search-input" placeholder="Recherche" class="input-rectangle">
         </div>
-    <?php endif; ?>
 
-    <!-- Barre de recherche -->
-    <div class="market-search-container">
-        <input type="text" id="search-input" placeholder="Recherche" class="input-rectangle">
-    </div>
+        <!-- Conteneur avec sidebar et contenu principal -->
+        <div class="market-layout">
+            <!-- Barre latérale -->
+            <aside class="market-sidebar">
+                <h3 class="sidebar-title">Filtres</h3>
+                <div class="sidebar-section">
+                    <h4>Catégories</h4>
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox" name="category" value="all" checked>
+                            <span>Toutes</span>
+                        </label>
+                        <?php foreach ($categories as $cat): ?>
+                        <label class="filter-option">
+                            <input type="checkbox" name="category" value="<?php echo htmlspecialchars($cat, ENT_QUOTES, 'UTF-8'); ?>">
+                            <span><?php echo htmlspecialchars($cat, ENT_QUOTES, 'UTF-8'); ?></span>
+                        </label>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <div class="sidebar-section">
+                    <h4>Prix</h4>
+                    <div class="price-range">
+                        <input type="number" placeholder="Min" class="price-input">
+                        <span>-</span>
+                        <input type="number" placeholder="Max" class="price-input">
+                    </div>
+                </div>
+            </aside>
 
-    <div class="market-container">
+            <!-- Contenu principal -->
+            <div class="market-container">
         <?php foreach ($offersByCategory as $category => $offers): ?>
             <div class="category-section">
                 <div class="category-header-row">
@@ -90,12 +128,14 @@ if (!empty($A_view['offers'])) {
                 </div>
             </div>
         <?php endforeach; ?>
-    </div>
+            </div>
+        </div>
 
-    <!-- Bouton flottant pour ajouter une offre -->
-    <?php if ($isLoggedIn): ?>
-        <button class="add-offer-btn" id="open-modal-btn" <?php echo $disabledAttr; ?>>+</button>
-    <?php endif; ?>
+        <!-- Bouton flottant pour ajouter une offre -->
+        <?php if ($isLoggedIn): ?>
+            <button class="add-offer-btn" id="open-modal-btn" <?php echo $disabledAttr; ?>>+</button>
+        <?php endif; ?>
+    </div>
 </div>
 
 <!-- Modal pour créer une offre -->
@@ -114,14 +154,14 @@ if (!empty($A_view['offers'])) {
 
                     <select name="category" class="input-rectangle" required <?php echo $disabledAttr; ?>>
                         <option value="">-- Catégorie --</option>
-                        <option value="Services">Services</option>
+                        <option value="Dev">Dev</option>
                         <option value="Maths">Maths</option>
-                        <option value="Informatique">Informatique</option>
-                        <option value="Électronique">Électronique</option>
-                        <option value="Mode">Mode</option>
-                        <option value="Maison">Maison</option>
-                        <option value="Sports">Sports</option>
-                        <option value="Alimentation">Alimentation</option>
+                        <option value="Algo">Algo</option>
+                        <option value="Web">Web</option>
+                        <option value="Réseau">Réseau</option>
+                        <option value="IA">IA</option>
+                        <option value=""></option>
+                        <option value=""></option>
                         <option value="Autre">Autre</option>
                     </select>
 

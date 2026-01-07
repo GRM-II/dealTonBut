@@ -45,7 +45,6 @@ function toggleTheme() {
 }
 
 function initRegisterForm(dbUnavailable, dbMessage) {
-    applySavedTheme();
     const form = document.getElementById('register-form');
     if (!form) return;
 
@@ -77,6 +76,12 @@ window.addEventListener('DOMContentLoaded', function() {
     } else if (document.getElementById('open-modal-btn')) {
         // Page marketplace détectée donc initialiser
         initMarketplace();
+    } else if (document.getElementById('register-form')) {
+        // Page register détectée donc initialiser
+        const dbUnavailableElem = document.querySelector('.db-unavailable-message');
+        const dbUnavailable = dbUnavailableElem !== null;
+        const dbMessage = dbUnavailable ? dbUnavailableElem.textContent.trim() : '';
+        initRegisterForm(dbUnavailable, dbMessage);
     }
 
     // Initialiser la modale de mot de passe oublié
@@ -142,7 +147,6 @@ function initForgotPasswordModal() {
 
 // Marketplace: Gestion du modal et du carrousel
 function initMarketplace() {
-    applySavedTheme();
 
     // Gestion du modal
     const modal = document.getElementById('offer-modal');
@@ -202,6 +206,46 @@ function initMarketplace() {
                 } else {
                     card.style.display = 'none';
                 }
+            });
+        });
+    }
+
+    // Filtrage par catégorie via la sidebar
+    const categoryCheckboxes = document.querySelectorAll('.filter-option input[type="checkbox"]');
+    const allCheckbox = document.querySelector('.filter-option input[value="all"]');
+
+    if (categoryCheckboxes.length > 0) {
+        categoryCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                // Si "Toutes" est coché, décocher les autres
+                if (this.value === 'all' && this.checked) {
+                    categoryCheckboxes.forEach(cb => {
+                        if (cb.value !== 'all') cb.checked = false;
+                    });
+                } else if (this.value !== 'all' && this.checked) {
+                    // Si une catégorie spécifique est cochée, décocher "Toutes"
+                    if (allCheckbox) allCheckbox.checked = false;
+                }
+
+                // Récupérer les catégories sélectionnées
+                const selectedCategories = Array.from(categoryCheckboxes)
+                    .filter(cb => cb.checked && cb.value !== 'all')
+                    .map(cb => cb.value);
+
+                // Filtrer les sections de catégories
+                document.querySelectorAll('.category-section').forEach(section => {
+                    const categoryName = section.querySelector('.category-name').textContent;
+
+                    if (allCheckbox && allCheckbox.checked || selectedCategories.length === 0) {
+                        // Afficher toutes les catégories
+                        section.style.display = 'block';
+                    } else if (selectedCategories.includes(categoryName)) {
+                        // Afficher seulement les catégories sélectionnées
+                        section.style.display = 'block';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
             });
         });
     }

@@ -16,7 +16,7 @@
                         <label class="login-text" for="username">Identifiant</label>
                         <input type="text"
                                id="username"
-                               placeholder="Nom d'utilisateur ou adresse mail"
+                               placeholder="Nom d'utilisateur ou mail"
                                name="login"
                                class="input-rectangle"
                                required>

@@ -60,12 +60,3 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         </div>
     </div>
 </main>
-
-<script>
-    window.addEventListener('DOMContentLoaded', function() {
-        initRegisterForm(
-                <?php echo $dbUnavailable ? 'true' : 'false'; ?>,
-                <?php echo json_encode($dbMessage, JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT); ?>
-        );
-    });
-</script>

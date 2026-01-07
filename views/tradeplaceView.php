@@ -11,7 +11,7 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
             <a href="?controller=marketpage&action=index" class="nav-btn nav-btn-market" title="Marché">
                 <img id="market-nav-icon" src="/public/assets/img/Market_Day.svg" alt="Marché" class="nav-icon">
             </a>
-            <a href="?controller=homepage&action=index" class="nav-btn nav-btn-home" title="Accueil">
+            <a href="?controller=profilepage&action=index" class="nav-btn nav-btn-profile" title="Accueil">
                 <img id="home-nav-icon" src="/public/assets/img/Home_Day.svg" alt="Accueil" class="nav-icon">
             </a>
             <button id="scroll-to-top-btn" class="nav-btn scroll-to-top-btn" title="Remonter en haut">
@@ -19,7 +19,7 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
             </button>
         </div>
 
-    <h1 class="trade-place-title">Trade place</h1>
+    <h1 class="page-title">Trade place</h1>
 
     <?php if ($dbUnavailable): ?>
         <div class="flash-message flash-warning">

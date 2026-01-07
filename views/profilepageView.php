@@ -6,7 +6,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
 
 <div class="content">
     <div class="profile-wrapper">
-        <div class="nav-buttons profile-nav-buttons">
+        <div class="nav-buttons default-nav-buttons">
             <a href="?controller=marketpage&action=index" class="nav-btn nav-btn-market" title="Marché">
                 <img id="market-nav-icon" src="/public/assets/img/Market_Day.svg" alt="Marché" class="nav-icon">
             </a>
