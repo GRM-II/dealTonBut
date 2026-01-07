@@ -1,8 +1,25 @@
 <?php
 
+/**
+ * Trade Place Controller
+ *
+ * Handles the trade place page where users can view and interact with offers.
+ * Manages offer selection, display, and provides database status information.
+ *
+ */
 class tradeplaceController
 {
-    public function index()
+    /**
+     * Displays the trade place page with offers
+     *
+     * Initializes the session if needed, checks user authentication status,
+     * retrieves all available offers and database status. Handles offer selection
+     * from GET parameters or defaults to the first available offer. Displays the
+     * trade place view with flash messages if any.
+     *
+     * @return void
+     */
+    public function index(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
@@ -40,7 +57,16 @@ class tradeplaceController
         ]);
     }
 
-    private function getDbStatus()
+    /**
+     * Fetches the database connection status
+     *
+     * Retrieves the current database connection status using the user model.
+     * Automatically loads the user model if not already loaded. Returns a default
+     * success status if the getDbStatus method is not available.
+     *
+     * @return array{available: bool, message: string, details?: string} Database status information
+     */
+    private function getDbStatus(): array
     {
         if (!class_exists('userModel', false)) {
             require_once 'models/userModel.php';
@@ -52,7 +78,15 @@ class tradeplaceController
         return ['available' => true, 'message' => ''];
     }
 
-    private function getOffers()
+    /**
+     * Fetches all available offers from the database
+     *
+     * Retrieves all marketplace offers using the offer model.
+     * Automatically loads the offer model if not already loaded.
+     *
+     * @return array<int, array<string, mixed>> Array of offers with their details
+     */
+    private function getOffers(): array
     {
         if (!class_exists('offerModel', false)) {
             require_once 'models/offerModel.php';
@@ -60,9 +94,16 @@ class tradeplaceController
         return offerModel::getAllOffers();
     }
 
+    /**
+     * Returns controller parameters
+     *
+     * Provides an empty array of parameters for controller configuration.
+     * This method can be used by the routing system or for future parameter handling.
+     *
+     * @return array<string, mixed> Empty array of parameters
+     */
     public function getParams(): array
     {
         return [];
     }
 }
-

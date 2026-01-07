@@ -1,6 +1,17 @@
 <?php
+
+/**
+ * Homepage Controller
+ *
+ * Handles homepage-related actions including login display, index routing,
+ * and MySQL diagnostics functionality.
+ */
 final class homepageController
 {
+    /**
+     * Displays the login page with database status
+     * @return void
+     */
     public function login(): void
     {
         $model = new userModel();
@@ -8,13 +19,20 @@ final class homepageController
         view::show("homepageView", ['db_status' => $status]);
     }
 
-    public function index(): void  // Adds the index method
+    /**
+     * Default index action
+     * @return void
+     */
+    public function index(): void
     {
-        $this->login();  // Redirects towards to login or shows the  homepage
+        $this->login();
     }
 
-    // Simple diagnostic page to help activate MySQL drivers
-    public function diagnostics(): void  // Adds the return type
+    /**
+     * Displays MySQL diagnostics information
+     * @return void
+     */
+    public function diagnostics(): void
     {
         $pdoAvailable = class_exists('PDO');
         $pdoDrivers = $pdoAvailable ? implode(', ', \PDO::getAvailableDrivers()) : 'PDO indisponible';

@@ -1,12 +1,42 @@
 <?php
 
+/**
+ * User Controller
+ *
+ * Handles all user-related actions including authentication (login/logout),
+ * registration, password reset functionality, and session management.
+ * Manages user authentication flow, password recovery, and account security.
+ *
+ */
 final class userController
 {
+    /**
+     * User model instance for database operations
+     *
+     * @var userModel
+     */
     private userModel $userModel;
+
+    /**
+     * Password reset model instance for token management
+     *
+     * @var passwordResetModel
+     */
     private passwordResetModel $passwordResetModel;
+
+    /**
+     * Email service instance for sending emails
+     *
+     * @var emailService
+     */
     private emailService $emailService;
 
-    // Constructor to ensure that the session is started and the DB connection is established
+    /**
+     * Constructor
+     *
+     * Ensures that the session is started and initializes required models
+     * (user model, password reset model, and email service) for controller operations.
+     */
     public function __construct()
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -20,9 +50,11 @@ final class userController
     }
 
     /**
-     * Gets the database status
+     * Gets the database connection status
      *
-     * @return array{available: bool, message: string, details?: string}
+     * Delegates to the userModel to retrieve the current state of the database connection.
+     *
+     * @return array{available: bool, message: string, details?: string} Database status information
      */
     private function getDbStatus(): array
     {
@@ -30,12 +62,31 @@ final class userController
         return $this->userModel->getDbStatus();
     }
 
+    /**
+     * Displays the homepage
+     *
+     * Shows the main homepage view with the current database status.
+     *
+     * @return void
+     */
     public function homepage(): void
     {
         $status = $this->getDbStatus();
         view::show('homepageView', ['db_status' => $status]);
     }
 
+    /**
+     * Handles user login functionality
+     *
+     * For GET requests: Displays the login form with any flash messages.
+     * For POST requests: Authenticates the user credentials, regenerates session ID
+     * for security, stores user information in session, and redirects to either
+     * a pending redirect URL or the default profile page.
+     *
+     * If a user is already logged in, logs them out before showing the login form.
+     *
+     * @return void
+     */
     public function login(): void
     {
         // If already connected, disconnect first.
@@ -104,9 +155,14 @@ final class userController
     }
 
     /**
-     * Authenticates a user
+     * Authenticates a user with provided credentials
      *
-     * @return array{success: bool, message: string, user?: array{id: int|string, username: string, email: string}}
+     * Validates user login credentials (username/email and password) against
+     * the database. Returns authentication result with user data on success.
+     *
+     * @param string $login Username or email address
+     * @param string $password User password (plain text, will be verified against hash)
+     * @return array{success: bool, message: string, user?: array{id: int|string, username: string, email: string}} Authentication result
      */
     private function authenticate(string $login, string $password): array
     {
@@ -125,6 +181,14 @@ final class userController
         }
     }
 
+    /**
+     * Handles user logout
+     *
+     * Destroys all session data, removes the session cookie, and redirects
+     * to the homepage. Ensures complete cleanup of user authentication state.
+     *
+     * @return void
+     */
     public function logout(): void
     {
         // destroy all session data
@@ -142,6 +206,15 @@ final class userController
         exit;
     }
 
+    /**
+     * Handles user registration
+     *
+     * For GET requests: Displays the registration form.
+     * For POST requests: Validates input data (username, email, password match),
+     * creates a new user account, and redirects to login with a success message.
+     *
+     * @return void
+     */
     public function register(): void
     {
         // if GET : shows the form
@@ -216,9 +289,15 @@ final class userController
     }
 
     /**
-     * Creates a new user
+     * Creates a new user account
      *
-     * @return array{success: bool, message: string}
+     * Validates email format and password length requirements before delegating
+     * user creation to the model. Standardizes error messages for compatibility.
+     *
+     * @param string $username Desired username
+     * @param string $email Email address
+     * @param string $password Plain text password (will be hashed by model)
+     * @return array{success: bool, message: string} Creation result with success status and message
      */
     private function createUser(string $username, string $email, string $password): array
     {
@@ -255,6 +334,17 @@ final class userController
         }
     }
 
+    /**
+     * Handles forgot password requests
+     *
+     * Processes password reset requests by validating the email, checking if
+     * the user exists, creating a reset token, and sending a password reset
+     * email. Uses a generic success message for security (to prevent email enumeration).
+     *
+     * Only accepts POST requests and redirects to homepage with flash messages.
+     *
+     * @return void
+     */
     public function forgotPassword(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -323,6 +413,15 @@ final class userController
         }
     }
 
+    /**
+     * Handles password reset via token
+     *
+     * For GET requests: Validates the reset token and displays the password reset form.
+     * For POST requests: Validates new password input, updates the user's password,
+     * deletes the used token, and displays a success message.
+     *
+     * @return void
+     */
     public function resetPassword(): void
     {
         $token = isset($_GET['token']) ? trim((string)$_GET['token']) : '';

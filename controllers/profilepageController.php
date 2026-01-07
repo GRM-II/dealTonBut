@@ -1,15 +1,43 @@
 <?php
 
+/**
+ * Profile Page Controller
+ *
+ * Handles user profile-related actions including viewing profile information,
+ * updating profile details (username, email, password, grades), and account deletion.
+ * Manages user authentication and session validation for profile operations.
+ *
+ */
 final class profilepageController
 {
+    /**
+     * User model instance
+     *
+     * @var userModel
+     */
     private userModel $userModel;
 
+    /**
+     * Constructor
+     *
+     * Initializes the controller by creating a new userModel instance
+     * for database operations related to user profiles.
+     */
     public function __construct()
     {
         $this->userModel = new userModel();
     }
 
-
+    /**
+     * Displays the user profile page
+     *
+     * Validates user authentication and verifies that the user still exists
+     * in the database. If the user doesn't exist, destroys the session and
+     * redirects to login. Otherwise, displays the profile page with user
+     * information and grade points for various subjects.
+     *
+     * @return void
+     */
     public function index(): void
     {
         if (!isset($_SESSION['user']) || !isset($_SESSION['logged_in'])) {
@@ -41,9 +69,19 @@ final class profilepageController
         ]);
     }
 
+    /**
+     * Updates user profile information
+     *
+     * Processes POST requests to update various profile fields including username,
+     * email, password, and grade points for multiple subjects (maths, programming,
+     * networks, databases, other). Validates user authentication and input data,
+     * then updates the database accordingly. Sets flash messages for success or
+     * failure of each operation and redirects to the profile page.
+     *
+     * @return void
+     */
     public function updateProfile(): void
     {
-
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
             echo 'Méthode non autorisée';
@@ -95,6 +133,7 @@ final class profilepageController
                 $_SESSION['flash'] = ['success' => false, 'message' => 'Erreur lors de la mise à jour du mot de passe.'];
             }
         }
+
         // Updates the averages
         $gradesUpdated = false;
         $gradesData = [];
@@ -138,6 +177,17 @@ final class profilepageController
         exit;
     }
 
+    /**
+     * Deletes the user account
+     *
+     * Permanently deletes the authenticated user's account from the database.
+     * Validates user authentication, retrieves the user ID, and performs the deletion.
+     * On success, destroys the session and redirects to login with a deletion confirmation.
+     * On failure, logs the error and sets a flash message before redirecting to the profile page.
+     *
+     * @return void
+     * @throws Exception If user is not found or deletion fails
+     */
     public function deleteAccount(): void
     {
         if (!isset($_SESSION['user'])) {
