@@ -61,11 +61,11 @@ final class profilepageController
         view::show('profilepageView', [
             'username' => $userExists['username'],
             'email' => $userExists['email'],
-            'points_maths' => $userExists['points_maths'] ?? 0,
-            'points_programmation' => $userExists['points_programmation'] ?? 0,
-            'points_reseaux' => $userExists['points_reseaux'] ?? 0,
-            'points_BD' => $userExists['points_BD'] ?? 0,
-            'points_autre' => $userExists['points_autre'] ?? 0
+            'maths_points' => $userExists['maths_points'] ?? 0,
+            'programmation_points' => $userExists['programmation_points'] ?? 0,
+            'network_points' => $userExists['network_points'] ?? 0,
+            'DB_points' => $userExists['DB_points'] ?? 0,
+            'other_points' => $userExists['other_points'] ?? 0
         ]);
     }
 
@@ -138,28 +138,28 @@ final class profilepageController
         $gradesUpdated = false;
         $gradesData = [];
 
-        if (isset($_POST['new_points_maths']) && $_POST['new_points_maths'] !== '') {
-            $gradesData['points_maths'] = (float)$_POST['new_points_maths'];
+        if (isset($_POST['new_maths_points']) && $_POST['new_maths_points'] !== '') {
+            $gradesData['maths_points'] = (float)$_POST['new_maths_points'];
             $gradesUpdated = true;
         }
 
-        if (isset($_POST['new_points_programmation']) && $_POST['new_points_programmation'] !== '') {
-            $gradesData['points_programmation'] = (float)$_POST['new_points_programmation'];
+        if (isset($_POST['new_programmation_points']) && $_POST['new_programmation_points'] !== '') {
+            $gradesData['programmation_points'] = (float)$_POST['new_programmation_points'];
             $gradesUpdated = true;
         }
 
-        if (isset($_POST['new_points_reseaux']) && $_POST['new_points_reseaux'] !== '') {
-            $gradesData['points_reseaux'] = (float)$_POST['new_points_reseaux'];
+        if (isset($_POST['new_network_points']) && $_POST['new_network_points'] !== '') {
+            $gradesData['network_points'] = (float)$_POST['new_network_points'];
             $gradesUpdated = true;
         }
 
-        if (isset($_POST['new_points_BD']) && $_POST['new_points_BD'] !== '') {
-            $gradesData['points_BD'] = (float)$_POST['new_points_BD'];
+        if (isset($_POST['new_DB_points']) && $_POST['new_DB_points'] !== '') {
+            $gradesData['DB_points'] = (float)$_POST['new_DB_points'];
             $gradesUpdated = true;
         }
 
-        if (isset($_POST['new_points_autre']) && $_POST['new_points_autre'] !== '') {
-            $gradesData['points_autre'] = (float)$_POST['new_points_autre'];
+        if (isset($_POST['new_other_points']) && $_POST['new_other_points'] !== '') {
+            $gradesData['other_points'] = (float)$_POST['new_other_points'];
             $gradesUpdated = true;
         }
 

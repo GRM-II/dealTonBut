@@ -110,7 +110,7 @@ final class userModel
      * across different subjects (mathematics, programming, networks, databases, and other).
      *
      * @param string $username The username to search for
-     * @return array{id: int|string, username: string, email: string, points_maths: float|string|null, points_programmation: float|string|null, points_reseaux: float|string|null, points_BD: float|string|null, points_autre: float|string|null}|null
+     * @return array{id: int|string, username: string, email: string, maths_maths: float|string|null, programmation_points: float|string|null, network_points: float|string|null, DB_points: float|string|null, other_points: float|string|null}|null
      *         An associative array containing user data with grades, or null if not found or on error
      */
     public function getUserByUsername(string $username): ?array
@@ -118,8 +118,8 @@ final class userModel
         try {
             $pdo = self::getConnection();
             $stmt = $pdo->prepare("SELECT id, username, email, 
-                       points_maths, points_programmation, points_reseaux, 
-                       points_BD, points_autre FROM Users WHERE username = :username");
+                       maths_points, programmation_points, network_points, 
+                       DB_points, other_points FROM Users WHERE username = :username");
             $stmt->execute(['username' => $username]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -483,7 +483,7 @@ final class userModel
      * 2. Only updates fields that are in the allowed fields list
      * 3. Dynamically constructs the UPDATE query based on provided fields
      *
-     * Allowed fields: points_maths, points_programmation, points_reseaux, points_BD, points_autre
+     * Allowed fields: network_points, network_points, network_points, network_points, other_points
      *
      * @param int $userId The ID of the user whose grades should be updated
      * @param array<string, float|int> $gradesData An associative array of field names and grade values
@@ -514,7 +514,7 @@ final class userModel
             $fields = [];
             $params = [':userId' => $userId];
 
-            $allowedFields = ['points_maths', 'points_programmation', 'points_reseaux', 'points_BD', 'points_autre'];
+            $allowedFields = ['maths_points', 'programmation_points', 'network_points', 'DB_points', 'other_points'];
 
             foreach ($gradesData as $field => $value) {
                 if (in_array($field, $allowedFields)) {
