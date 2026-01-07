@@ -71,9 +71,9 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             <form id="edit-maths-form" method="post" action="?controller=profilepage&action=updateProfile" style="margin-bottom:15px;">
                 <div style="display:inline-block;text-align:center;min-width:400px;">
                     <strong>Mathématiques :</strong>
-                    <span id="maths-display"><?php echo htmlspecialchars($A_view['points_maths'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>/20</span>
+                    <span id="maths-display"><?php echo htmlspecialchars($A_view['maths_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>/20</span>
                     <div id="maths-edit-container" style="display:none;">
-                        <input type="number" id="new_points_maths" name="new_points_maths" value="<?php echo htmlspecialchars($A_view['points_maths'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>" style="width:120px;" class="input-rectangle" min="0" max="20" step="0.01" required <?php echo $disabledAttr; ?>>
+                        <input type="number" id="new_maths_points" name="new_maths_points" value="<?php echo htmlspecialchars($A_view['maths_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>" style="width:120px;" class="input-rectangle" min="0" max="20" step="0.01" required <?php echo $disabledAttr; ?>>
                         <span style="font-size:0.85em;color:#666;display:block;margin-top:5px;">Entrez ici votre moyenne de ce semestre en mathématiques</span>
                     </div>
                     <button type="button" id="edit-maths-btn" class="input-rectangle" style="padding:2px 8px;font-size:0.95em;margin-left:10px;" <?php echo $disabledAttr; ?>>Modifier</button>
@@ -86,9 +86,9 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             <form id="edit-prog-form" method="post" action="?controller=profilepage&action=updateProfile" style="margin-bottom:15px;">
                 <div style="display:inline-block;text-align:center;min-width:400px;">
                     <strong>Programmation :</strong>
-                    <span id="prog-display"><?php echo htmlspecialchars($A_view['points_programmation'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>/20</span>
+                    <span id="prog-display"><?php echo htmlspecialchars($A_view['programmation_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>/20</span>
                     <div id="prog-edit-container" style="display:none;">
-                        <input type="number" id="new_points_programmation" name="new_points_programmation" value="<?php echo htmlspecialchars($A_view['points_programmation'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>" style="width:120px;" class="input-rectangle" min="0" max="20" step="0.01" required <?php echo $disabledAttr; ?>>
+                        <input type="number" id="new_programmation_points" name="new_programmation_points" value="<?php echo htmlspecialchars($A_view['programmation_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>" style="width:120px;" class="input-rectangle" min="0" max="20" step="0.01" required <?php echo $disabledAttr; ?>>
                         <span style="font-size:0.85em;color:#666;display:block;margin-top:5px;">Entrez ici votre moyenne de ce semestre en programmation</span>
                     </div>
                     <button type="button" id="edit-prog-btn" class="input-rectangle" style="padding:2px 8px;font-size:0.95em;margin-left:10px;" <?php echo $disabledAttr; ?>>Modifier</button>
@@ -101,9 +101,9 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             <form id="edit-reseaux-form" method="post" action="?controller=profilepage&action=updateProfile" style="margin-bottom:15px;">
                 <div style="display:inline-block;text-align:center;min-width:400px;">
                     <strong>Réseaux :</strong>
-                    <span id="reseaux-display"><?php echo htmlspecialchars($A_view['points_reseaux'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>/20</span>
+                    <span id="reseaux-display"><?php echo htmlspecialchars($A_view['network_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>/20</span>
                     <div id="reseaux-edit-container" style="display:none;">
-                        <input type="number" id="new_points_reseaux" name="new_points_reseaux" value="<?php echo htmlspecialchars($A_view['points_reseaux'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>" style="width:120px;" class="input-rectangle" min="0" max="20" step="0.01" required <?php echo $disabledAttr; ?>>
+                        <input type="number" id="new_network_points" name="new_network_points" value="<?php echo htmlspecialchars($A_view['network_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>" style="width:120px;" class="input-rectangle" min="0" max="20" step="0.01" required <?php echo $disabledAttr; ?>>
                         <span style="font-size:0.85em;color:#666;display:block;margin-top:5px;">Entrez ici votre moyenne de ce semestre en réseaux</span>
                     </div>
                     <button type="button" id="edit-reseaux-btn" class="input-rectangle" style="padding:2px 8px;font-size:0.95em;margin-left:10px;" <?php echo $disabledAttr; ?>>Modifier</button>
@@ -116,9 +116,9 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             <form id="edit-bd-form" method="post" action="?controller=profilepage&action=updateProfile" style="margin-bottom:15px;">
                 <div style="display:inline-block;text-align:center;min-width:400px;">
                     <strong>Base de données :</strong>
-                    <span id="bd-display"><?php echo htmlspecialchars($A_view['points_BD'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>/20</span>
+                    <span id="bd-display"><?php echo htmlspecialchars($A_view['DB_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>/20</span>
                     <div id="bd-edit-container" style="display:none;">
-                        <input type="number" id="new_points_BD" name="new_points_BD" value="<?php echo htmlspecialchars($A_view['points_BD'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>" style="width:120px;" class="input-rectangle" min="0" max="20" step="0.01" required <?php echo $disabledAttr; ?>>
+                        <input type="number" id="new_DB_points" name="new_DB_points" value="<?php echo htmlspecialchars($A_view['DB_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>" style="width:120px;" class="input-rectangle" min="0" max="20" step="0.01" required <?php echo $disabledAttr; ?>>
                         <span style="font-size:0.85em;color:#666;display:block;margin-top:5px;">Entrez ici votre moyenne de ce semestre en base de données</span>
                     </div>
                     <button type="button" id="edit-bd-btn" class="input-rectangle" style="padding:2px 8px;font-size:0.95em;margin-left:10px;" <?php echo $disabledAttr; ?>>Modifier</button>
@@ -131,9 +131,9 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             <form id="edit-autre-form" method="post" action="?controller=profilepage&action=updateProfile" style="margin-bottom:15px;">
                 <div style="display:inline-block;text-align:center;min-width:400px;">
                     <strong>Autre :</strong>
-                    <span id="autre-display"><?php echo htmlspecialchars($A_view['points_autre'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>/20</span>
+                    <span id="autre-display"><?php echo htmlspecialchars($A_view['other_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>/20</span>
                     <div id="autre-edit-container" style="display:none;">
-                        <input type="number" id="new_points_autre" name="new_points_autre" value="<?php echo htmlspecialchars($A_view['points_autre'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>" style="width:120px;" class="input-rectangle" min="0" max="20" step="0.01" required <?php echo $disabledAttr; ?>>
+                        <input type="number" id="new_other_points" name="new_other_points" value="<?php echo htmlspecialchars($A_view['other_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>" style="width:120px;" class="input-rectangle" min="0" max="20" step="0.01" required <?php echo $disabledAttr; ?>>
                         <span style="font-size:0.85em;color:#666;display:block;margin-top:5px;">Entrez ici votre moyenne de ce semestre pour les autres matières</span>
                     </div>
                     <button type="button" id="edit-autre-btn" class="input-rectangle" style="padding:2px 8px;font-size:0.95em;margin-left:10px;" <?php echo $disabledAttr; ?>>Modifier</button>
