@@ -1,7 +1,7 @@
 <?php
 final class constants
 {
-    // Les constantes relatives aux chemins
+    // Path constants
     private const VIEWS_REPOSITORY       = '/views/';
     private const MODELS_REPOSITORY      = '/models/';
     private const CORE_REPOSITORY        = '/core/';

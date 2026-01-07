@@ -17,19 +17,19 @@ final class profilepageController
             exit;
         }
 
-        // Vérifier que l'utilisateur existe toujours en BDD
+        // Checks that the user still exists in the database
         $username = $_SESSION['user']['username'];
         $userExists = $this->userModel->getUserByUsername($username);
 
         if (!$userExists) {
-            // L'utilisateur n'existe plus
+            // The user doesnt exist anymore
             session_unset();
             session_destroy();
             header('Location: ?controller=user&action=login&session_expired=1');
             exit;
         }
 
-        // Utiliser les données fraîches de la BDD
+        // Uses the data from the database
         view::show('profilepageView', [
             'username' => $userExists['username'],
             'email' => $userExists['email'],
@@ -43,11 +43,6 @@ final class profilepageController
 
     public function updateProfile(): void
     {
-        // DEBUG - À RETIRER APRÈS
-//        error_log("GET params: " . print_r($_GET, true));
-//        error_log("POST params: " . print_r($_POST, true));
-//        error_log("REQUEST_URI: " . $_SERVER['REQUEST_URI']);
-        // FIN DEBUG
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
@@ -62,7 +57,7 @@ final class profilepageController
 
         $currentUsername = $_SESSION['user']['username'];
 
-        // Mise à jour du nom d'utilisateur
+        // Updates the username
         if (isset($_POST['new_username']) && !empty(trim($_POST['new_username']))) {
             $newUsername = trim($_POST['new_username']);
             $result = $this->userModel->updateUsername($currentUsername, $newUsername);
@@ -76,7 +71,7 @@ final class profilepageController
             }
         }
 
-        // Mise à jour de l'email
+        // Updates the email
         if (isset($_POST['new_email']) && !empty(trim($_POST['new_email']))) {
             $newEmail = trim($_POST['new_email']);
             $result = $this->userModel->updateEmail($currentUsername, $newEmail);
@@ -89,7 +84,7 @@ final class profilepageController
             }
         }
 
-        // Mise à jour du mot de passe
+        // Updates the password
         if (isset($_POST['new_password']) && !empty($_POST['new_password'])) {
             $hashedPassword = password_hash($_POST['new_password'], PASSWORD_DEFAULT);
             $result = $this->userModel->updatePassword($_SESSION['user']['id'], $hashedPassword);
@@ -100,7 +95,7 @@ final class profilepageController
                 $_SESSION['flash'] = ['success' => false, 'message' => 'Erreur lors de la mise à jour du mot de passe.'];
             }
         }
-        // Mise à jour des moyennes
+        // Updates the averages
         $gradesUpdated = false;
         $gradesData = [];
 

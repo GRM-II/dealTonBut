@@ -6,28 +6,27 @@ final class userController
     private passwordResetModel $passwordResetModel;
     private emailService $emailService;
 
-    // Constructeur pour s'assurer que la session est démarrée et la connexion DB établie
-
+    // Constructor to ensure that the session is started and the DB connection is established
     public function __construct()
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
-        // Instancier le modèle utilisateur (gestion DB centralisée dans userModel)
+        // Instantiate the user model (centralized DB management in userModel)
         $this->userModel = new userModel();
         $this->passwordResetModel = new passwordResetModel();
         $this->emailService = new emailService();
     }
 
     /**
-     * Récupère le statut de la base de données
+     * Gets the database status
      *
      * @return array{available: bool, message: string, details?: string}
      */
     private function getDbStatus(): array
     {
-        // Délègue au userModel pour connaître l'état de la base
+        // Delegate to the userModel to know the state of the database
         return $this->userModel->getDbStatus();
     }
 
@@ -39,16 +38,16 @@ final class userController
 
     public function login(): void
     {
-        // Si déjà connecté, déconnecter d'abord
+        // If already connected, disconnect first.
         if (isset($_SESSION['user'])) {
             session_unset();
             session_destroy();
-            // IMPORTANT : Redémarrer avec un nouvel ID de session
+            // IMPORTANT: Restart with a new session ID
             session_start();
             session_regenerate_id(true);
         }
 
-        // Si le formulaire est soumis
+        // If the form is submitted
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $login = $_POST['login'] ?? '';
             $password = $_POST['password'] ?? '';
@@ -62,27 +61,27 @@ final class userController
                 $result = $this->authenticate($login, $password);
 
                 if ($result['success'] && isset($result['user'])) {
-                    // Régénérer l'ID de session pour la sécurité
+                    // Regenerate the session ID for security
                     session_regenerate_id(true);
 
-                    // Stocker les informations de l'utilisateur dans la session
+                    // Store user information in the session
                     $_SESSION['user'] = $result['user'];
                     $_SESSION['user_id'] = $result['user']['id'];
                     $_SESSION['logged_in'] = true;
 
-                    // Vérifier s'il y a une redirection en attente
+                    // Check if there is a pending redirection
                     if (isset($_SESSION['redirect_after_login'])) {
                         $redirect = $_SESSION['redirect_after_login'];
                         unset($_SESSION['redirect_after_login']);
                         header("Location: $redirect");
                     } else {
-                        // Redirection vers la page de profil par défaut
+                        // Redirecting to the default profile page
                         header('Location: ?controller=profilepage&action=index');
                     }
                     exit;
                 }
 
-                // Si échec : afficher la page de login avec le message d'erreur
+                // If unsuccessful: display the login page with the error message
                 view::show('user/login', ['error' => $result['message']]);
                 return;
 
@@ -93,8 +92,8 @@ final class userController
             }
         }
 
-        // GET request : Afficher le formulaire de login
-        // Vérifier s'il y a un message flash de succès d'inscription
+        // GET request: Display the login form
+        // Check if there is a registration success message
         $flashMessage = null;
         if (isset($_SESSION['flash_message'])) {
             $flashMessage = $_SESSION['flash_message'];
@@ -105,7 +104,7 @@ final class userController
     }
 
     /**
-     * Authentifie un utilisateur
+     * Authenticates a user
      *
      * @return array{success: bool, message: string, user?: array{id: int|string, username: string, email: string}}
      */
@@ -128,36 +127,36 @@ final class userController
 
     public function logout(): void
     {
-        // Détruire toutes les données de session
+        // destroy all session data
         session_unset();
         session_destroy();
 
-        // Supprimer le cookie de session
+        // Delete the session cookie
         $sessionName = session_name();
         if ($sessionName !== false && isset($_COOKIE[$sessionName])) {
             setcookie($sessionName, '', time() - 3600, '/');
         }
 
-        // Rediriger vers la page d'accueil
+        // Redirects towards the homepage
         header('Location: ?controller=user&action=homepage');
         exit;
     }
 
     public function register(): void
     {
-        // Si GET : afficher le formulaire
+        // if GET : shows the form
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             view::show('user/register', ['db_status' => $this->getDbStatus()]);
             return;
         }
 
-        // Si POST : traiter l'inscription
+        // if POST : treats the form submission
         $username = isset($_POST['username']) ? trim((string)$_POST['username']) : '';
         $email = isset($_POST['email']) ? trim((string)$_POST['email']) : '';
         $password = isset($_POST['password']) ? (string)$_POST['password'] : '';
         $confirm = isset($_POST['confirm_password']) ? (string)$_POST['confirm_password'] : '';
 
-        // Validation des champs vides
+        // Validates the empty fields
         if (empty($username) || empty($email) || empty($password) || empty($confirm)) {
             view::show('user/register', [
                 'db_status' => $this->getDbStatus(),
@@ -169,7 +168,7 @@ final class userController
             return;
         }
 
-        // Vérification de la correspondance des mots de passe
+        // Password matching verification
         if ($password !== $confirm) {
             view::show('user/register', [
                 'db_status' => $this->getDbStatus(),
@@ -181,12 +180,12 @@ final class userController
             return;
         }
 
-        // Tentative de création de l'utilisateur
+        // Attempting to create a user
         try {
             $result = $this->createUser($username, $email, $password);
 
             if ($result['success']) {
-                // Succès : stocker le message flash et rediriger vers login
+                // Success: Store the flash message and redirect to login
                 $_SESSION['flash_message'] = [
                     'success' => true,
                     'message' => $result['message']
@@ -194,7 +193,7 @@ final class userController
                 header('Location: ?controller=user&action=login');
                 exit;
             } else {
-                // Échec : réafficher le formulaire avec l'erreur
+                // Failure: redisplay the form with the error
                 view::show('user/register', [
                     'db_status' => $this->getDbStatus(),
                     'flash' => [
@@ -217,13 +216,13 @@ final class userController
     }
 
     /**
-     * Crée un nouvel utilisateur
+     * Creates a new user
      *
      * @return array{success: bool, message: string}
      */
     private function createUser(string $username, string $email, string $password): array
     {
-        // Valider côté contrôleur les règles simples d'UI
+        // Validate the simple UI rules on the controller side
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return [
                 'success' => false,
@@ -237,10 +236,10 @@ final class userController
             ];
         }
 
-        // Déléguer la création au modèle (unicité + insertion)
+        // Delegate the creation to the model (uniqueness + insertion)
         try {
             $result = $this->userModel->createUser($username, $email, $password);
-            // Normalisation des messages pour compatibilité avec l'existant/tests
+            // Message standardization for compatibility with existing systems/tests
             if (!$result['success']) {
                 if (str_contains($result['message'], "déjà pris")) {
                     $result['message'] = "Ce nom d'utilisateur est déjà utilisé.";

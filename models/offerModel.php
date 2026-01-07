@@ -7,7 +7,7 @@ final class offerModel
     private static ?PDO $connection = null;
 
     /**
-     * Récupère ou crée la connexion PDO unique (pattern Singleton)
+     * Retrieves or creates the unique PDO connection (Singleton pattern)
      */
     public static function getConnection(): PDO
     {
@@ -27,8 +27,8 @@ final class offerModel
                 self::$connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
             } catch (PDOException $e) {
-                error_log("Erreur de connexion BDD : " . $e->getMessage());
-                throw new RuntimeException("Impossible de se connecter à la base de données.");
+                error_log("Database connection error: " . $e->getMessage());
+                throw new RuntimeException("Unable to connect to the database.");
             }
         }
 
@@ -36,7 +36,7 @@ final class offerModel
     }
 
     /**
-     * Vérifie le statut de la connexion à la base de données
+     * Checks the database connection status
      *
      * @return array{available: bool, message: string, details?: string}
      */
@@ -45,30 +45,30 @@ final class offerModel
         try {
             $pdo = self::getConnection();
 
-            // Vérifie si la table User existe
+            // Check if the Offers table exists
             $stmt = $pdo->query("SHOW TABLES LIKE 'Offers'");
             $tableExists = $stmt !== false && $stmt->rowCount() > 0;
 
             if (!$tableExists) {
                 return [
                     'available' => false,
-                    'message' => "La table 'Offers' n'existe pas.",
-                    'details' => 'Connexion OK mais table manquante'
+                    'message' => "The 'Offers' table does not exist.",
+                    'details' => 'Connection OK but table missing'
                 ];
             }
 
             return [
                 'available' => true,
-                'message' => 'Connexion à la base de données opérationnelle.',
-                'details' => "PDO MySQL OK | Table 'Offers' existe"
+                'message' => 'Database connection operational.',
+                'details' => "PDO MySQL OK | 'Offers' table exists"
             ];
 
         } catch (PDOException $e) {
-            error_log("Erreur getDbStatus : " . $e->getMessage());
+            error_log("getDbStatus error: " . $e->getMessage());
             return [
                 'available' => false,
-                'message' => 'Erreur de connexion à la base de données.',
-                'details' => 'Vérifiez la configuration de la base de données'
+                'message' => 'Database connection error.',
+                'details' => 'Check database configuration'
             ];
         }
     }
@@ -88,7 +88,7 @@ final class offerModel
             return explode(' ',$offers) ?: null;
 
         } catch (PDOException $e) {
-            error_log("Erreur getAllOffers : " . $e->getMessage());
+            error_log("getAllOffers error: " . $e->getMessage());
             return null;
         }
         return null;

@@ -8,13 +8,13 @@ final class homepageController
         view::show("homepageView", ['db_status' => $status]);
     }
 
-    public function index(): void  // Ajout de la méthode index
+    public function index(): void  // Adds the index method
     {
-        $this->login();  // Redirige vers login ou afficher la homepage
+        $this->login();  // Redirects towards to login or shows the  homepage
     }
 
-    // Page de diagnostic simple pour aider à activer les pilotes MySQL
-    public function diagnostics(): void  // Ajout du type de retour
+    // Simple diagnostic page to help activate MySQL drivers
+    public function diagnostics(): void  // Adds the return type
     {
         $pdoAvailable = class_exists('PDO');
         $pdoDrivers = $pdoAvailable ? implode(', ', \PDO::getAvailableDrivers()) : 'PDO indisponible';

@@ -8,14 +8,14 @@ final class marketpageController
             session_start();
         }
 
-        // Vérifier si l'utilisateur est connecté
+        // Checks if the user is connected
         $isLoggedIn = !empty($_SESSION['user']) && is_array($_SESSION['user']);
 
         $status = $this->getDbStatus();
         $flash = $_SESSION['flash'] ?? null;
         unset($_SESSION['flash']);
 
-        // Récupérer les offres depuis la base de données
+        // Gets the offers from the database
         $offers = $this->getOffers();
 
         view::show('marketpageView', [
@@ -97,7 +97,7 @@ final class marketpageController
     }
 
     /**
-     * Récupère toutes les offres
+     * Fetchs all the offers
      *
      * @return array<int, array<string, mixed>>
      */
@@ -110,7 +110,7 @@ final class marketpageController
     }
 
     /**
-     * Récupère le status de la BDD
+     * Fetchs the database status
      *
      * @return array{available: bool, message: string, details?: string}
      */
