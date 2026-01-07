@@ -37,6 +37,12 @@ final class emailService
      */
     public function sendPasswordResetEmail(string $toEmail, string $token): array
     {
+        $originalMaxExecutionTime = ini_get('max_execution_time');
+        $originalSocketTimeout = ini_get('default_socket_timeout');
+
+        set_time_limit(300); // 5 minutes
+        ini_set('default_socket_timeout', '180'); // 3 minutes
+
         try {
             $mail = new PHPMailer(true);
 
@@ -45,9 +51,37 @@ final class emailService
             $mail->SMTPAuth = true;
             $mail->Username = $this->smtpUsername;
             $mail->Password = $this->smtpPassword;
-            $mail->SMTPSecure = $this->smtpEncryption;
+
+            if ($this->smtpPort === '587') {
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            } elseif ($this->smtpPort === '465') {
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            } else {
+                $mail->SMTPSecure = $this->smtpEncryption;
+            }
+
             $mail->Port = (int)$this->smtpPort;
             $mail->CharSet = 'UTF-8';
+
+            // Timeout très élevé car le serveur SMTP est très lent (84s observés)
+            $mail->Timeout = 180; // 3 minutes
+
+            // Options SSL/TLS pour éviter les erreurs de certificat
+            $mail->SMTPOptions = [
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                ]
+            ];
+
+            // Mode debug SMTP (décommenter en cas de problème)
+            // $mail->SMTPDebug = 2;
+            // $mail->Debugoutput = function($str, $level) {
+            //     error_log("SMTP Debug level $level: $str");
+            // };
+
+            error_log("Envoi email à $toEmail via {$this->smtpHost}:{$this->smtpPort} (encryption: {$mail->SMTPSecure})");
 
             $mail->setFrom($this->smtpUsername, 'DealTonBut');
             $mail->addAddress($toEmail);
@@ -61,11 +95,25 @@ final class emailService
 
             $mail->send();
 
+            error_log("Email envoyé avec succès à $toEmail");
+
             return ['success' => true, 'message' => 'Email envoyé avec succès.'];
 
         } catch (Exception $e) {
-            error_log("Erreur envoi email : " . $mail->ErrorInfo);
-            return ['success' => false, 'message' => 'Erreur lors de l\'envoi de l\'email : ' . $mail->ErrorInfo];
+            $errorDetails = "Erreur envoi email à $toEmail : " . $e->getMessage();
+            if (isset($mail)) {
+                $errorDetails .= " | PHPMailer: " . $mail->ErrorInfo;
+            }
+            error_log($errorDetails);
+
+            return [
+                'success' => false,
+                'message' => 'Erreur lors de l\'envoi de l\'email. Vérifiez la configuration SMTP.'
+            ];
+        } finally {
+            // Restaurer les timeouts originaux
+            set_time_limit((int)$originalMaxExecutionTime);
+            ini_set('default_socket_timeout', $originalSocketTimeout);
         }
     }
 
