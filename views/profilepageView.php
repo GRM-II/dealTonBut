@@ -114,7 +114,42 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                             <button type="button" id="edit-autre-btn" class="input-rectangle grade-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
                         </div>
                     </div>
-        </div>
+                    <?php
+                    $dataPoints = array(
+	                array("label"=> "Education", "y"=> 284935),
+	                array("label"=> "Entertainment", "y"=> 256548),
+	                array("label"=> "Lifestyle", "y"=> 245214),
+	                array("label"=> "Business", "y"=> 233464),
+	                array("label"=> "Music & Audio", "y"=> 200285),
+	                array("label"=> "Personalization", "y"=> 194422),
+	                array("label"=> "Tools", "y"=> 180337),
+	                array("label"=> "Books & Reference", "y"=> 172340),
+	                array("label"=> "Travel & Local", "y"=> 118187),
+	                array("label"=> "Puzzle", "y"=> 107530)
+                    );?>
+                    <script>
+                        window.onload = function () {
+
+                            var chart = new CanvasJS.Chart("chartContainer", {
+                                animationEnabled: true,
+                                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                                title: {
+                                    text: "Top 10 Google Play Categories - till 2017"
+                                },
+                                axisY: {
+                                    title: "Number of Apps"
+                                },
+                                data: [{
+                                    type: "column",
+                                    dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
+                                }]
+                            });
+                            chart.render();
+                        }
+                    </script>
+                    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+                    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+                </div>
                 <div class="login-right-separator"></div>
                 <div class="login-right-bottom">
                     <h3>Note de dev : espace pour l'historique des transactions ou autre</h3>
