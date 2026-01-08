@@ -698,6 +698,7 @@ body.dark-theme .flash-error {
 }
 
 /* Boutons stylisés */
+
 .btn-submit {
     background: var(--primary-color);
     color: var(--bg-light);
@@ -835,7 +836,68 @@ body.dark-theme .text-link:hover {
         font-size: 1em;
     }
 }
+/* Liens du footer */
+.footer-link {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    margin-left: 50px;
+    text-align: left;
+}
 
+.footer-link:hover {
+    color: #a8d5ff;
+    text-decoration: underline;
+}
+
+body.dark-theme .footer-link {
+    color: #ffffff;
+}
+
+body.dark-theme .footer-link:hover {
+    color: #a8d5ff;
+}
+.text-link {
+    display: block;
+    margin-top: 2vh;
+    text-align: center;
+    color: var(--primary-color);
+    text-decoration: underline;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: color var(--transition-fast);
+    box-shadow: none;
+    padding: 0;
+    background: none;
+    width: auto;
+}
+
+.text-link:hover {
+    color: var(--text-light);
+}
+
+.text-link:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Amélioration de la lisibilité du text-link dans login-rectangle */
+.login-rectangle .text-link {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.login-rectangle .text-link:hover {
+    color: var(--primary-dark);
+}
+
+body.dark-theme .login-rectangle .text-link {
+    color: #5ab4ff;
+}
+
+body.dark-theme .login-rectangle .text-link:hover {
+    color: #ffffff;
+}
 /* Phone */
 @media (max-width: 600px) {
     .login-rectangle {
