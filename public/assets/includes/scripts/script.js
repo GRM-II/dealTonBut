@@ -251,88 +251,119 @@ function initMarketplace() {
     }
 }
 
-// Profile: Gestion de l'édition des champs utilisateur
+// Profile: Gestion de l'édition des champs utilisateur via modals
 function initProfilePage() {
+    // Fonction générique pour ouvrir un modal
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'flex';
+            void modal.offsetHeight;
+            modal.style.opacity = '1';
+            const modalContent = modal.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.style.transform = 'scale(1)';
+            }
+        }
+    }
+
+    // Fonction générique pour fermer un modal
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.opacity = '0';
+            const modalContent = modal.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.style.transform = 'scale(0.9)';
+            }
+            setTimeout(function() {
+                modal.style.display = 'none';
+            }, 400);
+        }
+    }
+
     // Edit username
     const editUsernameBtn = document.getElementById('edit-username-btn');
-    const saveUsernameBtn = document.getElementById('save-username-btn');
-    const cancelUsernameBtn = document.getElementById('cancel-username-btn');
-    const usernameDisplay = document.getElementById('username-display');
-    const usernameInput = document.getElementById('new_username');
-
     if (editUsernameBtn) {
         editUsernameBtn.addEventListener('click', function() {
-            usernameDisplay.style.display = 'none';
-            usernameInput.style.display = '';
-            saveUsernameBtn.style.display = '';
-            cancelUsernameBtn.style.display = '';
-            editUsernameBtn.style.display = 'none';
-            usernameInput.focus();
-        });
-
-        cancelUsernameBtn.addEventListener('click', function() {
-            usernameDisplay.style.display = '';
-            usernameInput.style.display = 'none';
-            saveUsernameBtn.style.display = 'none';
-            cancelUsernameBtn.style.display = 'none';
-            editUsernameBtn.style.display = '';
-            usernameInput.value = usernameDisplay.textContent;
+            openModal('username-modal');
         });
     }
 
     // Edit email
     const editEmailBtn = document.getElementById('edit-email-btn');
-    const saveEmailBtn = document.getElementById('save-email-btn');
-    const cancelEmailBtn = document.getElementById('cancel-email-btn');
-    const emailDisplay = document.getElementById('email-display');
-    const emailInput = document.getElementById('new_email');
-
     if (editEmailBtn) {
         editEmailBtn.addEventListener('click', function() {
-            emailDisplay.style.display = 'none';
-            emailInput.style.display = '';
-            saveEmailBtn.style.display = '';
-            cancelEmailBtn.style.display = '';
-            editEmailBtn.style.display = 'none';
-            emailInput.focus();
-        });
-
-        cancelEmailBtn.addEventListener('click', function() {
-            emailDisplay.style.display = '';
-            emailInput.style.display = 'none';
-            saveEmailBtn.style.display = 'none';
-            cancelEmailBtn.style.display = 'none';
-            editEmailBtn.style.display = '';
-            emailInput.value = emailDisplay.textContent;
+            openModal('email-modal');
         });
     }
 
     // Edit password
     const editPasswordBtn = document.getElementById('edit-password-btn');
-    const savePasswordBtn = document.getElementById('save-password-btn');
-    const cancelPasswordBtn = document.getElementById('cancel-password-btn');
-    const passwordDisplay = document.getElementById('password-display');
-    const passwordInput = document.getElementById('new_password');
-
     if (editPasswordBtn) {
         editPasswordBtn.addEventListener('click', function() {
-            passwordDisplay.style.display = 'none';
-            passwordInput.style.display = '';
-            savePasswordBtn.style.display = '';
-            cancelPasswordBtn.style.display = '';
-            editPasswordBtn.style.display = 'none';
-            passwordInput.focus();
-        });
-
-        cancelPasswordBtn.addEventListener('click', function() {
-            passwordDisplay.style.display = '';
-            passwordInput.style.display = 'none';
-            savePasswordBtn.style.display = 'none';
-            cancelPasswordBtn.style.display = 'none';
-            editPasswordBtn.style.display = '';
-            passwordInput.value = '';
+            openModal('password-modal');
         });
     }
+
+    // Edit maths
+    const editMathsBtn = document.getElementById('edit-maths-btn');
+    if (editMathsBtn) {
+        editMathsBtn.addEventListener('click', function() {
+            openModal('maths-modal');
+        });
+    }
+
+    // Edit prog
+    const editProgBtn = document.getElementById('edit-prog-btn');
+    if (editProgBtn) {
+        editProgBtn.addEventListener('click', function() {
+            openModal('prog-modal');
+        });
+    }
+
+    // Edit reseaux
+    const editReseauxBtn = document.getElementById('edit-reseaux-btn');
+    if (editReseauxBtn) {
+        editReseauxBtn.addEventListener('click', function() {
+            openModal('reseaux-modal');
+        });
+    }
+
+    // Edit BD
+    const editBdBtn = document.getElementById('edit-bd-btn');
+    if (editBdBtn) {
+        editBdBtn.addEventListener('click', function() {
+            openModal('bd-modal');
+        });
+    }
+
+    // Edit autre
+    const editAutreBtn = document.getElementById('edit-autre-btn');
+    if (editAutreBtn) {
+        editAutreBtn.addEventListener('click', function() {
+            openModal('autre-modal');
+        });
+    }
+
+    // Gestion des boutons d'annulation dans les modals
+    const cancelButtons = document.querySelectorAll('.cancel-modal');
+    cancelButtons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const modalId = this.getAttribute('data-modal');
+            closeModal(modalId);
+        });
+    });
+
+    // Fermer les modals en cliquant en dehors
+    const profileModals = document.querySelectorAll('.profile-modal');
+    profileModals.forEach(function(modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal(modal.id);
+            }
+        });
+    });
 
     // Delete account modal
     const deleteAccountBtn = document.getElementById('delete-account-btn');
@@ -341,49 +372,19 @@ function initProfilePage() {
 
     if (deleteAccountBtn && deleteModal) {
         deleteAccountBtn.addEventListener('click', function() {
-
-            // Afficher le modal avec display flex pour le centrage
-            deleteModal.style.display = 'flex';
-
-            // Force un reflow pour que la transition CSS fonctionne
-            void deleteModal.offsetHeight;
-
-            // Démarrer l'animation de fade-in
-            deleteModal.style.opacity = '1';
-            const innerDiv = deleteModal.querySelector('div');
-            if (innerDiv) {
-                innerDiv.style.transform = 'scale(1)';
-            }
+            openModal('delete-modal');
         });
 
         if (cancelDeleteBtn) {
             cancelDeleteBtn.addEventListener('click', function() {
-                // Animation de fade-out
-                deleteModal.style.opacity = '0';
-                const innerDiv = deleteModal.querySelector('div');
-                if (innerDiv) {
-                    innerDiv.style.transform = 'scale(0.9)';
-                }
-                // Masquer après l'animation (400ms)
-                setTimeout(function() {
-                    deleteModal.style.display = 'none';
-                }, 400);
+                closeModal('delete-modal');
             });
         }
 
         // Fermer le modal si on clique en dehors
         deleteModal.addEventListener('click', function(e) {
             if (e.target === deleteModal) {
-                // Animation de fade-out
-                deleteModal.style.opacity = '0';
-                const innerDiv = deleteModal.querySelector('div');
-                if (innerDiv) {
-                    innerDiv.style.transform = 'scale(0.9)';
-                }
-                // Masquer après l'animation (400ms)
-                setTimeout(function() {
-                    deleteModal.style.display = 'none';
-                }, 400);
+                closeModal('delete-modal');
             }
         });
     }
