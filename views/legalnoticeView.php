@@ -15,18 +15,18 @@
                     <h2>1. Éditeur du site</h2>
                     <p>
                         <strong>Nom du site :</strong> Deal Ton BUT<br>
-                        <strong>URL :</strong> [votre-domaine.com]<br>
-                        <strong>Responsable de publication :</strong> [Votre nom ou pseudo]<br>
-                        <strong>Contact :</strong> [votre-email@exemple.com]
+                        <strong>URL :</strong> dealtonbut.feyli.dev<br>
+                        <strong>Responsable de publication :</strong> Kiko<br>
+                        <strong>Contact :</strong> kiko.gamingxd@gmail.com
                     </p>
                 </section>
 
                 <section>
                     <h2>2. Hébergement</h2>
                     <p>
-                        <strong>Hébergeur :</strong> [Nom de l'hébergeur]<br>
-                        <strong>Adresse :</strong> [Adresse de l'hébergeur]<br>
-                        <strong>Téléphone :</strong> [Numéro de l'hébergeur]
+                        <strong>Hébergeur :</strong> Mr. Feyli<br>
+                        <strong>Adresse :</strong> Pays des Furrys<br>
+                        <strong>Téléphone :</strong> 3630
                     </p>
                 </section>
 
