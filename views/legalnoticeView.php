@@ -73,7 +73,7 @@
                 <section>
                     <h2>7. Crédits</h2>
                     <p>
-                        <strong>Équipe :</strong> Thomas.A - Akcyl.B - Dimitri.C - Lou.D - Olivier.G - Francisco Packet Tracer. S<br>
+                        <strong>Équipe :</strong> Thomas.A - Akcyl.B - Dimitri.C - Lou.D - Olivier.G - Francisco. S<br>
                         <strong>Slogan :</strong> Là où la comédie commence, les points suivent.
                     </p>
                 </section>

@@ -6,7 +6,7 @@
             Instagram
         </a>
         <p class="footer-text">⠀|⠀</p>
-        <p class="footer-text">Thomas.A - Akcyl.B - Dimitri.C - Lou.D - Olivier.G - Francisco Packet Tracer. S</p>
+        <p class="footer-text">Thomas.A - Akcyl.B - Dimitri.C - Lou.D - Olivier.G - Francisco. S</p>
         <p class="footer-text">⠀|⠀</p>
         <a href="?controller=legalnotice&action=legalNotice" class="footer-link">Mentions légales</a>
     </div>
