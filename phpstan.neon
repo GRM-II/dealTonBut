@@ -4,6 +4,11 @@ parameters:
      - controllers
      - core
      - models
-     - views
-     - public
+     - services
      - index.php
+  excludePaths:
+     - vendor/*
+     - tests/*
+  scanDirectories:
+     - vendor
+  reportUnmatchedIgnoredErrors: false

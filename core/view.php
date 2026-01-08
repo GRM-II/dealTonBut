@@ -3,7 +3,7 @@
 final class view
 {
     /**
-     * Démarre le tampon de sortie principal
+     * Starts the main output buffer
      */
     public static function openBuffer(): void
     {
@@ -11,7 +11,7 @@ final class view
     }
 
     /**
-     * Récupère et nettoie le contenu du tampon principal
+     *  Retrieves and cleans the contents of the main buffer
      */
     public static function getBufferContent(): string
     {
@@ -19,11 +19,12 @@ final class view
     }
 
     /**
-     * Affiche une vue avec les paramètres fournis
+     * Displays a view with the provided parameters
      *
-     * @param string $S_localisation Chemin relatif de la vue (sans extension .php)
-     * @param array<string, mixed> $A_parameters Paramètres à passer à la vue
-     * @throws RuntimeException Si le fichier de vue n'existe pas
+     * @param string $S_localisation Relative path to the view (without the .php extension)
+     * @param array<string, mixed> $A_parameters Parameters to pass to the view
+     * @throws RuntimeException if the view file does not exist
+
      */
     public static function show(string $S_localisation, array $A_parameters = []): void
     {
@@ -34,10 +35,10 @@ final class view
             throw new RuntimeException("La vue '$S_localisation' est introuvable.");
         }
 
-        // Extraction des paramètres pour les rendre disponibles dans la vue
+        // Extracting the parameters to make them available in the view
         $A_view = $A_parameters;
 
-        // Démarrage d'un sous-tampon
+        // Starting a sub-buffer
         ob_start();
         include $S_file;
         ob_end_flush();

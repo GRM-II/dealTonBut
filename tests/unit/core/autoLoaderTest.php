@@ -3,17 +3,18 @@
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test unitaire pour la classe autoLoader
+ * Unit test for the autoLoader class
  *
- * Teste les fonctionnalités de chargement automatique des classes
- * pour les différents types de fichiers (Core, Exception, Model, View, Controller)
+ *  Tests the automatic loading functionality of classes
+ *
+ *  for different file types (Core, Exception, Model, View, Controller)
  */
 class autoLoaderTest extends TestCase
 {
     private static string $rootPath;
 
     /**
-     * Configuration avant tous les tests
+     * Configuration before all tests
      */
     public static function setUpBeforeClass(): void
     {
@@ -22,7 +23,7 @@ class autoLoaderTest extends TestCase
     }
 
     /**
-     * Test que la classe autoLoader existe
+     * Test that the autoLoader class exists
      */
     public function testAutoLoaderClassExists(): void
     {
@@ -33,7 +34,7 @@ class autoLoaderTest extends TestCase
     }
 
     /**
-     * Test que toutes les méthodes publiques existent
+     * Test that all public methods exist
      */
     public function testAutoLoaderMethodsExist(): void
     {
@@ -54,11 +55,11 @@ class autoLoaderTest extends TestCase
     }
 
     /**
-     * Test du chargement d'une classe Core existante
+     * Testing the loading of an existing Core class
      */
     public function testLoadClassCoreWithExistingClass(): void
     {
-        // Vérifier que les fichiers Core existent
+        // Verify that the Core files exist
         $coreFiles = ['view.php', 'controller.php', 'envReader.php'];
 
         foreach ($coreFiles as $file) {
@@ -68,7 +69,7 @@ class autoLoaderTest extends TestCase
             }
         }
 
-        // Vérifier que la méthode loadClassCore existe
+        // Verify that the loadfileCore files exist
         $this->assertTrue(
             method_exists('autoLoader', 'loadClassCore'),
             'La méthode loadClassCore doit exister'
@@ -76,21 +77,21 @@ class autoLoaderTest extends TestCase
     }
 
     /**
-     * Test du chargement d'une classe Controller existante
+     * Testing the loading of an existing Controller class
      */
     public function testLoadClassControllerWithExistingClass(): void
     {
-        // Vérifier qu'au moins un contrôleur existe
+        // Verify that at least one controller exists
         $controllerFile = self::$rootPath . '/controllers/homepageController.php';
         $this->assertFileExists($controllerFile, 'Le fichier homepageController.php doit exister');
 
-        // Vérifier que la méthode existe
+        // Verify that the method exists
         $this->assertTrue(
             method_exists('autoLoader', 'loadClassController'),
             'La méthode loadClassController doit exister'
         );
 
-        // Vérifier que homepageController est disponible (déjà chargé)
+        // Verify that homepageController is available (already loaded)
         $this->assertTrue(
             class_exists('homepageController'),
             'La classe homepageController devrait être disponible via autoload'
@@ -98,15 +99,15 @@ class autoLoaderTest extends TestCase
     }
 
     /**
-     * Test du chargement d'une classe Model existante
+     * Testing the loading of an existing Model class
      */
     public function testLoadClassModelWithExistingClass(): void
     {
-        // Vérifier qu'au moins un modèle existe
+        // Check that at least one model exists
         $modelFile = self::$rootPath . '/models/userModel.php';
         $this->assertFileExists($modelFile, 'Le fichier userModel.php doit exister');
 
-        // Vérifier que la méthode existe
+        // Verify that the method exists
         $this->assertTrue(
             method_exists('autoLoader', 'loadClassModel'),
             'La méthode loadClassModel doit exister'
@@ -114,15 +115,15 @@ class autoLoaderTest extends TestCase
     }
 
     /**
-     * Test du chargement d'une classe Exception existante
+     * Testing the loading of an existing class. Exception
      */
     public function testLoadClassExceptionWithExistingClass(): void
     {
-        // Vérifier que la classe d'exception existe
+        // verify that the exception class exists
         $exceptionFile = self::$rootPath . '/core/exception/controllerException.php';
         $this->assertFileExists($exceptionFile, 'Le fichier controllerException.php doit exister');
 
-        // Vérifier que la méthode existe
+        // Verify that the method exists
         $this->assertTrue(
             method_exists('autoLoader', 'loadClassException'),
             'La méthode loadClassException doit exister'
@@ -130,24 +131,25 @@ class autoLoaderTest extends TestCase
     }
 
     /**
-     * Test du chargement d'une classe inexistante (ne doit pas planter)
+     * Testing the loading of a non-existent class (should not crash)
      */
     public function testLoadClassWithNonExistentClass(): void
     {
-        // Charger une classe qui n'existe pas ne doit pas lever d'exception
-        // L'autoloader doit juste ne rien faire si le fichier n'existe pas
+        // Loading a class that doesn't exist should not throw an exception
 
-        // Ces appels ne devraient pas lever d'exception
+        // The autoloader should simply do nothing if the file doesn't exist
+
+        // These calls should not throw an exception
         autoLoader::loadClassCore('NonExistentClass99999.php');
         autoLoader::loadClassController('NonExistentController99999');
         autoLoader::loadClassModel('NonExistentModel99999');
 
-        // Si on arrive ici, c'est que ça n'a pas planté
+        // If we've arrived here, it's because it hasn't crashed.
         $this->assertTrue(true, 'Le chargement de classes inexistantes ne doit pas planter');
     }
 
     /**
-     * Test que les fonctions d'autoload sont enregistrées
+     * Test that the autoload functions are registered
      */
     public function testAutoloadFunctionsAreRegistered(): void
     {
@@ -156,7 +158,7 @@ class autoLoaderTest extends TestCase
         $this->assertIsArray($autoloadFunctions, 'spl_autoload_functions doit retourner un tableau');
         $this->assertNotEmpty($autoloadFunctions, 'Au moins une fonction d\'autoload doit être enregistrée');
 
-        // Vérifier que nos fonctions sont enregistrées
+        // Verify that our functions are registered
         $expectedFunctions = [
             ['autoLoader', 'loadClassCore'],
             ['autoLoader', 'loadClassException'],
@@ -185,7 +187,7 @@ class autoLoaderTest extends TestCase
     }
 
     /**
-     * Test que les répertoires nécessaires existent
+     * Test that the necessary directories exist
      */
     public function testRequiredDirectoriesExist(): void
     {
@@ -216,7 +218,7 @@ class autoLoaderTest extends TestCase
     }
 
     /**
-     * Test que les fichiers clés existent
+     * Test that the key files exist
      */
     public function testKeyFilesExist(): void
     {
@@ -242,19 +244,18 @@ class autoLoaderTest extends TestCase
     }
 
     /**
-     * Test de l'intégration complète : chargement automatique via new
+     * Testing full integration: automatic loading via new
      */
     public function testAutoloadIntegrationWithNewInstance(): void
     {
-        // Tester que l'autoload fonctionne avec l'instanciation
-        // (homepageController devrait déjà être chargé, mais on teste le principe)
-
+        // Test that autoloading works with instantiation
+        // (homepageController should already be loaded, but we're testing the principle)
         $this->assertTrue(
             class_exists('homepageController'),
             'homepageController doit être disponible via autoload'
         );
 
-        // Vérifier qu'on peut l'instancier
+        // Verify that it can be instantiated
         $instance = new homepageController();
         $this->assertInstanceOf(
             homepageController::class,

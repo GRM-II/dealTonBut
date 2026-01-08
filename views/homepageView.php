@@ -12,6 +12,13 @@
                         </div>
                     <?php endif; ?>
 
+                    <?php if (isset($_SESSION['flash_message'])): ?>
+                        <div class="<?= $_SESSION['flash_message']['success'] ? 'login-success-message' : 'login-error-message' ?>">
+                            <?= htmlspecialchars($_SESSION['flash_message']['message']) ?>
+                        </div>
+                        <?php unset($_SESSION['flash_message']); ?>
+                    <?php endif; ?>
+
                     <form class="input-rectangles" method="POST" action="?controller=user&action=login">
                         <label class="login-text" for="username">Identifiant</label>
                         <input type="text"
@@ -56,6 +63,7 @@
             <span class="close">&times;</span>
             <h2>Réinitialiser le mot de passe</h2>
             <p>C'est quand même balot, alors donnez nous votre adresse email pour recevoir un lien de réinitialisation.</p>
+            <p>L'envoi peut prendre jusqu'à 3 minutes</p>
             <form id="forgot-password-form" method="POST" action="?controller=user&action=forgotPassword">
                 <label>
                     <input type="email"
@@ -65,10 +73,54 @@
                            required>
                 </label>
                 <button type="submit"
-                        class="input-rectangle">
+                        class="input-rectangle"
+                        id="submit-forgot-password">
                     Envoyer
                 </button>
+                <div id="loading-indicator" style="display: none; text-align: center; margin-top: 15px;">
+                    <div style="border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+                    <p style="margin-top: 10px; color: #666;">Envoi en cours, veuillez patienter...</p>
+                </div>
             </form>
         </div>
     </div>
 </main>
+
+<style>
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+
+<script>
+    const modal = document.getElementById('forgot-password-modal');
+    const link = document.getElementById('forgot-password-link');
+    const closeBtn = document.getElementsByClassName('close')[0];
+    const forgotPasswordForm = document.getElementById('forgot-password-form');
+    const submitButton = document.getElementById('submit-forgot-password');
+    const loadingIndicator = document.getElementById('loading-indicator');
+
+    link.onclick = function(e) {
+        e.preventDefault();
+        modal.style.display = 'block';
+    }
+
+    closeBtn.onclick = function() {
+        modal.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    forgotPasswordForm.onsubmit = function() {
+        submitButton.disabled = true;
+        submitButton.style.opacity = '0.6';
+        submitButton.style.cursor = 'not-allowed';
+        submitButton.textContent = 'Envoi en cours...';
+        loadingIndicator.style.display = 'block';
+    }
+</script>
