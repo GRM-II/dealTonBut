@@ -47,7 +47,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                         <button type="submit" class="input-rectangle register-submit-btn" <?php echo $disabledAttr; ?>>Créer le compte</button>
                     </form>
 
-                    <a href="?controller=user&action=login" class="text-link">Vous possédez déjà un compte ?</a>
+                    <a href="?controller=homepage&action=index" class="text-link">Vous possédez déjà un compte ?</a>
                 </div>
 
                 <div class="login-right">
