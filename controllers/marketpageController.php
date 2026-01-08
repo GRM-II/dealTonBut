@@ -1,21 +1,38 @@
 <?php
 
+/**
+ * Marketplace Controller
+ *
+ * Handles marketplace-related actions including displaying offers,
+ * creating new offers, and deleting existing offers. Manages user
+ * authentication and flash messages for marketplace operations.
+ *
+ */
 final class marketpageController
 {
+    /**
+     * Displays the marketplace page with all offers
+     *
+     * Initializes the session if needed, checks user authentication status,
+     * retrieves database status and all available offers, then displays
+     * the marketplace view with flash messages if any.
+     *
+     * @return void
+     */
     public function index(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
-        // Vérifier si l'utilisateur est connecté
+        // Checks if the user is connected
         $isLoggedIn = !empty($_SESSION['user']) && is_array($_SESSION['user']);
 
         $status = $this->getDbStatus();
         $flash = $_SESSION['flash'] ?? null;
         unset($_SESSION['flash']);
 
-        // Récupérer les offres depuis la base de données
+        // Gets the offers from the database
         $offers = $this->getOffers();
 
         view::show('marketpageView', [
@@ -27,6 +44,16 @@ final class marketpageController
         ]);
     }
 
+    /**
+     * Creates a new marketplace offer
+     *
+     * Processes the offer creation form submission. Validates user authentication,
+     * required fields (title, description, price), and price format. Creates the
+     * offer in the database if validation passes. Sets appropriate flash messages
+     * for success or failure and redirects to the marketplace index.
+     *
+     * @return void
+     */
     public function createOffer(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -65,6 +92,15 @@ final class marketpageController
         exit;
     }
 
+    /**
+     * Deletes an existing marketplace offer
+     *
+     * Processes the offer deletion request. Validates user authentication
+     * and ensures the user owns the offer before deletion. Sets appropriate
+     * flash messages for success or failure and redirects to the marketplace index.
+     *
+     * @return void
+     */
     public function deleteOffer(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -97,9 +133,12 @@ final class marketpageController
     }
 
     /**
-     * Récupère toutes les offres
+     * Fetches all the offers from the database
      *
-     * @return array<int, array<string, mixed>>
+     * Retrieves all available marketplace offers using the offer model.
+     * Automatically loads the offer model if not already loaded.
+     *
+     * @return array<int, array<string, mixed>> Array of offers with their details
      */
     private function getOffers(): array
     {
@@ -110,9 +149,12 @@ final class marketpageController
     }
 
     /**
-     * Récupère le status de la BDD
+     * Fetches the database connection status
      *
-     * @return array{available: bool, message: string, details?: string}
+     * Retrieves the current database connection status using the user model.
+     * Automatically loads the user model if not already loaded.
+     *
+     * @return array{available: bool, message: string, details?: string} Database status information
      */
     private function getDbStatus(): array
     {

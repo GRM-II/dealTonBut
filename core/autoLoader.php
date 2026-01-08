@@ -1,10 +1,10 @@
 <?php
-require 'core/constants.php';
+require_once 'core/constants.php';
 
 final class autoLoader
 {
     /**
-     * Charge une classe depuis le répertoire core
+     * Loads a class from the core directory
      */
     public static function loadClassCore(string $S_className): void
     {
@@ -13,7 +13,7 @@ final class autoLoader
     }
 
     /**
-     * Charge une classe depuis le répertoire des exceptions
+     * Loads a class from the exception directory
      */
     public static function loadClassException(string $S_className): void
     {
@@ -22,7 +22,7 @@ final class autoLoader
     }
 
     /**
-     * Charge une classe depuis le répertoire des modèles
+     * Loads a class from the model directory
      */
     public static function loadClassModel(string $S_className): void
     {
@@ -31,7 +31,7 @@ final class autoLoader
     }
 
     /**
-     * Charge une classe depuis le répertoire des vues
+     * Loads a class from the view directory
      */
     public static function loadClassView(string $S_className): void
     {
@@ -40,7 +40,7 @@ final class autoLoader
     }
 
     /**
-     * Charge une classe depuis le répertoire des contrôleurs
+     * Loads a class from the controller directory
      */
     public static function loadClassController(string $S_className): void
     {
@@ -49,7 +49,16 @@ final class autoLoader
     }
 
     /**
-     * Charge un fichier s'il existe et est lisible
+     * Loads a class from the service directory
+     */
+    public static function loadClassService(string $S_className): void
+    {
+        $S_file = constants::servicesRepository() . "$S_className.php";
+        static::_load($S_file);
+    }
+
+    /**
+     * Loads a class if it exists and is readable
      */
     private static function _load(string $S_fileToLoad): void
     {
@@ -59,9 +68,10 @@ final class autoLoader
     }
 }
 
-// Enregistrement des autoloaders
+// Autoloader registration
 spl_autoload_register('autoLoader::loadClassCore');
 spl_autoload_register('autoLoader::loadClassException');
 spl_autoload_register('autoLoader::loadClassModel');
 spl_autoload_register('autoLoader::loadClassView');
 spl_autoload_register('autoLoader::loadClassController');
+spl_autoload_register('autoLoader::loadClassService');

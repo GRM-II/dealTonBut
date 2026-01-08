@@ -300,6 +300,23 @@ body.dark-theme .login-error-message {
     color: #ff6b6b;
 }
 
+.login-success-message {
+    color: #03543f;
+    padding: 8px;
+    background: #e6ffed;
+    margin: 5px 0;
+    border-radius: var(--radius-button);
+    text-align: center;
+    width: 100%;
+    border: 1px solid #84e1bc;
+}
+
+body.dark-theme .login-success-message {
+    background: #1a3a2e;
+    color: #84e1bc;
+    border-color: #2d5a4a;
+}
+
 /* Colonne droite : contenu supplémentaire */
 .login-right {
     display: flex;

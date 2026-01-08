@@ -1,15 +1,43 @@
 <?php
 
+/**
+ * Profile Page Controller
+ *
+ * Handles user profile-related actions including viewing profile information,
+ * updating profile details (username, email, password, grades), and account deletion.
+ * Manages user authentication and session validation for profile operations.
+ *
+ */
 final class profilepageController
 {
+    /**
+     * User model instance
+     *
+     * @var userModel
+     */
     private userModel $userModel;
 
+    /**
+     * Constructor
+     *
+     * Initializes the controller by creating a new userModel instance
+     * for database operations related to user profiles.
+     */
     public function __construct()
     {
         $this->userModel = new userModel();
     }
 
-
+    /**
+     * Displays the user profile page
+     *
+     * Validates user authentication and verifies that the user still exists
+     * in the database. If the user doesn't exist, destroys the session and
+     * redirects to login. Otherwise, displays the profile page with user
+     * information and grade points for various subjects.
+     *
+     * @return void
+     */
     public function index(): void
     {
         if (!isset($_SESSION['user']) || !isset($_SESSION['logged_in'])) {
@@ -17,38 +45,43 @@ final class profilepageController
             exit;
         }
 
-        // Vérifier que l'utilisateur existe toujours en BDD
+        // Checks that the user still exists in the database
         $username = $_SESSION['user']['username'];
         $userExists = $this->userModel->getUserByUsername($username);
 
         if (!$userExists) {
-            // L'utilisateur n'existe plus
+            // The user doesnt exist anymore
             session_unset();
             session_destroy();
             header('Location: ?controller=user&action=login&session_expired=1');
             exit;
         }
 
-        // Utiliser les données fraîches de la BDD
+        // Uses the data from the database
         view::show('profilepageView', [
-            'username' => $userExists['username'] ?? 'N/A',
-            'email' => $userExists['email'] ?? 'N/A',
-            'points_maths' => $userExists['points_maths'] ?? 0,
-            'points_programmation' => $userExists['points_programmation'] ?? 0,
-            'points_reseaux' => $userExists['points_reseaux'] ?? 0,
-            'points_BD' => $userExists['points_BD'] ?? 0,
-            'points_autre' => $userExists['points_autre'] ?? 0
+            'username' => $userExists['username'],
+            'email' => $userExists['email'],
+            'maths_points' => $userExists['maths_points'] ?? 0,
+            'programmation_points' => $userExists['programmation_points'] ?? 0,
+            'network_points' => $userExists['network_points'] ?? 0,
+            'DB_points' => $userExists['DB_points'] ?? 0,
+            'other_points' => $userExists['other_points'] ?? 0
         ]);
     }
 
+    /**
+     * Updates user profile information
+     *
+     * Processes POST requests to update various profile fields including username,
+     * email, password, and grade points for multiple subjects (maths, programming,
+     * networks, databases, other). Validates user authentication and input data,
+     * then updates the database accordingly. Sets flash messages for success or
+     * failure of each operation and redirects to the profile page.
+     *
+     * @return void
+     */
     public function updateProfile(): void
     {
-        // DEBUG - À RETIRER APRÈS
-//        error_log("GET params: " . print_r($_GET, true));
-//        error_log("POST params: " . print_r($_POST, true));
-//        error_log("REQUEST_URI: " . $_SERVER['REQUEST_URI']);
-        // FIN DEBUG
-
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
             echo 'Méthode non autorisée';
@@ -62,7 +95,7 @@ final class profilepageController
 
         $currentUsername = $_SESSION['user']['username'];
 
-        // Mise à jour du nom d'utilisateur
+        // Updates the username
         if (isset($_POST['new_username']) && !empty(trim($_POST['new_username']))) {
             $newUsername = trim($_POST['new_username']);
             $result = $this->userModel->updateUsername($currentUsername, $newUsername);
@@ -76,7 +109,7 @@ final class profilepageController
             }
         }
 
-        // Mise à jour de l'email
+        // Updates the email
         if (isset($_POST['new_email']) && !empty(trim($_POST['new_email']))) {
             $newEmail = trim($_POST['new_email']);
             $result = $this->userModel->updateEmail($currentUsername, $newEmail);
@@ -89,7 +122,7 @@ final class profilepageController
             }
         }
 
-        // Mise à jour du mot de passe
+        // Updates the password
         if (isset($_POST['new_password']) && !empty($_POST['new_password'])) {
             $hashedPassword = password_hash($_POST['new_password'], PASSWORD_DEFAULT);
             $result = $this->userModel->updatePassword($_SESSION['user']['id'], $hashedPassword);
@@ -100,32 +133,33 @@ final class profilepageController
                 $_SESSION['flash'] = ['success' => false, 'message' => 'Erreur lors de la mise à jour du mot de passe.'];
             }
         }
-        // Mise à jour des moyennes
+
+        // Updates the averages
         $gradesUpdated = false;
         $gradesData = [];
 
-        if (isset($_POST['new_points_maths']) && $_POST['new_points_maths'] !== '') {
-            $gradesData['points_maths'] = (float)$_POST['new_points_maths'];
+        if (isset($_POST['new_maths_points']) && $_POST['new_maths_points'] !== '') {
+            $gradesData['maths_points'] = (float)$_POST['new_maths_points'];
             $gradesUpdated = true;
         }
 
-        if (isset($_POST['new_points_programmation']) && $_POST['new_points_programmation'] !== '') {
-            $gradesData['points_programmation'] = (float)$_POST['new_points_programmation'];
+        if (isset($_POST['new_programmation_points']) && $_POST['new_programmation_points'] !== '') {
+            $gradesData['programmation_points'] = (float)$_POST['new_programmation_points'];
             $gradesUpdated = true;
         }
 
-        if (isset($_POST['new_points_reseaux']) && $_POST['new_points_reseaux'] !== '') {
-            $gradesData['points_reseaux'] = (float)$_POST['new_points_reseaux'];
+        if (isset($_POST['new_network_points']) && $_POST['new_network_points'] !== '') {
+            $gradesData['network_points'] = (float)$_POST['new_network_points'];
             $gradesUpdated = true;
         }
 
-        if (isset($_POST['new_points_BD']) && $_POST['new_points_BD'] !== '') {
-            $gradesData['points_BD'] = (float)$_POST['new_points_BD'];
+        if (isset($_POST['new_DB_points']) && $_POST['new_DB_points'] !== '') {
+            $gradesData['DB_points'] = (float)$_POST['new_DB_points'];
             $gradesUpdated = true;
         }
 
-        if (isset($_POST['new_points_autre']) && $_POST['new_points_autre'] !== '') {
-            $gradesData['points_autre'] = (float)$_POST['new_points_autre'];
+        if (isset($_POST['new_other_points']) && $_POST['new_other_points'] !== '') {
+            $gradesData['other_points'] = (float)$_POST['new_other_points'];
             $gradesUpdated = true;
         }
 
@@ -143,6 +177,17 @@ final class profilepageController
         exit;
     }
 
+    /**
+     * Deletes the user account
+     *
+     * Permanently deletes the authenticated user's account from the database.
+     * Validates user authentication, retrieves the user ID, and performs the deletion.
+     * On success, destroys the session and redirects to login with a deletion confirmation.
+     * On failure, logs the error and sets a flash message before redirecting to the profile page.
+     *
+     * @return void
+     * @throws Exception If user is not found or deletion fails
+     */
     public function deleteAccount(): void
     {
         if (!isset($_SESSION['user'])) {

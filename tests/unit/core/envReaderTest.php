@@ -3,10 +3,10 @@
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test unitaire pour la classe envReader
+ * Unit test for the envReader class
  *
- * Teste la lecture du fichier .env et l'accès aux configurations
- * de base de données (host, user, password, port, database name)
+ * Tests reading the .env file and accessing database
+ * configuration values (host, user, password, port, database name)
  */
 class envReaderTest extends TestCase
 {
@@ -14,7 +14,7 @@ class envReaderTest extends TestCase
     private static string $envPath;
 
     /**
-     * Configuration avant tous les tests
+     * Setup before all tests
      */
     public static function setUpBeforeClass(): void
     {
@@ -24,18 +24,18 @@ class envReaderTest extends TestCase
     }
 
     /**
-     * Test que la classe envReader existe
+     * Test that the envReader class exists
      */
     public function testEnvReaderClassExists(): void
     {
         $this->assertTrue(
             class_exists('envReader'),
-            'La classe envReader doit exister'
+            'The envReader class must exist'
         );
     }
 
     /**
-     * Test que tous les getters existent et sont publics
+     * Test that all getters exist and are public
      */
     public function testGettersExist(): void
     {
@@ -44,19 +44,19 @@ class envReaderTest extends TestCase
         foreach ($getters as $getter) {
             $this->assertTrue(
                 method_exists('envReader', $getter),
-                "La méthode envReader::$getter doit exister"
+                "The envReader::$getter method must exist"
             );
 
             $reflection = new ReflectionMethod('envReader', $getter);
             $this->assertTrue(
                 $reflection->isPublic(),
-                "La méthode $getter doit être publique"
+                "The $getter method must be public"
             );
         }
     }
 
     /**
-     * Test que toutes les propriétés privées existent
+     * Test that all private properties exist
      */
     public function testPrivatePropertiesExist(): void
     {
@@ -67,19 +67,19 @@ class envReaderTest extends TestCase
         foreach ($properties as $property) {
             $this->assertTrue(
                 $reflection->hasProperty($property),
-                "La propriété $property doit exister"
+                "The $property property must exist"
             );
 
             $prop = $reflection->getProperty($property);
             $this->assertTrue(
                 $prop->isPrivate(),
-                "La propriété $property doit être privée"
+                "The $property property must be private"
             );
         }
     }
 
     /**
-     * Test que le constructeur existe
+     * Test that the constructor exists
      */
     public function testConstructorExists(): void
     {
@@ -87,40 +87,40 @@ class envReaderTest extends TestCase
 
         $this->assertTrue(
             $reflection->hasMethod('__construct'),
-            'Le constructeur doit exister'
+            'The constructor must exist'
         );
 
         $constructor = $reflection->getMethod('__construct');
         $this->assertTrue(
             $constructor->isPublic(),
-            'Le constructeur doit être public'
+            'The constructor must be public'
         );
     }
 
     /**
-     * Test que le fichier .env existe (prérequis)
+     * Test that the .env file exists (prerequisite)
      */
     public function testEnvFileExists(): void
     {
         $this->assertFileExists(
             self::$envPath,
-            'Le fichier .env doit exister dans core/ pour que envReader fonctionne'
+            'The .env file must exist in core/ for envReader to work'
         );
 
         $this->assertFileIsReadable(
             self::$envPath,
-            'Le fichier .env doit être lisible'
+            'The .env file must be readable'
         );
     }
 
     /**
-     * Test de l'instanciation de envReader avec un fichier .env valide
+     * Test envReader instantiation with a valid .env file
      */
     public function testInstantiationWithValidEnvFile(): void
     {
-        // Ce test nécessite que le fichier .env existe
+        // This test requires the .env file to exist
         if (!file_exists(self::$envPath)) {
-            $this->markTestSkipped('Le fichier .env n\'existe pas, test ignoré');
+            $this->markTestSkipped('The .env file does not exist, test skipped');
         }
 
         try {
@@ -129,131 +129,131 @@ class envReaderTest extends TestCase
             $this->assertInstanceOf(
                 envReader::class,
                 $envReader,
-                'Le constructeur doit créer une instance de envReader'
+                'The constructor must create an envReader instance'
             );
         } catch (Exception $e) {
-            $this->fail('Le constructeur ne devrait pas lever d\'exception avec un fichier .env valide: ' . $e->getMessage());
+            $this->fail('The constructor should not throw an exception with a valid .env file: ' . $e->getMessage());
         }
     }
 
     /**
-     * Test que getHost retourne une chaîne
+     * Test that getHost returns a string
      */
     public function testGetHostReturnsString(): void
     {
         if (!file_exists(self::$envPath)) {
-            $this->markTestSkipped('Le fichier .env n\'existe pas, test ignoré');
+            $this->markTestSkipped('The .env file does not exist, test skipped');
         }
 
         $envReader = new envReader();
         $host = $envReader->getHost();
 
-        $this->assertIsString($host, 'getHost doit retourner une chaîne');
-        $this->assertNotEmpty($host, 'getHost ne doit pas retourner une chaîne vide');
+        $this->assertIsString($host, 'getHost must return a string');
+        $this->assertNotEmpty($host, 'getHost must not return an empty string');
     }
 
     /**
-     * Test que getUser retourne une chaîne
+     * Test that getUser returns a string
      */
     public function testGetUserReturnsString(): void
     {
         if (!file_exists(self::$envPath)) {
-            $this->markTestSkipped('Le fichier .env n\'existe pas, test ignoré');
+            $this->markTestSkipped('The .env file does not exist, test skipped');
         }
 
         $envReader = new envReader();
         $user = $envReader->getUser();
 
-        $this->assertIsString($user, 'getUser doit retourner une chaîne');
-        $this->assertNotEmpty($user, 'getUser ne doit pas retourner une chaîne vide');
+        $this->assertIsString($user, 'getUser must return a string');
+        $this->assertNotEmpty($user, 'getUser must not return an empty string');
     }
 
     /**
-     * Test que getMdp retourne une chaîne
+     * Test that getMdp returns a string
      */
     public function testGetMdpReturnsString(): void
     {
         if (!file_exists(self::$envPath)) {
-            $this->markTestSkipped('Le fichier .env n\'existe pas, test ignoré');
+            $this->markTestSkipped('The .env file does not exist, test skipped');
         }
 
         $envReader = new envReader();
         $mdp = $envReader->getMdp();
 
-        $this->assertIsString($mdp, 'getMdp doit retourner une chaîne');
-        // Le mot de passe peut être vide, donc on ne teste pas assertNotEmpty
+        $this->assertIsString($mdp, 'getMdp must return a string');
+        // The password may be empty, so we do not test assertNotEmpty
     }
 
     /**
-     * Test que getPort retourne une chaîne
+     * Test that getPort returns a string
      */
     public function testGetPortReturnsString(): void
     {
         if (!file_exists(self::$envPath)) {
-            $this->markTestSkipped('Le fichier .env n\'existe pas, test ignoré');
+            $this->markTestSkipped('The .env file does not exist, test skipped');
         }
 
         $envReader = new envReader();
         $port = $envReader->getPort();
 
-        $this->assertIsString($port, 'getPort doit retourner une chaîne');
-        $this->assertNotEmpty($port, 'getPort ne doit pas retourner une chaîne vide');
+        $this->assertIsString($port, 'getPort must return a string');
+        $this->assertNotEmpty($port, 'getPort must not return an empty string');
 
-        // Vérifier que c'est un nombre valide
+        // Check that it is a valid number
         $this->assertMatchesRegularExpression(
             '/^\d+$/',
             $port,
-            'Le port doit être un nombre'
+            'The port must be a number'
         );
     }
 
     /**
-     * Test que getBd retourne une chaîne
+     * Test that getBd returns a string
      */
     public function testGetBdReturnsString(): void
     {
         if (!file_exists(self::$envPath)) {
-            $this->markTestSkipped('Le fichier .env n\'existe pas, test ignoré');
+            $this->markTestSkipped('The .env file does not exist, test skipped');
         }
 
         $envReader = new envReader();
         $bd = $envReader->getBd();
 
-        $this->assertIsString($bd, 'getBd doit retourner une chaîne');
-        $this->assertNotEmpty($bd, 'getBd ne doit pas retourner une chaîne vide');
+        $this->assertIsString($bd, 'getBd must return a string');
+        $this->assertNotEmpty($bd, 'getBd must not return an empty string');
     }
 
     /**
-     * Test que tous les getters retournent des valeurs cohérentes
+     * Test that all getters return consistent values
      */
     public function testAllGettersReturnConsistentValues(): void
     {
         if (!file_exists(self::$envPath)) {
-            $this->markTestSkipped('Le fichier .env n\'existe pas, test ignoré');
+            $this->markTestSkipped('The .env file does not exist, test skipped');
         }
 
         $envReader = new envReader();
 
-        // Appeler chaque getter deux fois pour vérifier la cohérence
+        // Call each getter twice to check consistency
         $host1 = $envReader->getHost();
         $host2 = $envReader->getHost();
-        $this->assertSame($host1, $host2, 'getHost doit retourner la même valeur');
+        $this->assertSame($host1, $host2, 'getHost must return the same value');
 
         $user1 = $envReader->getUser();
         $user2 = $envReader->getUser();
-        $this->assertSame($user1, $user2, 'getUser doit retourner la même valeur');
+        $this->assertSame($user1, $user2, 'getUser must return the same value');
 
         $port1 = $envReader->getPort();
         $port2 = $envReader->getPort();
-        $this->assertSame($port1, $port2, 'getPort doit retourner la même valeur');
+        $this->assertSame($port1, $port2, 'getPort must return the same value');
 
         $bd1 = $envReader->getBd();
         $bd2 = $envReader->getBd();
-        $this->assertSame($bd1, $bd2, 'getBd doit retourner la même valeur');
+        $this->assertSame($bd1, $bd2, 'getBd must return the same value');
     }
 
     /**
-     * Test que le type de retour de tous les getters est string
+     * Test that all getters return string type
      */
     public function testAllGettersReturnStringType(): void
     {
@@ -266,19 +266,19 @@ class envReaderTest extends TestCase
 
             $this->assertNotNull(
                 $returnType,
-                "La méthode $getter doit avoir un type de retour déclaré"
+                "The $getter method must have a declared return type"
             );
 
             $this->assertSame(
                 'string',
                 $returnType->getName(),
-                "La méthode $getter doit retourner un string"
+                "The $getter method must return a string"
             );
         }
     }
 
     /**
-     * Test que toutes les propriétés ont le type string
+     * Test that all properties have string type
      */
     public function testAllPropertiesHaveStringType(): void
     {
@@ -291,75 +291,75 @@ class envReaderTest extends TestCase
 
             $this->assertNotNull(
                 $type,
-                "La propriété $property doit avoir un type déclaré"
+                "The $property property must have a declared type"
             );
 
             $this->assertSame(
                 'string',
                 $type->getName(),
-                "La propriété $property doit être de type string"
+                "The $property property must be of type string"
             );
         }
     }
 
     /**
-     * Test de la structure du fichier .env (format attendu)
+     * Test the structure of the .env file (expected format)
      */
     public function testEnvFileFormat(): void
     {
         if (!file_exists(self::$envPath)) {
-            $this->markTestSkipped('Le fichier .env n\'existe pas, test ignoré');
+            $this->markTestSkipped('The .env file does not exist, test skipped');
         }
 
         $content = file_get_contents(self::$envPath);
 
-        // Vérifier que le fichier contient les clés attendues
+        // Check that the file contains the expected keys
         $expectedKeys = ['DB_HOST', 'DB_USER', 'DB_MDP', 'DB_PORT', 'DB_NAME'];
 
         foreach ($expectedKeys as $key) {
             $this->assertStringContainsString(
                 $key,
                 $content,
-                "Le fichier .env doit contenir la clé $key"
+                "The .env file must contain the $key key"
             );
         }
     }
 
     /**
-     * Test que les valeurs par défaut communes sont reconnues
+     * Test that common default values are recognized
      */
     public function testCommonDefaultValues(): void
     {
         if (!file_exists(self::$envPath)) {
-            $this->markTestSkipped('Le fichier .env n\'existe pas, test ignoré');
+            $this->markTestSkipped('The .env file does not exist, test skipped');
         }
 
         $envReader = new envReader();
 
-        // Tester que le host est soit localhost, soit une IP
+        // Test that the host is either localhost or an IP
         $host = $envReader->getHost();
         $this->assertTrue(
             $host === 'localhost' ||
             $host === '127.0.0.1' ||
             filter_var($host, FILTER_VALIDATE_IP) !== false ||
             preg_match('/^[a-zA-Z0-9\.\-]+$/', $host),
-            'Le host doit être un nom d\'hôte ou une IP valide'
+            'The host must be a valid hostname or IP'
         );
 
-        // Tester que le port est un nombre entre 1 et 65535
+        // Test that the port is a number between 1 and 65535
         $port = $envReader->getPort();
         $portNum = (int)$port;
-        $this->assertGreaterThan(0, $portNum, 'Le port doit être supérieur à 0');
-        $this->assertLessThanOrEqual(65535, $portNum, 'Le port doit être inférieur ou égal à 65535');
+        $this->assertGreaterThan(0, $portNum, 'The port must be greater than 0');
+        $this->assertLessThanOrEqual(65535, $portNum, 'The port must be less than or equal to 65535');
     }
 
     /**
-     * Test de multiple instanciations (chaque instance doit être indépendante)
+     * Test multiple instantiations (each instance must be independent)
      */
     public function testMultipleInstances(): void
     {
         if (!file_exists(self::$envPath)) {
-            $this->markTestSkipped('Le fichier .env n\'existe pas, test ignoré');
+            $this->markTestSkipped('The .env file does not exist, test skipped');
         }
 
         $envReader1 = new envReader();
@@ -368,19 +368,19 @@ class envReaderTest extends TestCase
         $this->assertNotSame(
             $envReader1,
             $envReader2,
-            'Chaque instanciation doit créer un nouvel objet'
+            'Each instantiation must create a new object'
         );
 
-        // Mais les valeurs doivent être identiques
+        // But the values must be identical
         $this->assertSame(
             $envReader1->getHost(),
             $envReader2->getHost(),
-            'Les deux instances doivent lire les mêmes valeurs'
+            'Both instances must read the same values'
         );
     }
 
     /**
-     * Test du nombre de méthodes publiques
+     * Test the number of public methods
      */
     public function testPublicMethodCount(): void
     {
@@ -393,12 +393,12 @@ class envReaderTest extends TestCase
         $this->assertCount(
             5,
             $publicMethods,
-            'envReader doit avoir exactement 5 méthodes publiques (les 5 getters)'
+            'envReader must have exactly 5 public methods (the 5 getters)'
         );
     }
 
     /**
-     * Test que le chemin du fichier .env est correct
+     * Test that the .env file path is correct
      */
     public function testEnvFilePathIsCorrect(): void
     {
@@ -409,7 +409,7 @@ class envReaderTest extends TestCase
         $this->assertSame(
             $normalizedExpectedPath,
             $normalizedActualPath,
-            'Le chemin du fichier .env doit être dans core/'
+            'The .env file path must be located in core/'
         );
     }
 }

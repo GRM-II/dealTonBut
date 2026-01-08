@@ -21,10 +21,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require 'core/autoLoader.php';
-require 'core/view.php';
-require 'core/controller.php';
-require 'core/exception/controllerException.php';
+require_once 'core/autoLoader.php';
+require_once 'core/view.php';
+require_once 'core/controller.php';
+require_once 'core/exception/controllerException.php';
 
 try {
     // Récupérer le contrôleur et l'action depuis les paramètres GET

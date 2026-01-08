@@ -3,10 +3,10 @@
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test unitaire pour la classe view
+ * Unit test for the view class
  *
- * Teste la gestion des tampons de sortie (output buffers),
- * l'affichage des vues et le passage de paramètres
+ * Tests output buffer handling,
+ * view rendering, and parameter passing
  */
 class viewTest extends TestCase
 {
@@ -14,7 +14,7 @@ class viewTest extends TestCase
     private static string $testViewPath;
 
     /**
-     * Configuration avant tous les tests
+     * Setup before all tests
      */
     public static function setUpBeforeClass(): void
     {
@@ -24,12 +24,12 @@ class viewTest extends TestCase
     }
 
     /**
-     * Nettoyage après chaque test
+     * Cleanup after each test
      */
     protected function tearDown(): void
     {
-        // Nettoyer tous les tampons de sortie qui pourraient rester
-        // (sauf le tampon de PHPUnit lui-même qui est au niveau 1)
+        // Clean all remaining output buffers
+        // (except PHPUnit's own buffer which is at level 1)
         while (ob_get_level() > 1) {
             @ob_end_clean();
         }
@@ -37,24 +37,24 @@ class viewTest extends TestCase
     }
 
     /**
-     * Test que la classe view existe et est finale
+     * Test that the view class exists and is final
      */
     public function testViewClassExists(): void
     {
         $this->assertTrue(
             class_exists('view'),
-            'La classe view doit exister'
+            'The view class must exist'
         );
 
         $reflection = new ReflectionClass('view');
         $this->assertTrue(
             $reflection->isFinal(),
-            'La classe view doit être finale (final class)'
+            'The view class must be final (final class)'
         );
     }
 
     /**
-     * Test que toutes les méthodes statiques publiques existent
+     * Test that all public static methods exist
      */
     public function testStaticMethodsExist(): void
     {
@@ -63,24 +63,24 @@ class viewTest extends TestCase
         foreach ($methods as $method) {
             $this->assertTrue(
                 method_exists('view', $method),
-                "La méthode view::$method doit exister"
+                "The method view::$method must exist"
             );
 
             $reflection = new ReflectionMethod('view', $method);
             $this->assertTrue(
                 $reflection->isStatic(),
-                "La méthode view::$method doit être statique"
+                "The method view::$method must be static"
             );
 
             $this->assertTrue(
                 $reflection->isPublic(),
-                "La méthode view::$method doit être publique"
+                "The method view::$method must be public"
             );
         }
     }
 
     /**
-     * Test de la méthode openBuffer
+     * Test the openBuffer method
      */
     public function testOpenBuffer(): void
     {
@@ -93,15 +93,15 @@ class viewTest extends TestCase
         $this->assertSame(
             $levelBefore + 1,
             $levelAfter,
-            'openBuffer doit augmenter le niveau de tampon de 1'
+            'openBuffer must increase the buffer level by 1'
         );
 
-        // Nettoyer
+        // Cleanup
         ob_end_clean();
     }
 
     /**
-     * Test de la méthode getBufferContent
+     * Test the getBufferContent method
      */
     public function testGetBufferContent(): void
     {
@@ -116,19 +116,19 @@ class viewTest extends TestCase
         $this->assertSame(
             "Test content",
             $content,
-            'getBufferContent doit retourner le contenu du tampon'
+            'getBufferContent must return the buffer content'
         );
 
-        // Vérifier que le tampon est fermé après getBufferContent
+        // Check that the buffer is closed after getBufferContent
         $this->assertSame(
             $levelBefore,
             ob_get_level(),
-            'getBufferContent doit fermer le tampon (ob_get_clean)'
+            'getBufferContent must close the buffer (ob_get_clean)'
         );
     }
 
     /**
-     * Test que getBufferContent retourne une chaîne
+     * Test that getBufferContent returns a string
      */
     public function testGetBufferContentReturnsString(): void
     {
@@ -138,42 +138,42 @@ class viewTest extends TestCase
 
         $this->assertIsString(
             $content,
-            'getBufferContent doit retourner une chaîne'
+            'getBufferContent must return a string'
         );
     }
 
     /**
-     * Test de la méthode show avec une vue existante
+     * Test the show method with an existing view
      */
     public function testShowWithExistingView(): void
     {
-        // Utiliser une vue existante (homepageView)
+        // Use an existing view (homepageView)
         $viewFile = self::$rootPath . '/views/homepageView.php';
 
         if (!file_exists($viewFile)) {
-            $this->markTestSkipped('Le fichier homepageView.php n\'existe pas');
+            $this->markTestSkipped('The homepageView.php file does not exist');
         }
 
-        // Capturer la sortie
+        // Capture output
         ob_start();
         view::show('homepageView', ['test' => 'value']);
         $output = ob_get_clean();
 
-        $this->assertIsString($output, 'show doit produire une sortie');
+        $this->assertIsString($output, 'show must produce output');
     }
 
     /**
-     * Test que show accepte des paramètres vides
+     * Test that show accepts empty parameters
      */
     public function testShowWithEmptyParameters(): void
     {
         $viewFile = self::$rootPath . '/views/homepageView.php';
 
         if (!file_exists($viewFile)) {
-            $this->markTestSkipped('Le fichier homepageView.php n\'existe pas');
+            $this->markTestSkipped('The homepageView.php file does not exist');
         }
 
-        // show doit accepter un tableau vide
+        // show must accept an empty array
         ob_start();
         view::show('homepageView', []);
         $output = ob_get_clean();
@@ -182,17 +182,17 @@ class viewTest extends TestCase
     }
 
     /**
-     * Test que show accepte l'omission du paramètre
+     * Test that show accepts omission of the parameters argument
      */
     public function testShowWithoutParameters(): void
     {
         $viewFile = self::$rootPath . '/views/homepageView.php';
 
         if (!file_exists($viewFile)) {
-            $this->markTestSkipped('Le fichier homepageView.php n\'existe pas');
+            $this->markTestSkipped('The homepageView.php file does not exist');
         }
 
-        // show doit accepter l'omission du second paramètre
+        // show must accept omission of the second parameter
         ob_start();
         view::show('homepageView');
         $output = ob_get_clean();
@@ -201,7 +201,7 @@ class viewTest extends TestCase
     }
 
     /**
-     * Test du type de retour de openBuffer
+     * Test the return type of openBuffer
      */
     public function testOpenBufferReturnsVoid(): void
     {
@@ -210,18 +210,18 @@ class viewTest extends TestCase
 
         $this->assertNotNull(
             $returnType,
-            'openBuffer doit avoir un type de retour déclaré'
+            'openBuffer must have a declared return type'
         );
 
         $this->assertSame(
             'void',
             $returnType->getName(),
-            'openBuffer doit retourner void'
+            'openBuffer must return void'
         );
     }
 
     /**
-     * Test du type de retour de getBufferContent
+     * Test the return type of getBufferContent
      */
     public function testGetBufferContentReturnsStringType(): void
     {
@@ -230,18 +230,18 @@ class viewTest extends TestCase
 
         $this->assertNotNull(
             $returnType,
-            'getBufferContent doit avoir un type de retour déclaré'
+            'getBufferContent must have a declared return type'
         );
 
         $this->assertSame(
             'string',
             $returnType->getName(),
-            'getBufferContent doit retourner string'
+            'getBufferContent must return string'
         );
     }
 
     /**
-     * Test du type de retour de show
+     * Test the return type of show
      */
     public function testShowReturnsVoid(): void
     {
@@ -250,18 +250,18 @@ class viewTest extends TestCase
 
         $this->assertNotNull(
             $returnType,
-            'show doit avoir un type de retour déclaré'
+            'show must have a declared return type'
         );
 
         $this->assertSame(
             'void',
             $returnType->getName(),
-            'show doit retourner void'
+            'show must return void'
         );
     }
 
     /**
-     * Test de la chaîne de tampons multiples
+     * Test multiple nested output buffers
      */
     public function testMultipleBuffers(): void
     {
@@ -279,7 +279,7 @@ class viewTest extends TestCase
     }
 
     /**
-     * Test que openBuffer peut être appelé plusieurs fois
+     * Test that openBuffer can be called multiple times
      */
     public function testOpenBufferMultipleTimes(): void
     {
@@ -298,35 +298,35 @@ class viewTest extends TestCase
         $this->assertSame($level0 + 2, $level2);
         $this->assertSame($level0 + 3, $level3);
 
-        // Nettoyer
+        // Cleanup
         ob_end_clean();
         ob_end_clean();
         ob_end_clean();
     }
 
     /**
-     * Test que getBufferContent gère le contenu vide
+     * Test that getBufferContent handles empty content
      */
     public function testGetBufferContentWithEmptyBuffer(): void
     {
         view::openBuffer();
-        // Ne rien écrire
+        // Write nothing
 
         $content = view::getBufferContent();
 
         $this->assertSame(
             '',
             $content,
-            'getBufferContent doit retourner une chaîne vide si rien n\'est écrit'
+            'getBufferContent must return an empty string if nothing is written'
         );
     }
 
     /**
-     * Test que show utilise constants::viewsRepository
+     * Test that show uses constants::viewsRepository
      */
     public function testShowUsesConstantsViewsRepository(): void
     {
-        // Vérifier que constants::viewsRepository existe et retourne un chemin
+        // Check that constants::viewsRepository exists and returns a path
         $viewsRepo = constants::viewsRepository();
 
         $this->assertIsString($viewsRepo);
@@ -335,7 +335,7 @@ class viewTest extends TestCase
     }
 
     /**
-     * Test du nombre de méthodes publiques
+     * Test the number of public methods
      */
     public function testPublicMethodCount(): void
     {
@@ -350,7 +350,7 @@ class viewTest extends TestCase
         $this->assertCount(
             3,
             $publicMethods,
-            'view doit avoir exactement 3 méthodes publiques'
+            'view must have exactly 3 public methods'
         );
 
         $this->assertContains('openBuffer', $publicMethodNames);
@@ -359,7 +359,7 @@ class viewTest extends TestCase
     }
 
     /**
-     * Test que view n'a pas de propriétés
+     * Test that view has no properties
      */
     public function testViewHasNoProperties(): void
     {
@@ -369,12 +369,12 @@ class viewTest extends TestCase
         $this->assertCount(
             0,
             $properties,
-            'view ne doit pas avoir de propriétés (classe utilitaire statique)'
+            'view must not have any properties (static utility class)'
         );
     }
 
     /**
-     * Test que les paramètres show utilisent le bon type
+     * Test that show parameters use the correct types
      */
     public function testShowParametersTypes(): void
     {
@@ -384,81 +384,81 @@ class viewTest extends TestCase
         $this->assertCount(
             2,
             $parameters,
-            'show doit avoir 2 paramètres'
+            'show must have 2 parameters'
         );
 
-        // Premier paramètre: $S_localisation (pas de type hint dans le code actuel)
+        // First parameter: $S_localisation (no type hint in current code)
         $param1 = $parameters[0];
         $this->assertSame('S_localisation', $param1->getName());
 
-        // Second paramètre: $A_parameters avec valeur par défaut array()
+        // Second parameter: $A_parameters with default array()
         $param2 = $parameters[1];
         $this->assertSame('A_parameters', $param2->getName());
         $this->assertTrue(
             $param2->isOptional(),
-            'Le second paramètre doit être optionnel'
+            'The second parameter must be optional'
         );
         $this->assertTrue(
             $param2->isDefaultValueAvailable(),
-            'Le second paramètre doit avoir une valeur par défaut'
+            'The second parameter must have a default value'
         );
     }
 
     /**
-     * Test d'intégration: cycle complet de tampon
+     * Integration test: complete buffer lifecycle
      */
     public function testCompleteBufferCycle(): void
     {
         $levelBefore = ob_get_level();
 
-        // Ouvrir un tampon
+        // Open a buffer
         view::openBuffer();
 
-        // Écrire du contenu
+        // Write content
         echo "Line 1\n";
         echo "Line 2\n";
         echo "Line 3";
 
-        // Récupérer le contenu
+        // Retrieve content
         $content = view::getBufferContent();
 
-        // Vérifier le contenu
+        // Check content
         $this->assertSame("Line 1\nLine 2\nLine 3", $content);
 
-        // Vérifier que le tampon est fermé et revenu au niveau initial
+        // Check that buffer is closed and level restored
         $this->assertSame($levelBefore, ob_get_level());
     }
 
     /**
-     * Test que show construit le bon chemin de fichier
+     * Test that show builds the correct file path
      */
     public function testShowBuildsCorrectFilePath(): void
     {
-        // Utiliser réflexion pour vérifier la logique (indirectement)
+        // Use reflection to indirectly verify logic
         $viewsRepo = constants::viewsRepository();
         $expectedPath = $viewsRepo . 'homepageView.php';
 
         $this->assertFileExists(
             $expectedPath,
-            'Le chemin construit par show doit pointer vers un fichier existant'
+            'The path built by show must point to an existing file'
         );
     }
 
     /**
-     * Test que view est bien une classe utilitaire (pas instanciable normalement)
+     * Test that view is a proper utility class (not instantiable normally)
      */
     public function testViewIsUtilityClass(): void
     {
         $reflection = new ReflectionClass('view');
 
-        // Vérifier que toutes les méthodes sont statiques
+        // Check that all public methods are static
         $methods = $reflection->getMethods(ReflectionMethod::IS_PUBLIC);
 
         foreach ($methods as $method) {
             if (!$method->isConstructor()) {
                 $this->assertTrue(
                     $method->isStatic(),
-                    "Toutes les méthodes publiques de view doivent être statiques (classe utilitaire)"
+                    'All public methods of view must be static (utility class)'
                 );
             }
         }

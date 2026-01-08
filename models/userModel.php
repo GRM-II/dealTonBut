@@ -1,13 +1,36 @@
 <?php
 
-require 'core/envReader.php';
+require_once 'core/envReader.php';
 
+/**
+ * User model class for managing database operations related to users.
+ *
+ * This class implements the Singleton pattern for database connections
+ * and provides comprehensive methods for user management including authentication,
+ * registration, profile updates, and grade management. It handles all database
+ * interactions for the Users table with proper error handling and security measures.
+ *
+ * @final
+ */
 final class userModel
 {
+    /**
+     * Singleton PDO database connection instance.
+     *
+     * @var PDO|null
+     */
     private static ?PDO $connection = null;
 
     /**
-     * Récupère ou crée la connexion PDO unique (pattern Singleton)
+     * Retrieves or creates the single PDO connection (Singleton pattern).
+     *
+     * This method establishes a MySQL database connection using credentials
+     * from the envReader configuration. The connection is created only once
+     * and reused for subsequent calls. It configures PDO to throw exceptions
+     * on errors and fetch results as associative arrays by default.
+     *
+     * @return PDO The PDO database connection instance
+     * @throws RuntimeException If unable to connect to the database
      */
     public static function getConnection(): PDO
     {
@@ -36,16 +59,23 @@ final class userModel
     }
 
     /**
-     * Vérifie le statut de la connexion à la base de données
+     * Checks the database connection status and verifies the Users table exists.
      *
-     * @return array{available: bool, message: string, details?: string}
+     * This method performs two checks:
+     * 1. Verifies that a database connection can be established
+     * 2. Confirms that the 'Users' table exists in the database
+     *
+     * @return array{available: bool, message: string, details?: string} An associative array containing:
+     *         - available: Boolean indicating if the database is operational
+     *         - message: Human-readable status message
+     *         - details: Additional diagnostic information (optional)
      */
     public function getDbStatus(): array
     {
         try {
             $pdo = self::getConnection();
 
-            // Vérifie si la table Users existe
+            // Checks if the User table exists
             $stmt = $pdo->query("SHOW TABLES LIKE 'Users'");
             $tableExists = $stmt !== false && $stmt->rowCount() > 0;
 
@@ -74,15 +104,22 @@ final class userModel
     }
 
     /**
-     * Récupère un utilisateur par son username
+     * Retrieves a user by their username.
+     *
+     * This method fetches complete user information including their grades/points
+     * across different subjects (mathematics, programming, networks, databases, and other).
+     *
+     * @param string $username The username to search for
+     * @return array{id: int|string, username: string, email: string, maths_maths: float|string|null, programmation_points: float|string|null, network_points: float|string|null, DB_points: float|string|null, other_points: float|string|null}|null
+     *         An associative array containing user data with grades, or null if not found or on error
      */
     public function getUserByUsername(string $username): ?array
     {
         try {
             $pdo = self::getConnection();
             $stmt = $pdo->prepare("SELECT id, username, email, 
-                       points_maths, points_programmation, points_reseaux, 
-                       points_BD, points_autre FROM Users WHERE username = :username");
+                       maths_points, programmation_points, network_points, 
+                       DB_points, other_points FROM Users WHERE username = :username");
             $stmt->execute(['username' => $username]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -94,31 +131,13 @@ final class userModel
     }
 
     /**
-     * Récupère un utilisateur avec ses moyennes
-     */
-    public function getUserWithGrades(string $username): ?array
-    {
-        try {
-            $pdo = self::getConnection();
-            $stmt = $pdo->prepare("
-                SELECT id, username, email, 
-                       points_maths, points_programmation, points_reseaux, 
-                       points_BD, points_autre 
-                FROM Users 
-                WHERE username = :username
-            ");
-            $stmt->execute(['username' => $username]);
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            return $user ?: null;
-        } catch (PDOException $e) {
-            error_log("Erreur getUserWithGrades: " . $e->getMessage());
-            return null;
-        }
-    }
-
-    /**
-     * Récupère l'ID d'un utilisateur par son username
+     * Retrieves a user's ID from their username.
+     *
+     * This is a lightweight method that only fetches the user ID,
+     * useful when only the ID is needed without loading the complete user profile.
+     *
+     * @param string $username The username to look up
+     * @return int|null The user's ID, or null if the user is not found or an error occurs
      */
     public function getUserIdByUsername(string $username): ?int
     {
@@ -136,14 +155,27 @@ final class userModel
     }
 
     /**
-     * Crée un nouvel utilisateur dans la base de données
+     * Creates a new user in the database.
+     *
+     * This method performs the following validations and operations:
+     * 1. Checks if the email address is already in use
+     * 2. Checks if the username is already taken
+     * 3. Hashes the password using PHP's password_hash with PASSWORD_DEFAULT algorithm
+     * 4. Inserts the new user into the database
+     *
+     * @param string $username The desired username
+     * @param string $email The user's email address
+     * @param string $password The plain text password (will be hashed)
+     * @return array{success: bool, message: string} An associative array containing:
+     *         - success: Boolean indicating if the user was created successfully
+     *         - message: A descriptive message about the operation result
      */
     public function createUser(string $username, string $email, string $password): array
     {
         try {
             $pdo = self::getConnection();
 
-            // 1. Vérifier si l'email existe déjà
+            // 1. Check if the email address already exists.
             $stmt = $pdo->prepare("SELECT id FROM Users WHERE email = :email LIMIT 1");
             $stmt->execute(['email' => $email]);
 
@@ -154,7 +186,7 @@ final class userModel
                 ];
             }
 
-            // 2. Vérifier si le nom d'utilisateur existe déjà
+            // 2. Check if the username already exists
             $stmt = $pdo->prepare("SELECT id FROM Users WHERE username = :username LIMIT 1");
             $stmt->execute(['username' => $username]);
 
@@ -165,10 +197,10 @@ final class userModel
                 ];
             }
 
-            // 3. Hasher le mot de passe
+            // 3. Hasher the password
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            // 4. Insérer le nouvel utilisateur
+            // 4. Insert the new user
             $stmt = $pdo->prepare(
                 "INSERT INTO Users (username, email, mdp) 
                  VALUES (:username, :email, :password)"
@@ -202,7 +234,15 @@ final class userModel
     }
 
     /**
-     * Recherche un utilisateur par son username OU son email
+     * Searches for a user by their username OR email address.
+     *
+     * This method is used during login to allow users to authenticate
+     * using either their username or email. It returns the complete user
+     * record including the hashed password for verification.
+     *
+     * @param string $login The username or email to search for
+     * @return array{id: int|string, username: string, email: string, mdp: string}|null
+     *         An associative array containing user credentials, or null if not found or on error
      */
     public function findUserByLogin(string $login): ?array
     {
@@ -216,7 +256,7 @@ final class userModel
             $pdo = self::getConnection();
 
             $sql = "SELECT id, username, email, mdp 
-                    FROM Users 
+                    FROM Users
                     WHERE username = :login OR email = :login 
                     LIMIT 1";
 
@@ -235,7 +275,24 @@ final class userModel
     }
 
     /**
-     * Authentifie un utilisateur
+     * Authenticates a user with their login credentials.
+     *
+     * This method performs user authentication by:
+     * 1. Validating that both login and password are provided
+     * 2. Looking up the user by username or email
+     * 3. Verifying the password using password_verify()
+     * 4. Returning user information on successful authentication
+     *
+     * For security, the same error message is returned whether the user
+     * doesn't exist or the password is incorrect to prevent user enumeration.
+     *
+     * @param string $login The username or email address
+     * @param string $password The plain text password to verify
+     * @return array{success: bool, message: string, user?: array{id: int|string, username: string, email: string}}
+     *         An associative array containing:
+     *         - success: Boolean indicating if authentication was successful
+     *         - message: A status message
+     *         - user: User data (id, username, email) only present if success is true
      */
     public function authenticate(string $login, string $password): array
     {
@@ -245,14 +302,14 @@ final class userModel
             return ['success' => false, 'message' => 'Identifiants manquants.'];
         }
 
-        // Recherche l'utilisateur
+        // Search for user
         $user = $this->findUserByLogin($login);
 
         if (!$user) {
             return ['success' => false, 'message' => 'Identifiant ou mot de passe incorrect.'];
         }
 
-        // Vérifie le mot de passe
+        // Check the password
         $passwordMatch = password_verify($password, $user['mdp']);
 
         if (!$passwordMatch) {
@@ -271,7 +328,14 @@ final class userModel
     }
 
     /**
-     * Met à jour le mot de passe
+     * Updates a user's password.
+     *
+     * This method updates the password field in the database with a pre-hashed password.
+     * Note: The password should be hashed before calling this method using password_hash().
+     *
+     * @param int $userId The ID of the user whose password should be updated
+     * @param string $hashedPassword The hashed password to store
+     * @return bool True if the password was successfully updated, false otherwise
      */
     public static function updatePassword(int $userId, string $hashedPassword): bool
     {
@@ -295,7 +359,14 @@ final class userModel
     }
 
     /**
-     * Supprime un utilisateur
+     * Deletes a user from the database.
+     *
+     * This method permanently removes a user record from the Users table.
+     * Warning: This operation cannot be undone. Consider implementing soft deletes
+     * for production applications.
+     *
+     * @param int $userId The ID of the user to delete
+     * @return bool True if the user was successfully deleted, false otherwise
      */
     public static function deleteUser(int $userId): bool
     {
@@ -314,7 +385,16 @@ final class userModel
     }
 
     /**
-     * Met à jour le nom d'utilisateur
+     * Updates a user's username.
+     *
+     * This method changes the username for an existing user. It validates that
+     * the new username is not empty and handles duplicate username errors.
+     *
+     * @param string $currentUsername The user's current username
+     * @param string $newUsername The desired new username
+     * @return array{success: bool, message: string} An associative array containing:
+     *         - success: Boolean indicating if the update was successful
+     *         - message: A descriptive message about the operation result
      */
     public function updateUsername(string $currentUsername, string $newUsername): array
     {
@@ -350,7 +430,16 @@ final class userModel
     }
 
     /**
-     * Met à jour l'email
+     * Updates a user's email address.
+     *
+     * This method changes the email for an existing user. It validates that
+     * the email format is correct and handles duplicate email errors.
+     *
+     * @param string $username The username of the user to update
+     * @param string $newEmail The new email address
+     * @return array{success: bool, message: string} An associative array containing:
+     *         - success: Boolean indicating if the update was successful
+     *         - message: A descriptive message about the operation result
      */
     public function updateEmail(string $username, string $newEmail): array
     {
@@ -386,7 +475,21 @@ final class userModel
     }
 
     /**
-     * Met à jour les moyennes de l'utilisateur
+     * Updates a user's grades/points across different subjects.
+     *
+     * This method allows updating one or more grade fields for a user.
+     * It performs the following validations:
+     * 1. Ensures all grade values are between 0 and 20
+     * 2. Only updates fields that are in the allowed fields list
+     * 3. Dynamically constructs the UPDATE query based on provided fields
+     *
+     * Allowed fields: network_points, network_points, network_points, network_points, other_points
+     *
+     * @param int $userId The ID of the user whose grades should be updated
+     * @param array<string, float|int> $gradesData An associative array of field names and grade values
+     * @return array{success: bool, message: string} An associative array containing:
+     *         - success: Boolean indicating if the update was successful
+     *         - message: A descriptive message about the operation result
      */
     public function updateGrades(int $userId, array $gradesData): array
     {
@@ -394,7 +497,7 @@ final class userModel
             return ['success' => false, 'message' => 'Aucune moyenne à mettre à jour.'];
         }
 
-        // Valider que toutes les valeurs sont entre 0 et 20
+        // Checks that all the values are between 0 and 20
         foreach ($gradesData as $field => $value) {
             if ($value < 0 || $value > 20) {
                 return [
@@ -407,11 +510,11 @@ final class userModel
         try {
             $pdo = self::getConnection();
 
-            // Construire dynamiquement la requête UPDATE
+            // Dynamically construct the UPDATE query
             $fields = [];
             $params = [':userId' => $userId];
 
-            $allowedFields = ['points_maths', 'points_programmation', 'points_reseaux', 'points_BD', 'points_autre'];
+            $allowedFields = ['maths_points', 'programmation_points', 'network_points', 'DB_points', 'other_points'];
 
             foreach ($gradesData as $field => $value) {
                 if (in_array($field, $allowedFields)) {
