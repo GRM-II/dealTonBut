@@ -114,41 +114,49 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                             <button type="button" id="edit-autre-btn" class="input-rectangle grade-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
                         </div>
                     </div>
-                    <?php
-                    $dataPoints = array(
-	                array("label"=> "Education", "y"=> 284935),
-	                array("label"=> "Entertainment", "y"=> 256548),
-	                array("label"=> "Lifestyle", "y"=> 245214),
-	                array("label"=> "Business", "y"=> 233464),
-	                array("label"=> "Music & Audio", "y"=> 200285),
-	                array("label"=> "Personalization", "y"=> 194422),
-	                array("label"=> "Tools", "y"=> 180337),
-	                array("label"=> "Books & Reference", "y"=> 172340),
-	                array("label"=> "Travel & Local", "y"=> 118187),
-	                array("label"=> "Puzzle", "y"=> 107530)
-                    );?>
-                    <script>
-                        window.onload = function () {
+                    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+                    <script type="text/javascript">
+                        google.charts.load("current", {packages:["corechart"]});
+                        google.charts.setOnLoadCallback(drawChart);
+                        function drawChart() {
+                            var data = google.visualization.arrayToDataTable([
+                                ["Moyennes", "Moyenne", { role: "style" } ],
+                                ["Maths", <?php echo $A_view['maths_points'] ?? '0'?>, "color: #ff00ff"],
+                                ["Programmation", <?php echo $A_view['programmation_points'] ?? '0'?>, "color: #ff00ff"],
+                                ["Réseau", <?php echo $A_view['network_points'] ?? '0'?>, "color: #ff00ff"],
+                                ["BD", <?php echo $A_view['DB_points'] ?? '0'?>, "color: #ff00ff"],
+                                ["Autres", <?php echo $A_view['other_points'] ?? '0'?>, "color: #ff00ff"]
+                            ]);
 
-                            var chart = new CanvasJS.Chart("chartContainer", {
-                                animationEnabled: true,
-                                theme: "light2", // "light1", "light2", "dark1", "dark2"
-                                title: {
-                                    text: "Top 10 Google Play Categories - till 2017"
+                            var view = new google.visualization.DataView(data);
+                            view.setColumns([0, 1,
+                                { calc: "stringify",
+                                    sourceColumn: 1,
+                                    type: "string",
+                                    role: "annotation" },
+                                2]);
+
+                            var options = {
+                                title: "Aperçu des moyennes",
+                                width: 600,
+                                height: 400,
+                                backgroundColor: 'var(--surface-light)',
+                                bar: {groupWidth: "67%"},
+                                legend: { position: "none" },
+                                hAxis: {
+                                    title: 'Points/20',
+                                    viewWindow:{
+                                        max:20,
+                                        min:0
+                                    }
                                 },
-                                axisY: {
-                                    title: "Number of Apps"
-                                },
-                                data: [{
-                                    type: "column",
-                                    dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
-                                }]
-                            });
-                            chart.render();
+                            };
+                            var chart = new google.visualization.BarChart(document.getElementById("barchart_values"));
+                            chart.draw(view, options);
                         }
                     </script>
-                    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-                    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+                    <div id="barchart_values" style="width: 900px; height: 300px;"></div>
+
                 </div>
                 <div class="login-right-separator"></div>
                 <div class="login-right-bottom">
