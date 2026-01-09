@@ -58,9 +58,7 @@ if (!empty($A_view['offers'])) {
             <input type="text" id="search-input" placeholder="Recherche" class="input-rectangle">
         </div>
 
-        <!-- Conteneur avec sidebar et contenu principal -->
         <div class="market-layout">
-            <!-- Barre latérale -->
             <aside class="market-sidebar">
                 <h3 class="sidebar-title">Filtres</h3>
                 <div class="sidebar-section">

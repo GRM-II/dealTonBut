@@ -45,13 +45,13 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                         <span id="username-display"><?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
                         <button type="button" id="edit-username-btn" class="input-rectangle profile-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
                     </div>
-                    <br><br>
+
                     <div class="profile-info-item">
                         <strong>Email :</strong>
                         <span id="email-display"><?php echo htmlspecialchars($A_view['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
                         <button type="button" id="edit-email-btn" class="input-rectangle profile-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
                     </div>
-                    <br><br>
+
                     <div class="profile-info-item">
                         <strong>Mot de passe :</strong>
                         <span id="password-display">••••••••</span>
@@ -68,99 +68,60 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                 </div>
 
                 <div class="profile-danger-zone">
-                    <strong class="danger-title">Oh là jeune ménestrel</strong><br>
-                    <p class="danger-warning-text">La suppression de votre compte est définitive et irréversible.</p>
+                    <strong class="danger-title">⚠️ Zone de danger de mort 💀</strong>
+                    <p class="danger-warning-text">La suppression de votre compte est définitive et irréversible. Toutes vos données seront effacées avec efficacité.</p>
                     <button type="button" id="delete-account-btn" class="input-rectangle profile-delete-btn" <?php echo $disabledAttr; ?>>Supprimer mon compte</button>
                 </div>
             </div>
             <div class="login-right">
-                <div class="login-right-top">
-                    <!-- Section Moyennes par matière -->
-                    <div class="grades-section">
-                        <h1 class="rectangle-title"><u>Moyennes du semestre par matière</u></h1>
+                <h1 class="rectangle-title">Moyennes du semestre</h1>
 
-                        <!-- Mathématiques -->
-                        <div class="grade-item">
-                            <strong>Mathématiques :</strong>
-                            <span id="maths-display"><?php echo htmlspecialchars($A_view['maths_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>/20</span>
-                            <button type="button" id="edit-maths-btn" class="input-rectangle grade-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
-                        </div>
-
-                        <!-- Programmation -->
-                        <div class="grade-item">
-                            <strong>Programmation :</strong>
-                            <span id="prog-display"><?php echo htmlspecialchars($A_view['programmation_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>/20</span>
-                            <button type="button" id="edit-prog-btn" class="input-rectangle grade-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
-                        </div>
-
-                        <!-- Réseaux -->
-                        <div class="grade-item">
-                            <strong>Réseaux :</strong>
-                            <span id="reseaux-display"><?php echo htmlspecialchars($A_view['network_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>/20</span>
-                            <button type="button" id="edit-reseaux-btn" class="input-rectangle grade-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
-                        </div>
-
-                        <!-- Base de données -->
-                        <div class="grade-item">
-                            <strong>Base de données :</strong>
-                            <span id="bd-display"><?php echo htmlspecialchars($A_view['DB_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>/20</span>
-                            <button type="button" id="edit-bd-btn" class="input-rectangle grade-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
-                        </div>
-
-                        <!-- Autre -->
-                        <div class="grade-item">
-                            <strong>Autre :</strong>
-                            <span id="autre-display"><?php echo htmlspecialchars($A_view['other_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>/20</span>
-                            <button type="button" id="edit-autre-btn" class="input-rectangle grade-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
-                        </div>
+                <!-- Graphique des moyennes -->
+                <div class="chart-container">
+                    <div id="barchart_values"
+                         data-maths="<?php echo htmlspecialchars($A_view['maths_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>"
+                         data-programmation="<?php echo htmlspecialchars($A_view['programmation_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>"
+                         data-network="<?php echo htmlspecialchars($A_view['network_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>"
+                         data-db="<?php echo htmlspecialchars($A_view['DB_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>"
+                         data-other="<?php echo htmlspecialchars($A_view['other_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>">
                     </div>
-                    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-                    <script type="text/javascript">
-                        google.charts.load("current", {packages:["corechart"]});
-                        google.charts.setOnLoadCallback(drawChart);
-                        function drawChart() {
-                            var data = google.visualization.arrayToDataTable([
-                                ["Moyennes", "Moyenne", { role: "style" } ],
-                                ["Maths", <?php echo $A_view['maths_points'] ?? '0'?>, "color: #ff00ff"],
-                                ["Programmation", <?php echo $A_view['programmation_points'] ?? '0'?>, "color: #ff00ff"],
-                                ["Réseau", <?php echo $A_view['network_points'] ?? '0'?>, "color: #ff00ff"],
-                                ["BD", <?php echo $A_view['DB_points'] ?? '0'?>, "color: #ff00ff"],
-                                ["Autres", <?php echo $A_view['other_points'] ?? '0'?>, "color: #ff00ff"]
-                            ]);
-
-                            var view = new google.visualization.DataView(data);
-                            view.setColumns([0, 1,
-                                { calc: "stringify",
-                                    sourceColumn: 1,
-                                    type: "string",
-                                    role: "annotation" },
-                                2]);
-
-                            var options = {
-                                title: "Aperçu des moyennes",
-                                width: 600,
-                                height: 400,
-                                backgroundColor: 'var(--surface-light)',
-                                bar: {groupWidth: "67%"},
-                                legend: { position: "none" },
-                                hAxis: {
-                                    title: 'Points/20',
-                                    viewWindow:{
-                                        max:20,
-                                        min:0
-                                    }
-                                },
-                            };
-                            var chart = new google.visualization.BarChart(document.getElementById("barchart_values"));
-                            chart.draw(view, options);
-                        }
-                    </script>
-                    <div id="barchart_values" style="width: 900px; height: 300px;"></div>
-
                 </div>
-                <div class="login-right-separator"></div>
-                <div class="login-right-bottom">
-                    <h3>Note de dev : espace pour l'historique des transactions ou autre</h3>
+
+                <!-- Liste des moyennes en grille -->
+                <div class="grades-grid">
+                    <!-- Mathématiques -->
+                    <div class="grade-item">
+                        <strong>Mathématiques :</strong>
+                        <span id="maths-display"><?php echo htmlspecialchars($A_view['maths_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>/20</span>
+                    </div>
+
+                    <!-- Programmation -->
+                    <div class="grade-item">
+                        <strong>Programmation :</strong>
+                        <span id="prog-display"><?php echo htmlspecialchars($A_view['programmation_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>/20</span>
+                    </div>
+
+                    <!-- Réseaux -->
+                    <div class="grade-item">
+                        <strong>Réseaux :</strong>
+                        <span id="reseaux-display"><?php echo htmlspecialchars($A_view['network_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>/20</span>
+                    </div>
+
+                    <!-- Base de données -->
+                    <div class="grade-item">
+                        <strong>Base de données :</strong>
+                        <span id="bd-display"><?php echo htmlspecialchars($A_view['DB_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>/20</span>
+                    </div>
+
+                    <!-- Autre -->
+                    <div class="grade-item">
+                        <strong>Autre :</strong>
+                        <span id="autre-display"><?php echo htmlspecialchars($A_view['other_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>/20</span>
+                    </div>
+                </div>
+
+                <div class="grades-edit-container">
+                    <button type="button" id="edit-all-grades-btn" class="input-rectangle grades-edit-all-btn" <?php echo $disabledAttr; ?>>Modifier mes moyennes</button>
                 </div>
             </div>
         </div>
@@ -225,81 +186,41 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
     </div>
 </div>
 
-<!-- Modal modification Mathématiques -->
-<div id="maths-modal" class="profile-modal">
-    <div class="modal-content">
-        <h3>Modifier la moyenne en Mathématiques</h3>
+<!-- Modal modification de toutes les moyennes -->
+<div id="all-grades-modal" class="profile-modal">
+    <div class="modal-content modal-content-large">
+        <h3>Modifier toutes mes moyennes</h3>
         <form method="post" action="?controller=profilepage&action=updateProfile">
-            <label for="modal_new_maths_points">Moyenne (/20) :</label>
-            <input type="number" id="modal_new_maths_points" name="new_maths_points" value="<?php echo htmlspecialchars($A_view['maths_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle" min="0" max="20" step="0.01" required <?php echo $disabledAttr; ?>>
-            <span class="grade-help-text">Entrez ici votre moyenne de ce semestre en mathématiques</span>
-            <div class="modal-buttons">
-                <button type="submit" class="input-rectangle btn-save">Enregistrer</button>
-                <button type="button" class="input-rectangle btn-cancel cancel-modal" data-modal="maths-modal">Annuler</button>
-            </div>
-        </form>
-    </div>
-</div>
+            <div class="grades-modal-grid">
+                <div class="grade-modal-item">
+                    <label for="modal_new_maths_points">Mathématiques (/20) :</label>
+                    <input type="number" id="modal_new_maths_points" name="new_maths_points" value="<?php echo htmlspecialchars($A_view['maths_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle" min="0" max="20" step="0.01" required <?php echo $disabledAttr; ?>>
+                </div>
 
-<!-- Modal modification Programmation -->
-<div id="prog-modal" class="profile-modal">
-    <div class="modal-content">
-        <h3>Modifier la moyenne en Programmation</h3>
-        <form method="post" action="?controller=profilepage&action=updateProfile">
-            <label for="modal_new_programmation_points">Moyenne (/20) :</label>
-            <input type="number" id="modal_new_programmation_points" name="new_programmation_points" value="<?php echo htmlspecialchars($A_view['programmation_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle" min="0" max="20" step="0.01" required <?php echo $disabledAttr; ?>>
-            <span class="grade-help-text">Entrez ici votre moyenne de ce semestre en programmation</span>
-            <div class="modal-buttons">
-                <button type="submit" class="input-rectangle btn-save">Enregistrer</button>
-                <button type="button" class="input-rectangle btn-cancel cancel-modal" data-modal="prog-modal">Annuler</button>
-            </div>
-        </form>
-    </div>
-</div>
+                <div class="grade-modal-item">
+                    <label for="modal_new_programmation_points">Programmation (/20) :</label>
+                    <input type="number" id="modal_new_programmation_points" name="new_programmation_points" value="<?php echo htmlspecialchars($A_view['programmation_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle" min="0" max="20" step="0.01" required <?php echo $disabledAttr; ?>>
+                </div>
 
-<!-- Modal modification Réseaux -->
-<div id="reseaux-modal" class="profile-modal">
-    <div class="modal-content">
-        <h3>Modifier la moyenne en Réseaux</h3>
-        <form method="post" action="?controller=profilepage&action=updateProfile">
-            <label for="modal_new_network_points">Moyenne (/20) :</label>
-            <input type="number" id="modal_new_network_points" name="new_network_points" value="<?php echo htmlspecialchars($A_view['network_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle" min="0" max="20" step="0.01" required <?php echo $disabledAttr; ?>>
-            <span class="grade-help-text">Entrez ici votre moyenne de ce semestre en réseaux</span>
-            <div class="modal-buttons">
-                <button type="submit" class="input-rectangle btn-save">Enregistrer</button>
-                <button type="button" class="input-rectangle btn-cancel cancel-modal" data-modal="reseaux-modal">Annuler</button>
-            </div>
-        </form>
-    </div>
-</div>
+                <div class="grade-modal-item">
+                    <label for="modal_new_network_points">Réseaux (/20) :</label>
+                    <input type="number" id="modal_new_network_points" name="new_network_points" value="<?php echo htmlspecialchars($A_view['network_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle" min="0" max="20" step="0.01" required <?php echo $disabledAttr; ?>>
+                </div>
 
-<!-- Modal modification Base de données -->
-<div id="bd-modal" class="profile-modal">
-    <div class="modal-content">
-        <h3>Modifier la moyenne en Base de données</h3>
-        <form method="post" action="?controller=profilepage&action=updateProfile">
-            <label for="modal_new_DB_points">Moyenne (/20) :</label>
-            <input type="number" id="modal_new_DB_points" name="new_DB_points" value="<?php echo htmlspecialchars($A_view['DB_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle" min="0" max="20" step="0.01" required <?php echo $disabledAttr; ?>>
-            <span class="grade-help-text">Entrez ici votre moyenne de ce semestre en base de données</span>
-            <div class="modal-buttons">
-                <button type="submit" class="input-rectangle btn-save">Enregistrer</button>
-                <button type="button" class="input-rectangle btn-cancel cancel-modal" data-modal="bd-modal">Annuler</button>
-            </div>
-        </form>
-    </div>
-</div>
+                <div class="grade-modal-item">
+                    <label for="modal_new_DB_points">Base de données (/20) :</label>
+                    <input type="number" id="modal_new_DB_points" name="new_DB_points" value="<?php echo htmlspecialchars($A_view['DB_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle" min="0" max="20" step="0.01" required <?php echo $disabledAttr; ?>>
+                </div>
 
-<!-- Modal modification Autre -->
-<div id="autre-modal" class="profile-modal">
-    <div class="modal-content">
-        <h3>Modifier la moyenne - Autre</h3>
-        <form method="post" action="?controller=profilepage&action=updateProfile">
-            <label for="modal_new_other_points">Moyenne (/20) :</label>
-            <input type="number" id="modal_new_other_points" name="new_other_points" value="<?php echo htmlspecialchars($A_view['other_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle" min="0" max="20" step="0.01" required <?php echo $disabledAttr; ?>>
-            <span class="grade-help-text">Entrez ici votre moyenne de ce semestre pour les autres matières</span>
+                <div class="grade-modal-item">
+                    <label for="modal_new_other_points">Autre (/20) :</label>
+                    <input type="number" id="modal_new_other_points" name="new_other_points" value="<?php echo htmlspecialchars($A_view['other_points'] ?? '0', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle" min="0" max="20" step="0.01" required <?php echo $disabledAttr; ?>>
+                </div>
+            </div>
+
             <div class="modal-buttons">
-                <button type="submit" class="input-rectangle btn-save">Enregistrer</button>
-                <button type="button" class="input-rectangle btn-cancel cancel-modal" data-modal="autre-modal">Annuler</button>
+                <button type="submit" class="input-rectangle btn-save">Enregistrer toutes les moyennes</button>
+                <button type="button" class="input-rectangle btn-cancel cancel-modal" data-modal="all-grades-modal">Annuler</button>
             </div>
         </form>
     </div>

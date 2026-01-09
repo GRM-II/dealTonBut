@@ -244,7 +244,6 @@ body.dark-theme .login-text {
 .login-grid {
     display: grid;
     grid-template-columns: 0.54fr 1fr;
-    gap: 25px;
     height: 100%;
     align-items: center;
 }
@@ -262,11 +261,24 @@ body.dark-theme .login-text {
     align-self: center;
 }
 
+.rectangle-title {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 2vh;
+    text-align: center;
+    color: var(--text-light);
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    background: none;
+    width: auto;
+    text-decoration: underline;
+}
+
 .login-left .rectangle-title {
     align-self: center;
     width: 100%;
     text-align: center;
-    text-decoration: underline;
 }
 
 .login-left .input-rectangles {
@@ -511,8 +523,10 @@ body.dark-theme .danger-zone p {
 }
 
 .danger-warning-text {
-    font-size: 0.9em;
+    font-size: 0.95em;
     color: var(--text-light-secondary);
+    margin: 10px 0;
+    line-height: 1.5;
 }
 
 body.dark-theme .danger-warning-text {
@@ -522,6 +536,9 @@ body.dark-theme .danger-warning-text {
 .danger-title,
 .login-rectangle .danger-title {
     color: var(--dark-red-color);
+    font-size: 1.2em;
+    display: block;
+    margin-bottom: 10px;
 }
 
 body.dark-theme .danger-title,
@@ -1102,6 +1119,34 @@ body.dark-theme .db-unavailable-message {
     text-align: center;
 }
 
+.profile-info-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(19, 96, 170, 0.05);
+    border-radius: var(--radius-small);
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+body.dark-theme .profile-info-item {
+    background: rgba(19, 96, 170, 0.15);
+}
+
+.profile-info-item strong {
+    color: var(--primary-color);
+    min-width: 140px;
+}
+
+.profile-info-item span {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .profile-edit-form {
     display: inline;
 }
@@ -1121,8 +1166,9 @@ body.dark-theme .db-unavailable-message {
 
 .profile-edit-btn,
 .profile-cancel-btn {
-    padding: 2px 8px;
-    font-size: 0.95em;
+    padding: 6px 12px;
+    font-size: 0.9em;
+    white-space: nowrap;
 }
 
 .profile-save-btn {
@@ -1142,36 +1188,104 @@ body.dark-theme .db-unavailable-message {
     background: #1360AA;
     color: #fff;
     cursor: pointer;
-    padding: 10px 20px;
+    padding: 12px 24px;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: var(--radius-button);
+    transition: background var(--transition-fast);
+}
+
+.profile-logout-btn:hover {
+    background: var(--primary-dark);
 }
 
 .profile-danger-zone {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #ddd;
+    margin-top: 40px;
+    padding: 20px;
+    border: 2px solid var(--red-color);
+    border-radius: var(--radius-small);
     text-align: center;
+    background: rgba(220, 38, 38, 0.05);
 }
 
 body.dark-theme .profile-danger-zone {
-    border-top-color: var(--surface-dark);
+    background: rgba(220, 38, 38, 0.1);
+    border-color: var(--red-color);
 }
 
 .profile-delete-btn {
-    background: #dc2626;
+    background: var(--red-color);
     color: #fff;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-weight: bold;
+    transition: background var(--transition-fast);
+}
+
+.profile-delete-btn:hover {
+    background: var(--dark-red-color);
 }
 
 /* Styles pour la section des moyennes */
 .grades-section {
-    margin-top: 40px;
+    margin-top: 20px;
     text-align: center;
 }
 
+.grades-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.grades-layout {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    align-items: flex-start;
+}
+
+.grades-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.grades-section .rectangle-title {
+    color: var(--text-light);
+    margin-bottom: 25px;
+    text-decoration: underline;
+}
+
 .grade-item {
-    margin-bottom: 15px;
-    text-align: center;
+    margin-bottom: 0;
+    padding: 12px 20px;
+    background: rgba(19, 96, 170, 0.05);
+    border-radius: var(--radius-small);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    text-align: left;
+}
+
+body.dark-theme .grade-item {
+    background: rgba(19, 96, 170, 0.15);
+}
+
+.grade-item strong {
+    color: var(--primary-color);
+    min-width: 130px;
+    flex-shrink: 0;
+}
+
+.grade-item span {
+    flex: 1;
+    font-size: 1.1em;
+    font-weight: bold;
 }
 
 .grade-form {
@@ -1205,9 +1319,10 @@ body.dark-theme .grade-help-text {
 
 .grade-edit-btn,
 .grade-cancel-btn {
-    padding: 2px 8px;
-    font-size: 0.95em;
-    margin-left: 10px;
+    padding: 6px 12px;
+    font-size: 0.9em;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .grade-save-btn {
@@ -1219,10 +1334,103 @@ body.dark-theme .grade-help-text {
     margin-left: 10px;
 }
 
-.profile-info-item {
-    margin-bottom: 10px;
+/* Conteneur du graphique */
+.chart-container {
+    width: 100%;
+    background: rgba(19, 96, 170, 0.05);
+    border-radius: var(--radius-default);
+    box-shadow: var(--shadow-default);
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+body.dark-theme .chart-container {
+    background: rgba(19, 96, 170, 0.1);
+}
+
+#barchart_values {
+    width: 100%;
+    height: 400px;
+}
+
+@media (min-width: 900px) {
+    .grades-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 899px) {
+    .grades-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 1200px) {
+    .grades-layout {
+        flex-direction: column;
+    }
+
+    .chart-container {
+        width: 100%;
+    }
+}
+
+/* Conteneur et bouton pour modifier toutes les notes */
+.grades-edit-container {
+    margin-top: 20px;
     text-align: center;
 }
+
+.grades-edit-all-btn {
+    background: var(--primary-color);
+    color: #fff;
+    cursor: pointer;
+    padding: 12px 24px;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: var(--radius-button);
+    transition: background var(--transition-fast);
+}
+
+.grades-edit-all-btn:hover {
+    background: var(--primary-dark);
+}
+
+/* Modal pour toutes les notes */
+.modal-content-large {
+    max-width: 700px;
+}
+
+.grades-modal-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.grade-modal-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.grade-modal-item label {
+    font-weight: bold;
+    color: var(--primary-color);
+    text-align: left;
+}
+
+body.dark-theme .grade-modal-item label {
+    color: var(--primary-color);
+}
+
+.grade-modal-item input {
+    width: 100%;
+}
+
 
 /* Styles pour les modals de profil */
 .profile-modal {
@@ -1691,7 +1899,7 @@ body.dark-theme .market-sidebar {
     color: var(--text-light);
     margin: 0 0 20px 0;
     padding-bottom: 15px;
-    border-bottom: 2px solid var(--primary-color);
+    border-bottom: 2px solid var(--grey-color);
 }
 
 body.dark-theme .sidebar-title {
