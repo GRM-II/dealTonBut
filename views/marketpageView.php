@@ -6,7 +6,7 @@ $isLoggedIn = $A_view['isLoggedIn'] ?? false;
 
 // Organiser les offres par catégorie
 $offersByCategory = [];
-$categories = ['Services', 'Maths', 'Informatique', 'Électronique', 'Mode', 'Maison', 'Sports', 'Alimentation', 'Autre'];
+$categories = ['Maths', 'Programmation', 'Réseau', 'BD', 'Autre'];
 foreach ($categories as $cat) {
     $offersByCategory[$cat] = [];
 }
@@ -152,15 +152,11 @@ if (!empty($A_view['offers'])) {
 
                     <select name="category" class="input-rectangle" required <?php echo $disabledAttr; ?>>
                         <option value="">-- Catégorie --</option>
-                        <option value="Dev">Dev</option>
                         <option value="Maths">Maths</option>
-                        <option value="Algo">Algo</option>
-                        <option value="Web">Web</option>
-                        <option value="Réseau">Réseau</option>
-                        <option value="IA">IA</option>
-                        <option value=""></option>
-                        <option value=""></option>
-                        <option value="Autre">Autre</option>
+                        <option value="Programmation">Programmation</option>
+                        <option value="Network">Réseau</option>
+                        <option value="DB">BD</option>
+                        <option value="Other">Autre</option>
                     </select>
 
                     <button type="submit" class="button btn-submit">Publier l'offre</button>
