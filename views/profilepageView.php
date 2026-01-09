@@ -21,7 +21,6 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         <div class="login-rectangle">
         <div class="login-grid">
             <div class="login-left">
-
                 <!-- L'image doit être l'image de profil de l'utilisateur, placeholder pour l'instant -->
                 <img src="/public/assets/img/placeholder-meme.jpeg" alt="Image de profil" class="log-img">
 
@@ -38,41 +37,8 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                         <?php echo htmlspecialchars($A_view['flash']['message'], ENT_QUOTES, 'UTF-8'); ?>
                     </div>
                 <?php endif; ?>
-
-                <div class="profile-forms-container">
-                    <div class="profile-info-item">
-                        <strong>Nom d'utilisateur :</strong>
-                        <span id="username-display"><?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
-                        <button type="button" id="edit-username-btn" class="input-rectangle profile-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
-                    </div>
-
-                    <div class="profile-info-item">
-                        <strong>Email :</strong>
-                        <span id="email-display"><?php echo htmlspecialchars($A_view['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
-                        <button type="button" id="edit-email-btn" class="input-rectangle profile-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
-                    </div>
-
-                    <div class="profile-info-item">
-                        <strong>Mot de passe :</strong>
-                        <span id="password-display">••••••••</span>
-                        <button type="button" id="edit-password-btn" class="input-rectangle profile-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
-                    </div>
-                </div>
-
-                <div class="profile-logout-container">
-                    <form method="post" action="?controller=user&action=logout">
-                        <button type="submit" class="input-rectangle profile-logout-btn">
-                            Se déconnecter
-                        </button>
-                    </form>
-                </div>
-
-                <div class="profile-danger-zone">
-                    <strong class="danger-title">⚠️ Zone de danger de mort 💀</strong>
-                    <p class="danger-warning-text">La suppression de votre compte est définitive et irréversible. Toutes vos données seront effacées avec efficacité.</p>
-                    <button type="button" id="delete-account-btn" class="input-rectangle profile-delete-btn" <?php echo $disabledAttr; ?>>Supprimer mon compte</button>
-                </div>
             </div>
+
             <div class="login-right">
                 <h1 class="rectangle-title">Moyennes du semestre</h1>
 
@@ -121,7 +87,50 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                 </div>
 
                 <div class="grades-edit-container">
-                    <button type="button" id="edit-all-grades-btn" class="input-rectangle grades-edit-all-btn" <?php echo $disabledAttr; ?>>Modifier mes moyennes</button>
+                    <button type="button" id="edit-all-grades-btn" class="button grades-edit-all-btn" <?php echo $disabledAttr; ?>>✏️ Modifier mes moyennes</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Informations du compte -->
+        <div class="login-grid account-info-section">
+            <div class="login-left">
+                <h2 class="section-subtitle">Informations du compte</h2>
+
+                <div class="profile-forms-container">
+                    <div class="profile-info-item">
+                        <strong>Nom d'utilisateur :</strong>
+                        <span id="username-display"><?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
+                        <button type="button" id="edit-username-btn" class="button profile-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
+                    </div>
+
+                    <div class="profile-info-item">
+                        <strong>Email :</strong>
+                        <span id="email-display"><?php echo htmlspecialchars($A_view['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
+                        <button type="button" id="edit-email-btn" class="button profile-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
+                    </div>
+
+                    <div class="profile-info-item">
+                        <strong>Mot de passe :</strong>
+                        <span id="password-display">••••••••</span>
+                        <button type="button" id="edit-password-btn" class="button profile-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
+                    </div>
+                </div>
+
+                <div class="profile-logout-container">
+                    <form method="post" action="?controller=user&action=logout">
+                        <button type="submit" class="button profile-logout-btn">
+                            Se déconnecter
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="login-right">
+                <div class="profile-danger-zone">
+                    <strong class="danger-title">⚠️ Zone de danger</strong>
+                    <p class="danger-warning-text">La suppression de votre compte est définitive et irréversible. Toutes vos données seront effacées.</p>
+                    <button type="button" id="delete-account-btn" class="button profile-delete-btn" <?php echo $disabledAttr; ?>>🗑️ Supprimer mon compte</button>
                 </div>
             </div>
         </div>
@@ -135,8 +144,8 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         <h3>Confirmer la suppression</h3>
         <p>Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible et votre compte sera triste );</p>
         <form method="post" action="?controller=profilepage&action=deleteAccount">
-            <button type="submit" class="input-rectangle btn-delete">Oui, supprimer</button>
-            <button type="button" id="cancel-delete-btn" class="input-rectangle btn-cancel">Non, j'y tiens</button>
+            <button type="submit" class="button btn-delete">Oui, supprimer</button>
+            <button type="button" id="cancel-delete-btn" class="button btn-cancel">Non, j'y tiens</button>
         </form>
     </div>
 </div>
@@ -149,8 +158,8 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             <label for="modal_new_username">Nouveau nom d'utilisateur :</label>
             <input type="text" id="modal_new_username" name="new_username" value="<?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle" required <?php echo $disabledAttr; ?>>
             <div class="modal-buttons">
-                <button type="submit" class="input-rectangle btn-save">Enregistrer</button>
-                <button type="button" class="input-rectangle btn-cancel cancel-modal" data-modal="username-modal">Annuler</button>
+                <button type="submit" class="button btn-save">Enregistrer</button>
+                <button type="button" class="button btn-cancel cancel-modal" data-modal="username-modal">Annuler</button>
             </div>
         </form>
     </div>
@@ -164,8 +173,8 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             <label for="modal_new_email">Nouvel email :</label>
             <input type="email" id="modal_new_email" name="new_email" value="<?php echo htmlspecialchars($A_view['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle" required <?php echo $disabledAttr; ?>>
             <div class="modal-buttons">
-                <button type="submit" class="input-rectangle btn-save">Enregistrer</button>
-                <button type="button" class="input-rectangle btn-cancel cancel-modal" data-modal="email-modal">Annuler</button>
+                <button type="submit" class="button btn-save">Enregistrer</button>
+                <button type="button" class="button btn-cancel cancel-modal" data-modal="email-modal">Annuler</button>
             </div>
         </form>
     </div>
@@ -179,8 +188,8 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             <label for="modal_new_password">Nouveau mot de passe :</label>
             <input type="password" id="modal_new_password" name="new_password" placeholder="Nouveau mot de passe" class="input-rectangle" required <?php echo $disabledAttr; ?>>
             <div class="modal-buttons">
-                <button type="submit" class="input-rectangle btn-save">Enregistrer</button>
-                <button type="button" class="input-rectangle btn-cancel cancel-modal" data-modal="password-modal">Annuler</button>
+                <button type="submit" class="button btn-save">Enregistrer</button>
+                <button type="button" class="button btn-cancel cancel-modal" data-modal="password-modal">Annuler</button>
             </div>
         </form>
     </div>
@@ -189,7 +198,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
 <!-- Modal modification de toutes les moyennes -->
 <div id="all-grades-modal" class="profile-modal">
     <div class="modal-content modal-content-large">
-        <h3>Modifier toutes mes moyennes</h3>
+        <h3>Modifier les moyennes</h3>
         <form method="post" action="?controller=profilepage&action=updateProfile">
             <div class="grades-modal-grid">
                 <div class="grade-modal-item">
@@ -219,8 +228,8 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             </div>
 
             <div class="modal-buttons">
-                <button type="submit" class="input-rectangle btn-save">Enregistrer toutes les moyennes</button>
-                <button type="button" class="input-rectangle btn-cancel cancel-modal" data-modal="all-grades-modal">Annuler</button>
+                <button type="submit" class="button btn-save">Enregistrer toutes les moyennes</button>
+                <button type="button" class="button btn-cancel cancel-modal" data-modal="all-grades-modal">Annuler</button>
             </div>
         </form>
     </div>

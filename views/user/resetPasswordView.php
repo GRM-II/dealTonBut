@@ -37,7 +37,7 @@
                                    minlength="6"
                                    required>
 
-                            <button type="submit" class="input-rectangle">
+                            <button type="submit" class="button">
                                 Réinitialiser
                             </button>
                         </form>

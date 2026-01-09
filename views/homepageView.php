@@ -38,7 +38,7 @@
 
                         <button type="submit"
                                 name="submit"
-                                class="input-rectangle">
+                                class="button">
                             Connexion
                         </button>
                     </form>

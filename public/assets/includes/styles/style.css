@@ -37,6 +37,20 @@
     box-sizing: border-box;
 }
 
+input,
+select,
+textarea {
+    border: none;
+    outline: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border: none;
+    outline: none;
+}
+
 html {
     overflow-x: hidden;
 }
@@ -214,6 +228,11 @@ body.dark-theme footer p {
     margin-left: 50px;
 }
 
+.profile-wrapper {
+    width: 100%;
+    padding: 0 10px;
+}
+
 .login-rectangle {
     width: 90%;
     max-width: 83%;
@@ -222,7 +241,7 @@ body.dark-theme footer p {
     min-height: 400px;
     background: var(--surface-light);
     margin: 0 auto;
-    padding: 3vh 3vw;
+    padding: 20px 20px;
     box-shadow: var(--shadow-default);
     border-radius: var(--radius-default);
 }
@@ -255,6 +274,8 @@ body.dark-theme .login-text {
     align-items: center;
     justify-content: center;
     padding-right: 20px;
+    width: 100%;
+    min-width: 40%;
 }
 
 .login-left .log-img {
@@ -266,34 +287,12 @@ body.dark-theme .login-text {
     font-weight: bold;
     margin-bottom: 2vh;
     text-align: center;
-    color: var(--text-light);
     box-shadow: none;
     border-radius: 0;
     padding: 0;
     background: none;
-    width: auto;
+    width: 100%;
     text-decoration: underline;
-}
-
-.login-left .rectangle-title {
-    align-self: center;
-    width: 100%;
-    text-align: center;
-}
-
-.login-left .input-rectangles {
-    width: 100%;
-    align-items: center;
-}
-
-.login-left .input-rectangle {
-    align-self: center;
-    width: 100%;
-    margin-bottom: 1rem;
-}
-
-.login-left .text-link {
-    align-self: center;
 }
 
 /* Message d'erreur de connexion */
@@ -338,6 +337,8 @@ body.dark-theme .login-success-message {
     padding-left: 20px;
     border-left: 2px solid var(--grey-color);
     min-height: 300px;
+    width: 100%;
+    min-width: 40%;
 }
 
 body.dark-theme .login-right {
@@ -347,6 +348,7 @@ body.dark-theme .login-right {
 .login-right-placeholder {
     text-align: center;
     color: var(--text-light-secondary);
+    width: 100%;
 }
 
 body.dark-theme .login-right-placeholder {
@@ -388,6 +390,61 @@ body.dark-theme .login-right-placeholder {
     body.dark-theme .login-right {
         border-top-color: var(--text-dark);
     }
+
+    /* Responsive pour la page de profil */
+    .profile-info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .profile-info-item strong {
+        min-width: auto;
+        width: 100%;
+    }
+
+    .profile-info-item span {
+        width: 100%;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .profile-info-item .button {
+        width: 100%;
+        align-self: stretch;
+    }
+
+    .grade-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .grade-item strong {
+        min-width: auto;
+    }
+
+    .grades-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .chart-container {
+        min-height: 300px;
+        padding: 10px;
+    }
+
+    #barchart_values {
+        height: 300px;
+    }
+
+    .log-img {
+        max-width: 120px;
+        height: auto;
+    }
+
+    .profile-danger-zone {
+        padding: 15px;
+    }
 }
 
 .rectangle-title {
@@ -411,40 +468,58 @@ body.dark-theme .rectangle-title {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 0.2em;
+    gap: 0.5em;
 }
 
 .input-rectangle {
-    width: 75%;
+    width: auto;
     align-self: center;
     height: 56px;
     border: none;
-    border-radius: var(--radius-default);
+    outline: none;
+    border-radius: var(--radius-button);
     background: var(--bg-light);
+    color: var(--text-light);
     padding: 0 20px;
     font-size: 1.2em;
-    outline: none;
-    transition: box-shadow var(--transition-fast);
+    align-items: center;
     box-shadow: var(--shadow-default);
 }
 
-/* Boutons de type submit avec style primaire */
-button[type="submit"].input-rectangle {
+.input-rectangle:focus {
+    border: none;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(19, 96, 170, 0.3);
+}
+
+body.dark-theme .input-rectangle {
+    background: var(--bg-dark);
+    color: var(--text-dark);
+}
+
+body.dark-theme .input-rectangle:focus {
+    box-shadow: 0 0 0 3px rgba(19, 96, 170, 0.5);
+}
+
+.button {
     background: var(--primary-color);
-    color: #fff;
     cursor: pointer;
+    width: auto;
+    align-self: center;
+    height: 56px;
+    border: none;
+    border-radius: var(--radius-button);
+    color: var(--white-color);
+    padding: 0 20px;
     font-size: 1.2em;
-    padding: 0 16px;
+    outline: none;
+    align-items: center;
+    transition: background var(--transition-fast);
+    box-shadow: var(--shadow-default);
 }
 
-button[type="submit"].input-rectangle:hover {
+.button:hover {
     background: var(--primary-dark);
-}
-
-/* Style spécifique pour le bouton du modal mot de passe oublié */
-#forgot-password-form button[type="submit"] {
-    font-size: 1.1em;
-    margin-top: 10px;
 }
 
 .not-displayed {
@@ -581,19 +656,11 @@ body.dark-theme .delete-retangle h3 {
     color: var(--red-color);
 }
 
-body.dark-theme .input-rectangle {
-    background: var(--text-dark);
-    color: var(--bg-dark);
-}
-
 body.dark-theme .submit-rectangle {
     background: var(--text-dark);
     color: var(--surface-dark);
 }
 
-.input-rectangle:focus {
-    box-shadow: var(--shadow-focus);
-}
 
 .text-link {
     display: block;
@@ -1117,6 +1184,7 @@ body.dark-theme .db-unavailable-message {
 .profile-forms-container {
     margin-top: 20px;
     text-align: center;
+    width: 100%;
 }
 
 .profile-info-item {
@@ -1129,6 +1197,7 @@ body.dark-theme .db-unavailable-message {
     align-items: center;
     justify-content: space-between;
     gap: 10px;
+    width: 100%;
 }
 
 body.dark-theme .profile-info-item {
@@ -1137,7 +1206,6 @@ body.dark-theme .profile-info-item {
 
 .profile-info-item strong {
     color: var(--primary-color);
-    min-width: 140px;
 }
 
 .profile-info-item span {
@@ -1166,33 +1234,33 @@ body.dark-theme .profile-info-item {
 
 .profile-edit-btn,
 .profile-cancel-btn {
-    padding: 6px 12px;
+    padding: 5px;
     font-size: 0.9em;
     white-space: nowrap;
+    width: auto;
+    display: inline-block;
 }
 
 .profile-save-btn {
     display: none;
-    padding: 2px 8px;
+    padding: 5px;
     font-size: 0.95em;
     background: #1360AA;
     color: #fff;
+    width: auto;
 }
 
 .profile-logout-container {
     margin-top: 30px;
     text-align: center;
+    width: 100%;
 }
 
 .profile-logout-btn {
-    background: #1360AA;
-    color: #fff;
-    cursor: pointer;
-    padding: 12px 24px;
+    padding: 5px;
     font-size: 1em;
-    font-weight: bold;
-    border-radius: var(--radius-button);
-    transition: background var(--transition-fast);
+    width: auto;
+    display: inline-block;
 }
 
 .profile-logout-btn:hover {
@@ -1206,6 +1274,7 @@ body.dark-theme .profile-info-item {
     border-radius: var(--radius-small);
     text-align: center;
     background: rgba(220, 38, 38, 0.05);
+    width: 100%;
 }
 
 body.dark-theme .profile-danger-zone {
@@ -1218,9 +1287,11 @@ body.dark-theme .profile-danger-zone {
     color: #fff;
     cursor: pointer;
     margin-top: 15px;
-    padding: 10px 20px;
+    padding: 5px;
     font-weight: bold;
     transition: background var(--transition-fast);
+    width: auto;
+    display: inline-block;
 }
 
 .profile-delete-btn:hover {
@@ -1238,6 +1309,7 @@ body.dark-theme .profile-danger-zone {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 15px;
     margin-top: 20px;
+    width: 100%;
 }
 
 .grades-layout {
@@ -1319,19 +1391,73 @@ body.dark-theme .grade-help-text {
 
 .grade-edit-btn,
 .grade-cancel-btn {
-    padding: 6px 12px;
+    padding: 5px;
     font-size: 0.9em;
     white-space: nowrap;
     flex-shrink: 0;
+    width: auto;
+    display: inline-block;
 }
 
 .grade-save-btn {
     display: none;
-    padding: 2px 8px;
+    padding: 5px;
     font-size: 0.95em;
     background: #1360AA;
     color: #fff;
     margin-left: 10px;
+    width: auto;
+}
+
+/* Conteneur du graphique */
+.chart-container {
+    width: 100%;
+    padding: 15px;
+    background: rgba(19, 96, 170, 0.05);
+    border-radius: var(--radius-default);
+    box-shadow: var(--shadow-default);
+    min-height: 300px;
+    max-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+body.dark-theme .chart-container {
+    background: rgba(19, 96, 170, 0.1);
+}
+
+#barchart_values {
+    width: 100% !important;
+    max-width: 100%;
+    height: auto !important;
+    min-height: 250px;
+    max-height: 400px;
+}
+
+/* Section des informations du compte */
+.account-info-section {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 2px solid var(--grey-color);
+}
+
+body.dark-theme .account-info-section {
+    border-top-color: var(--text-dark);
+}
+
+.section-subtitle {
+    font-size: 1.5em;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 20px;
+    text-decoration: underline;
+}
+
+body.dark-theme .section-subtitle {
+    color: var(--primary-color);
 }
 
 /* Conteneur du graphique */
@@ -1368,6 +1494,124 @@ body.dark-theme .chart-container {
     }
 }
 
+/* Responsive pour tablettes */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .login-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .profile-info-item {
+        flex-wrap: wrap;
+    }
+
+    .chart-container {
+        min-height: 300px;
+        max-height: 400px;
+        padding: 10px;
+    }
+
+    #barchart_values {
+        min-height: 250px;
+        max-height: 350px;
+    }
+
+    .grades-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .account-info-section {
+        margin-top: 20px;
+        padding-top: 20px;
+    }
+}
+
+/* Responsive pour petits mobiles */
+@media (max-width: 480px) {
+    .profile-wrapper {
+        padding: 0 5px;
+    }
+
+    .login-rectangle {
+        width: 95%;
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        min-width: auto;
+    }
+
+    .rectangle-title {
+        font-size: 1.5em;
+    }
+
+    .button,
+    .input-rectangle {
+        height: 48px;
+        font-size: 1em;
+        padding: 0 15px;
+    }
+
+    .profile-edit-btn,
+    .grade-edit-btn {
+        font-size: 0.85em;
+        padding: 4px;
+    }
+
+    .chart-container {
+        min-height: 200px;
+        max-height: 300px;
+        padding: 10px;
+    }
+
+    #barchart_values {
+        min-height: 180px;
+        max-height: 280px;
+    }
+
+    .grades-edit-all-btn {
+        width: 100%;
+        font-size: 0.95em;
+        padding: 8px;
+    }
+
+    .profile-edit-btn {
+        font-size: 0.8em;
+        padding: 6px 8px;
+        white-space: nowrap;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .modal-content-large {
+        max-width: 95%;
+    }
+
+    .modal-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .modal-buttons .button {
+        width: 100%;
+    }
+
+    .grades-modal-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .profile-logout-btn,
+    .profile-delete-btn {
+        width: 100%;
+    }
+
+    .log-img {
+        max-width: 100px;
+    }
+}
+
 @media (max-width: 1200px) {
     .grades-layout {
         flex-direction: column;
@@ -1382,21 +1626,7 @@ body.dark-theme .chart-container {
 .grades-edit-container {
     margin-top: 20px;
     text-align: center;
-}
-
-.grades-edit-all-btn {
-    background: var(--primary-color);
-    color: #fff;
-    cursor: pointer;
-    padding: 12px 24px;
-    font-size: 1em;
-    font-weight: bold;
-    border-radius: var(--radius-button);
-    transition: background var(--transition-fast);
-}
-
-.grades-edit-all-btn:hover {
-    background: var(--primary-dark);
+    width: 100%;
 }
 
 /* Modal pour toutes les notes */
@@ -1504,7 +1734,9 @@ body.dark-theme .profile-modal .modal-content h3 {
     background: #1360AA;
     color: #fff;
     cursor: pointer;
-    padding: 10px 20px;
+    padding: 5px;
+    width: auto;
+    display: inline-block;
 }
 
 .btn-save:hover {

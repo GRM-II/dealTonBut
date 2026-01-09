@@ -405,26 +405,32 @@ function drawChart(gradesData) {
     ]);
 
     const isDark = document.body.classList.contains('dark-theme');
+    const chartElement = document.getElementById("barchart_values");
+    const containerWidth = chartElement ? chartElement.parentElement.clientWidth : 600;
+    const isMobile = window.innerWidth < 768;
+    const chartHeight = isMobile ? Math.min(250, window.innerHeight * 0.3) : Math.min(400, window.innerHeight * 0.5);
 
     const options = {
         title: "Aperçu visuel de vos moyennes",
-        width: '100%',
-        height: 400,
+        width: containerWidth - 30,
+        height: chartHeight,
         backgroundColor: 'transparent',
-        bar: {groupWidth: "60%"},
+        bar: {groupWidth: isMobile ? "50%" : "60%"},
         legend: { position: "none" },
         titleTextStyle: {
             color: isDark ? '#E4E4E4' : '#2c3e50',
-            fontSize: 16,
+            fontSize: isMobile ? 14 : 16,
             bold: true
         },
         hAxis: {
             title: 'Points / 20',
             titleTextStyle: {
-                color: isDark ? '#E4E4E4' : '#2c3e50'
+                color: isDark ? '#E4E4E4' : '#2c3e50',
+                fontSize: isMobile ? 11 : 13
             },
             textStyle: {
-                color: isDark ? '#E4E4E4' : '#2c3e50'
+                color: isDark ? '#E4E4E4' : '#2c3e50',
+                fontSize: isMobile ? 10 : 12
             },
             viewWindow: {
                 max: 20,
@@ -436,11 +442,27 @@ function drawChart(gradesData) {
         },
         vAxis: {
             textStyle: {
-                color: isDark ? '#E4E4E4' : '#2c3e50'
+                color: isDark ? '#E4E4E4' : '#2c3e50',
+                fontSize: isMobile ? 10 : 12
             }
+        },
+        chartArea: {
+            width: '70%',
+            height: '70%'
         }
     };
 
-    const chart = new google.visualization.BarChart(document.getElementById("barchart_values"));
+    const chart = new google.visualization.BarChart(chartElement);
     chart.draw(view, options);
+
+    window.addEventListener('resize', function() {
+        const newWidth = chartElement.parentElement.clientWidth;
+        const newIsMobile = window.innerWidth < 768;
+        const newHeight = newIsMobile ? Math.min(250, window.innerHeight * 0.3) : Math.min(400, window.innerHeight * 0.5);
+        options.width = newWidth - 30;
+        options.height = newHeight;
+        options.bar.groupWidth = newIsMobile ? "50%" : "60%";
+        options.titleTextStyle.fontSize = newIsMobile ? 14 : 16;
+        chart.draw(view, options);
+    });
 }
