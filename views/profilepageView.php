@@ -14,14 +14,14 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                 <img id="trade-nav-icon" src="/public/assets/img/Trade_Day.svg" alt="Trading" class="nav-icon">
             </a>
             <button id="scroll-to-top-btn" class="nav-btn scroll-to-top-btn" title="Remonter en haut">
-                <img src="/public/assets/img/placeholder-meme.jpeg" alt="Remonter" class="nav-icon">
+                <img id="scroll-icon" src="/public/assets/img/Blue_Arrow.svg" alt="Remonter" class="nav-icon">
             </button>
         </div>
 
         <div class="login-rectangle">
         <div class="login-grid">
             <div class="login-left">
-                <!-- L'image doit être l'image de profil de l'utilisateur, placeholder pour l'instant -->
+                <!-- Image de profil -->
                 <img src="/public/assets/img/placeholder-meme.jpeg" alt="Image de profil" class="log-img">
 
                 <div class="rectangle-title">Profil utilisateur</div>
@@ -37,6 +37,45 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                         <?php echo htmlspecialchars($A_view['flash']['message'], ENT_QUOTES, 'UTF-8'); ?>
                     </div>
                 <?php endif; ?>
+
+                <!-- Informations du compte -->
+                <h2 class="section-subtitle">Informations du compte</h2>
+
+                <div class="profile-forms-container">
+                    <div class="profile-info-item">
+                        <strong>Nom d'utilisateur :</strong>
+                        <span id="username-display"><?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
+                        <button type="button" id="edit-username-btn" class="button profile-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
+                    </div>
+
+                    <div class="profile-info-item">
+                        <strong>Email :</strong>
+                        <span id="email-display"><?php echo htmlspecialchars($A_view['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
+                        <button type="button" id="edit-email-btn" class="button profile-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
+                    </div>
+
+                    <div class="profile-info-item">
+                        <strong>Mot de passe :</strong>
+                        <span id="password-display">••••••••</span>
+                        <button type="button" id="edit-password-btn" class="button profile-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
+                    </div>
+                </div>
+
+                <!-- Bouton de déconnexion -->
+                <div class="profile-logout-container">
+                    <form method="post" action="?controller=user&action=logout">
+                        <button type="submit" class="button profile-logout-btn">
+                            Se déconnecter
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Zone de danger -->
+                <div class="profile-danger-zone">
+                    <strong class="danger-title">⚠️ Zone de danger</strong>
+                    <p class="danger-warning-text">La suppression de votre compte est définitive et irréversible. Toutes vos données seront effacées.</p>
+                    <button type="button" id="delete-account-btn" class="button profile-delete-btn" <?php echo $disabledAttr; ?>>Je veux supprimer mon compte</button>
+                </div>
             </div>
 
             <div class="login-right">
@@ -87,50 +126,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                 </div>
 
                 <div class="grades-edit-container">
-                    <button type="button" id="edit-all-grades-btn" class="button grades-edit-all-btn" <?php echo $disabledAttr; ?>>✏️ Modifier mes moyennes</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Informations du compte -->
-        <div class="login-grid account-info-section">
-            <div class="login-left">
-                <h2 class="section-subtitle">Informations du compte</h2>
-
-                <div class="profile-forms-container">
-                    <div class="profile-info-item">
-                        <strong>Nom d'utilisateur :</strong>
-                        <span id="username-display"><?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
-                        <button type="button" id="edit-username-btn" class="button profile-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
-                    </div>
-
-                    <div class="profile-info-item">
-                        <strong>Email :</strong>
-                        <span id="email-display"><?php echo htmlspecialchars($A_view['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
-                        <button type="button" id="edit-email-btn" class="button profile-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
-                    </div>
-
-                    <div class="profile-info-item">
-                        <strong>Mot de passe :</strong>
-                        <span id="password-display">••••••••</span>
-                        <button type="button" id="edit-password-btn" class="button profile-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
-                    </div>
-                </div>
-
-                <div class="profile-logout-container">
-                    <form method="post" action="?controller=user&action=logout">
-                        <button type="submit" class="button profile-logout-btn">
-                            Se déconnecter
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-            <div class="login-right">
-                <div class="profile-danger-zone">
-                    <strong class="danger-title">⚠️ Zone de danger</strong>
-                    <p class="danger-warning-text">La suppression de votre compte est définitive et irréversible. Toutes vos données seront effacées.</p>
-                    <button type="button" id="delete-account-btn" class="button profile-delete-btn" <?php echo $disabledAttr; ?>>🗑️ Supprimer mon compte</button>
+                    <button type="button" id="edit-all-grades-btn" class="button grades-edit-all-btn" <?php echo $disabledAttr; ?>>Modifier mes moyennes</button>
                 </div>
             </div>
         </div>

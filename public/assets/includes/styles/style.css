@@ -3,21 +3,28 @@
     /* Colors */
     --primary-color: #1360AA;
     --primary-dark: #0a53be;
+    --primary-light: #4A90E2;
     --red-color: #dc2626;
     --white-color: #ddd;
     --dark-red-color: #9b1c1c;
     --grey-color: #666;
+    --grey-light: #999;
 
     /* Background */
     --bg-light: #fff;
-    --bg-dark: #242424;
+    --bg-dark: #1a1a1a;
     --surface-light: #D9D9D9;
-    --surface-dark: #646464;
+    --surface-dark: #2d2d2d;
 
     /* Text */
     --text-light: #2c3e50;
     --text-light-secondary: #555;
     --text-dark: #E4E4E4;
+    --text-dark-secondary: #b8b8b8;
+
+    /* Chart */
+    --chart-grid-light: #ddd;
+    --chart-grid-dark: #4a4a4a;
 
     /* Visual effects */
     --shadow-default: 1px 1px 3px 1px rgba(0, 0, 0, 0.5);
@@ -148,11 +155,13 @@ body.dark-theme #theme-toggle {
     flex: 1 0 auto;
     width: 100vw;
     max-width: 100vw;
-    padding: 76px 0 0 0;
+    padding: 90px 0 40px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     overflow-x: hidden;
+    min-height: calc(100vh - 100px);
+    justify-content: center;
 }
 
 h1 {
@@ -164,6 +173,7 @@ h1 {
 
 body.dark-theme h1 {
     color: var(--text-dark);
+    background-color: var(--surface-dark);
 }
 
 p {
@@ -217,17 +227,6 @@ footer {
     text-align: left;
 }
 
-body.dark-theme footer {
-    background: var(--surface-dark);
-    color: var(--text-dark);
-}
-
-body.dark-theme footer p {
-    color: var(--text-dark);
-    text-align: left;
-    margin-left: 50px;
-}
-
 .profile-wrapper {
     width: 100%;
     padding: 0 10px;
@@ -240,7 +239,7 @@ body.dark-theme footer p {
     height: auto;
     min-height: 400px;
     background: var(--surface-light);
-    margin: 0 auto;
+    margin: 20px auto;
     padding: 20px 20px;
     box-shadow: var(--shadow-default);
     border-radius: var(--radius-default);
@@ -253,6 +252,7 @@ body.dark-theme .login-rectangle {
 .login-text {
     color: var(--text-light);
     width: 100%;
+    text-align: center;
 }
 
 body.dark-theme .login-text {
@@ -264,7 +264,8 @@ body.dark-theme .login-text {
     display: grid;
     grid-template-columns: 0.54fr 1fr;
     height: 100%;
-    align-items: center;
+    align-items: start;
+    gap: 20px;
 }
 
 /* Colonne gauche : formulaire */
@@ -272,11 +273,13 @@ body.dark-theme .login-text {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     padding-right: 20px;
     width: 100%;
     min-width: 40%;
+    padding-bottom: 20px;
 }
+
 
 .login-left .log-img {
     align-self: center;
@@ -362,6 +365,17 @@ body.dark-theme .login-right-placeholder {
 
 /* Responsive : sur petits écrans, passer en une colonne */
 @media (max-width: 768px) {
+    .content {
+        padding: 80px 0 30px 0;
+        min-height: calc(100vh - 80px);
+    }
+
+    .login-rectangle {
+        margin: 15px auto;
+        width: 95%;
+        padding: 15px;
+    }
+
     .login-grid {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -374,10 +388,35 @@ body.dark-theme .login-right-placeholder {
 
     .login-left .rectangle-title {
         text-align: center;
+        font-size: 1.8em;
     }
 
     .login-left .text-link {
         align-self: center;
+        font-size: 0.95em;
+    }
+
+    .login-left .log-img {
+        max-width: 100px;
+        height: auto;
+    }
+
+    .input-rectangles {
+        width: 100%;
+    }
+
+    .input-rectangles label {
+        font-size: 0.95em;
+    }
+
+    .input-rectangle {
+        height: 50px;
+        font-size: 1.1em;
+    }
+
+    .button {
+        height: 50px;
+        font-size: 1.1em;
     }
 
     .login-right {
@@ -392,6 +431,12 @@ body.dark-theme .login-right-placeholder {
     }
 
     /* Responsive pour la page de profil */
+    .profile-forms-container,
+    .profile-logout-container,
+    .profile-danger-zone {
+        max-width: 100%;
+    }
+
     .profile-info-item {
         flex-direction: column;
         align-items: flex-start;
@@ -1148,9 +1193,9 @@ body.dark-theme #delete-modal .btn-cancel {
 .default-nav-buttons {
     position: fixed;
     left: calc((100vw - 80%) / 4 - 32px);
-    top: 76px;
+    top: 90px;
     flex-direction: column;
-    z-index: 1000;
+    z-index: 999;
 }
 
 .scroll-to-top-btn {
@@ -1185,6 +1230,7 @@ body.dark-theme .db-unavailable-message {
     margin-top: 20px;
     text-align: center;
     width: 100%;
+    max-width: 500px;
 }
 
 .profile-info-item {
@@ -1254,6 +1300,7 @@ body.dark-theme .profile-info-item {
     margin-top: 30px;
     text-align: center;
     width: 100%;
+    max-width: 500px;
 }
 
 .profile-logout-btn {
@@ -1268,13 +1315,14 @@ body.dark-theme .profile-info-item {
 }
 
 .profile-danger-zone {
-    margin-top: 40px;
+    margin-top: 30px;
     padding: 20px;
     border: 2px solid var(--red-color);
     border-radius: var(--radius-small);
     text-align: center;
     background: rgba(220, 38, 38, 0.05);
     width: 100%;
+    max-width: 500px;
 }
 
 body.dark-theme .profile-danger-zone {
@@ -1449,11 +1497,12 @@ body.dark-theme .account-info-section {
 }
 
 .section-subtitle {
-    font-size: 1.5em;
+    font-size: 1.3em;
     color: var(--primary-color);
     text-align: center;
+    margin-top: 30px;
     margin-bottom: 20px;
-    text-decoration: underline;
+    font-weight: bold;
 }
 
 body.dark-theme .section-subtitle {
@@ -1527,6 +1576,11 @@ body.dark-theme .chart-container {
 
 /* Responsive pour petits mobiles */
 @media (max-width: 480px) {
+    .content {
+        padding: 75px 0 25px 0;
+        min-height: calc(100vh - 75px);
+    }
+
     .profile-wrapper {
         padding: 0 5px;
     }
@@ -1855,15 +1909,19 @@ body.dark-theme .trade-place-title {
     flex-direction: row;
     gap: 20px;
     width: 100%;
+    max-width: 1400px;
     height: calc(100vh - 180px);
-    justify-content: flex-end;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: flex-start;
     overflow-x: hidden;
-    padding: 20px 0 20px 0;
+    padding: 20px 10px;
 }
 
 .trade-place-sidebar {
-    width: 35%;
-    max-width: 34%;
+    width: 320px;
+    min-width: 280px;
+    max-width: 350px;
     background: var(--surface-light);
     border-radius: var(--radius-default);
     padding: 20px 10px;
@@ -1871,6 +1929,8 @@ body.dark-theme .trade-place-title {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    gap: 12px;
+    flex-shrink: 0;
 }
 
 body.dark-theme .trade-place-sidebar {
@@ -1936,13 +1996,14 @@ body.dark-theme .offer-arrow {
 }
 
 .trade-place-main {
-    width: 60%;
+    flex: 1;
     max-width: 800px;
     background: var(--surface-light);
-    border-radius: 20px 0 0 20px;
+    border-radius: var(--radius-default);
     padding: 30px;
     box-shadow: var(--shadow-default);
     overflow-y: auto;
+    min-height: 400px;
 }
 
 body.dark-theme .trade-place-main {
@@ -2011,6 +2072,10 @@ body.dark-theme .offer-meta {
 .meta-label {
     font-weight: bold;
     color: var(--grey-color);
+}
+
+body.dark-theme .meta-label {
+    color: var(--grey-light);
 }
 
 .meta-value {
@@ -2279,7 +2344,7 @@ body.dark-theme .category-name {
 }
 
 body.dark-theme .arrow-btn {
-    background: var(--primary-color);
+    background: var(--surface-dark);
 }
 
 .arrow-left::before {
@@ -2356,7 +2421,7 @@ body.dark-theme .product-title {
 }
 
 body.dark-theme .product-points {
-    color: var(--text-dark);
+    color: var(--grey-light);
 }
 
 /* Catégorie vide */
@@ -2652,7 +2717,7 @@ body.dark-theme .offer-title {
 }
 
 body.dark-theme .offer-price {
-    color: var(--text-dark);
+    color: var(--grey-light);
 }
 
 .product-delete-form {
@@ -2697,6 +2762,10 @@ body.dark-theme .detail-box {
     font-size: 0.9rem;
     color: var(--grey-color);
     margin-bottom: 8px;
+}
+
+body.dark-theme .detail-label {
+    color: var(--grey-light);
 }
 
 .detail-value {
@@ -2802,6 +2871,11 @@ body.dark-theme .detail-value {
     font-size: 1.2rem;
 }
 
+body.dark-theme .no-offer-selected,
+body.dark-theme .empty-offers {
+    color: var(--grey-light);
+}
+
 @media (max-width: 1400px) {
     .trade-place-title {
         padding: 1rem;
@@ -2825,9 +2899,14 @@ body.dark-theme .detail-value {
     }
 
     .nav-buttons {
-        top: 15px;
+        top: 80px;
         left: 15px;
         gap: 10px;
+    }
+
+    .default-nav-buttons {
+        top: 80px;
+        left: 15px;
     }
 
     .nav-btn {
@@ -2843,29 +2922,112 @@ body.dark-theme .detail-value {
     .trade-place-container {
         height: auto;
         min-height: calc(100vh - 200px);
-        padding: 15px 0;
+        padding: 15px 10px;
+        gap: 15px;
+    }
+
+    .marketplace-wrapper {
+        width: 90%;
+    }
+
+    .market-layout {
+        flex-direction: column;
+    }
+
+    .market-sidebar {
+        width: 100%;
+        min-width: auto;
+        position: static;
+        margin-bottom: 20px;
+    }
+
+    .market-content {
+        width: 100%;
+    }
+
+    .market-search-container {
+        width: 100%;
+        max-width: 100%;
     }
 
     .trade-place-sidebar {
-        width: 45%;
+        width: 40%;
+        max-width: 350px;
+        padding: 15px 10px;
     }
 
     .trade-place-main {
-        width: 50%;
-        padding: 20px;
+        width: 55%;
+        max-width: none;
+        padding: 25px;
+        border-radius: var(--radius-default);
+    }
+
+    .offer-title {
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+    }
+
+    .offer-description-box {
+        padding: 18px;
+        margin-bottom: 20px;
+    }
+
+    .offer-details-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 15px;
+    }
+
+    .detail-box {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .marketplace-wrapper {
+        width: 95%;
+    }
+
+    .marketplace-title {
+        font-size: 1.6rem;
+        padding: 0.9rem;
+        margin: 0 10px;
+    }
+
+    .market-sidebar {
+        padding: 15px;
+    }
+
+    .market-search-container {
+        padding: 0 10px;
+        margin-bottom: 20px;
+    }
+
+    .offers-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    /* Responsive spécifique pour tradeplace entre tablette et mobile */
+    .trade-place-container {
+        gap: 18px;
+        padding: 15px 8px;
+    }
+
+    .trade-place-sidebar {
+        width: 280px;
+        min-width: 260px;
+        padding: 18px 10px;
+    }
+
+    .trade-place-main {
+        padding: 25px 20px;
     }
 
     .offer-title {
         font-size: 1.5rem;
     }
-
-    .offer-details-grid {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 10px;
-    }
-}
-
-@media (max-width: 768px) {
 
     .trade-place-title {
         padding: 0.8rem;
@@ -2874,9 +3036,14 @@ body.dark-theme .detail-value {
     }
 
     .nav-buttons {
-        top: 10px;
+        top: 75px;
         left: 10px;
         gap: 8px;
+    }
+
+    .default-nav-buttons {
+        top: 75px;
+        left: 10px;
     }
 
     .nav-btn {
@@ -2892,8 +3059,9 @@ body.dark-theme .detail-value {
     .trade-place-container {
         flex-direction: column;
         height: auto;
-        padding: 10px;
-        gap: 15px;
+        min-height: calc(100vh - 160px);
+        padding: 10px 5px;
+        gap: 20px;
     }
 
     .market-layout {
@@ -2908,16 +3076,20 @@ body.dark-theme .detail-value {
 
     .trade-place-sidebar {
         width: 100%;
-        border-radius: 20px;
-        max-height: 250px;
+        max-width: 100%;
+        border-radius: var(--radius-default);
+        max-height: 300px;
         padding: 15px 10px;
+        order: 1;
     }
 
     .trade-place-main {
         width: 100%;
-        border-radius: 20px;
-        padding: 20px;
-        min-height: 400px;
+        max-width: 100%;
+        border-radius: var(--radius-default);
+        padding: 20px 15px;
+        min-height: 350px;
+        order: 2;
     }
 
     .offer-detail-card {
@@ -2925,12 +3097,45 @@ body.dark-theme .detail-value {
     }
 
     .offer-title {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
+        margin-bottom: 15px;
     }
 
     .offer-description-box {
         padding: 15px;
-        min-height: 100px;
+        min-height: 120px;
+        margin-bottom: 20px;
+    }
+
+    .offer-meta {
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .offer-meta-item {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .offer-details-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .detail-box {
+        padding: 15px;
+    }
+
+    .trade-offer-item {
+        padding: 12px 15px;
+        font-size: 0.95rem;
+    }
+
+    .no-offer-selected {
+        font-size: 1rem;
+        padding: 30px 15px;
     }
 
     .offer-meta {
@@ -2956,6 +3161,45 @@ body.dark-theme .detail-value {
 
 @media (max-width: 480px) {
 
+    .marketplace-wrapper {
+        width: 98%;
+    }
+
+    .marketplace-title {
+        font-size: 1.3rem;
+        padding: 0.7rem;
+        margin: 0 5px;
+    }
+
+    .market-search-container {
+        padding: 0 5px;
+    }
+
+    .market-search-container .input-rectangle {
+        height: 44px;
+        font-size: 0.95rem;
+    }
+
+    .category-section {
+        padding: 15px;
+    }
+
+    .category-name {
+        font-size: 1.3rem;
+    }
+
+    .offer-card {
+        padding: 12px;
+    }
+
+    .offer-title {
+        font-size: 1.1rem;
+    }
+
+    .offer-price {
+        font-size: 1rem;
+    }
+
     .trade-place-title {
         padding: 1rem;
         font-size: 1.2rem;
@@ -2963,10 +3207,15 @@ body.dark-theme .detail-value {
     }
 
     .nav-buttons {
-        top: 12px;
+        top: 70px;
         left: 12px;
         gap: 10px;
         flex-wrap: wrap;
+    }
+
+    .default-nav-buttons {
+        top: 70px;
+        left: 12px;
     }
 
     .nav-btn {
@@ -2980,33 +3229,95 @@ body.dark-theme .detail-value {
     }
 
     .trade-place-container {
-        padding: 10px;
-        gap: 20px;
+        padding: 8px 5px;
+        gap: 15px;
     }
 
     .trade-place-sidebar {
-        padding: 15px 12px;
-        max-height: 220px;
-        gap: 12px;
+        padding: 12px 8px;
+        max-height: 200px;
+        gap: 10px;
+        border-radius: var(--radius-small);
     }
 
     .trade-offer-item {
-        padding: 15px 18px;
-        font-size: 0.95rem;
-        margin-bottom: 4px;
+        padding: 12px 15px;
+        font-size: 0.9rem;
+        margin-bottom: 0;
     }
 
     .offer-category {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
+    }
+
+    .offer-arrow {
+        width: 0;
+        height: 0;
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        border-left: 6px solid var(--grey-color);
     }
 
     .trade-place-main {
-        padding: 20px;
-        min-height: 350px;
+        padding: 15px 12px;
+        min-height: 300px;
+        border-radius: var(--radius-small);
     }
 
     .offer-detail-card {
-        padding: 5px 0;
+        padding: 0;
+    }
+
+    .offer-title {
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+    }
+
+    .offer-description-box {
+        padding: 12px;
+        min-height: 100px;
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+    }
+
+    .offer-meta {
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .offer-meta-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .meta-label {
+        font-size: 0.85rem;
+    }
+
+    .meta-value {
+        font-size: 0.9rem;
+    }
+
+    .offer-details-grid {
+        gap: 10px;
+    }
+
+    .detail-box {
+        padding: 12px;
+    }
+
+    .detail-label {
+        font-size: 0.8rem;
+    }
+
+    .detail-value {
+        font-size: 1rem;
+    }
+
+    .no-offer-selected {
+        font-size: 0.95rem;
+        padding: 25px 12px;
     }
 
     .offer-title {
@@ -3104,9 +3415,14 @@ body.dark-theme .detail-value {
     }
 
     .nav-buttons {
-        top: 8px;
+        top: 70px;
         left: 8px;
         gap: 8px;
+    }
+
+    .default-nav-buttons {
+        top: 70px;
+        left: 8px;
     }
 
     .nav-btn {
@@ -3209,6 +3525,12 @@ body.dark-theme .detail-value {
     }
 }
 
+/* Animation pour le loader de forgot password */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 /* Modal mot de passe oublié */
 #forgot-password-modal {
     display: none;
@@ -3273,6 +3595,10 @@ body.dark-theme #forgot-password-modal p {
     color: var(--grey-color);
     cursor: pointer;
     transition: color var(--transition-fast);
+}
+
+body.dark-theme #forgot-password-modal .close {
+    color: var(--grey-light);
 }
 
 #forgot-password-modal .close:hover,

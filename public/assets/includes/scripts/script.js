@@ -14,6 +14,7 @@ function updateNavigationIcons() {
     const tradeIcon = document.getElementById('trade-nav-icon');
     const marketIcon = document.getElementById('market-nav-icon');
     const homeIcon = document.getElementById('home-nav-icon');
+    const scrollIcon = document.getElementById('scroll-icon');
 
     if (tradeIcon) {
         tradeIcon.src = isDark ? '/public/assets/img/Trade_Night.svg' : '/public/assets/img/Trade_Day.svg';
@@ -23,6 +24,9 @@ function updateNavigationIcons() {
     }
     if (homeIcon) {
         homeIcon.src = isDark ? '/public/assets/img/Home_Night.svg' : '/public/assets/img/Home_Day.svg';
+    }
+    if (scrollIcon) {
+        scrollIcon.src = isDark ? '/public/assets/img/Black_Arrow.svg' : '/public/assets/img/Blue_Arrow.svg';
     }
 }
 
@@ -42,6 +46,12 @@ function toggleTheme() {
     localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
     setThemeIcon();
     updateNavigationIcons();
+
+    // Redessiner le graphique de la page de profil, sinon le texte ne change pas de couleur avec le thème
+    const chartElement = document.getElementById('barchart_values');
+    if (chartElement && typeof google !== 'undefined' && google.charts) {
+        initGradesChartFromData();
+    }
 }
 
 function initRegisterForm(dbUnavailable, dbMessage) {
@@ -135,6 +145,22 @@ function initForgotPasswordModal() {
                 setTimeout(function() {
                     forgotPasswordModal.style.display = 'none';
                 }, 400);
+            }
+        });
+    }
+
+    const forgotPasswordForm = document.getElementById('forgot-password-form');
+    const submitButton = document.getElementById('submit-forgot-password');
+    const loadingIndicator = document.getElementById('loading-indicator');
+
+    if (forgotPasswordForm && submitButton) {
+        forgotPasswordForm.addEventListener('submit', function() {
+            submitButton.disabled = true;
+            submitButton.style.opacity = '0.6';
+            submitButton.style.cursor = 'not-allowed';
+            submitButton.textContent = 'Envoi en cours...';
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'block';
             }
         });
     }
@@ -383,14 +409,25 @@ function initGradesChart(gradesData) {
     });
 }
 
+function getCSSVariable(variableName) {
+    return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
+}
+
 function drawChart(gradesData) {
+    const isDark = document.body.classList.contains('dark-theme');
+
+    // Récupération des couleurs depuis les variables CSS
+    const primaryColor = getCSSVariable('--primary-color');
+    const textColor = isDark ? getCSSVariable('--text-dark') : getCSSVariable('--text-light');
+    const gridColor = isDark ? getCSSVariable('--chart-grid-dark') : getCSSVariable('--chart-grid-light');
+
     const data = google.visualization.arrayToDataTable([
         ["Moyennes", "Moyenne", { role: "style" }],
-        ["Maths", parseFloat(gradesData.maths) || 0, "color: #1360AA"],
-        ["Programmation", parseFloat(gradesData.programmation) || 0, "color: #1360AA"],
-        ["Réseau", parseFloat(gradesData.network) || 0, "color: #1360AA"],
-        ["BD", parseFloat(gradesData.db) || 0, "color: #1360AA"],
-        ["Autres", parseFloat(gradesData.other) || 0, "color: #1360AA"]
+        ["Maths", parseFloat(gradesData.maths) || 0, `color: ${primaryColor}`],
+        ["Programmation", parseFloat(gradesData.programmation) || 0, `color: ${primaryColor}`],
+        ["Réseau", parseFloat(gradesData.network) || 0, `color: ${primaryColor}`],
+        ["BD", parseFloat(gradesData.db) || 0, `color: ${primaryColor}`],
+        ["Autres", parseFloat(gradesData.other) || 0, `color: ${primaryColor}`]
     ]);
 
     const view = new google.visualization.DataView(data);
@@ -404,7 +441,6 @@ function drawChart(gradesData) {
         2
     ]);
 
-    const isDark = document.body.classList.contains('dark-theme');
     const chartElement = document.getElementById("barchart_values");
     const containerWidth = chartElement ? chartElement.parentElement.clientWidth : 600;
     const isMobile = window.innerWidth < 768;
@@ -418,18 +454,18 @@ function drawChart(gradesData) {
         bar: {groupWidth: isMobile ? "50%" : "60%"},
         legend: { position: "none" },
         titleTextStyle: {
-            color: isDark ? '#E4E4E4' : '#2c3e50',
+            color: textColor,
             fontSize: isMobile ? 14 : 16,
             bold: true
         },
         hAxis: {
             title: 'Points / 20',
             titleTextStyle: {
-                color: isDark ? '#E4E4E4' : '#2c3e50',
+                color: textColor,
                 fontSize: isMobile ? 11 : 13
             },
             textStyle: {
-                color: isDark ? '#E4E4E4' : '#2c3e50',
+                color: textColor,
                 fontSize: isMobile ? 10 : 12
             },
             viewWindow: {
@@ -437,13 +473,16 @@ function drawChart(gradesData) {
                 min: 0
             },
             gridlines: {
-                color: isDark ? '#646464' : '#ddd'
+                color: gridColor
             }
         },
         vAxis: {
             textStyle: {
-                color: isDark ? '#E4E4E4' : '#2c3e50',
+                color: textColor,
                 fontSize: isMobile ? 10 : 12
+            },
+            gridlines: {
+                color: gridColor
             }
         },
         chartArea: {

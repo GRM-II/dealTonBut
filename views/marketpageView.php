@@ -6,7 +6,7 @@ $isLoggedIn = $A_view['isLoggedIn'] ?? false;
 
 // Organiser les offres par catégorie
 $offersByCategory = [];
-$categories = ['Services', 'Maths', 'Informatique', 'Électronique', 'Mode', 'Maison', 'Sports', 'Alimentation', 'Autre'];
+$categories = ['Maths', 'Programmation', 'Réseau', 'BD', 'Autre'];
 foreach ($categories as $cat) {
     $offersByCategory[$cat] = [];
 }
@@ -32,7 +32,7 @@ if (!empty($A_view['offers'])) {
             <img id="home-nav-icon" src="/public/assets/img/Home_Day.svg" alt="Profil" class="nav-icon">
         </a>
         <button id="scroll-to-top-btn" class="nav-btn scroll-to-top-btn" title="Remonter en haut">
-            <img src="/public/assets/img/placeholder-meme.jpeg" alt="Remonter" class="nav-icon">
+            <img id="scroll-icon" src="/public/assets/img/Blue_Arrow.svg" alt="Remonter" class="nav-icon">
         </button>
     </div>
 
@@ -152,15 +152,11 @@ if (!empty($A_view['offers'])) {
 
                     <select name="category" class="input-rectangle" required <?php echo $disabledAttr; ?>>
                         <option value="">-- Catégorie --</option>
-                        <option value="Dev">Dev</option>
                         <option value="Maths">Maths</option>
-                        <option value="Algo">Algo</option>
-                        <option value="Web">Web</option>
-                        <option value="Réseau">Réseau</option>
-                        <option value="IA">IA</option>
-                        <option value=""></option>
-                        <option value=""></option>
-                        <option value="Autre">Autre</option>
+                        <option value="Programmation">Web</option>
+                        <option value="Network">Réseau</option>
+                        <option value="BD">IA</option>
+                        <option value="Other">Autre</option>
                     </select>
 
                     <button type="submit" class="button btn-submit">Publier l'offre</button>
@@ -170,6 +166,3 @@ if (!empty($A_view['offers'])) {
     </div>
 <?php endif; ?>
 
-<script>
-    window.addEventListener('DOMContentLoaded', initMarketplace);
-</script>

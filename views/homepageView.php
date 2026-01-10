@@ -63,7 +63,7 @@
             <span class="close">&times;</span>
             <h2>Réinitialiser le mot de passe</h2>
             <p>C'est quand même balot, alors donnez nous votre adresse email pour recevoir un lien de réinitialisation.</p>
-            <p>L'envoi peut prendre jusqu'à 3 minutes</p>
+            <p>L'envoi peut prendre jusqu'à 3 minutes.</p>
             <form id="forgot-password-form" method="POST" action="?controller=user&action=forgotPassword">
                 <label>
                     <input type="email"
@@ -73,7 +73,7 @@
                            required>
                 </label>
                 <button type="submit"
-                        class="input-rectangle"
+                        class="button"
                         id="submit-forgot-password">
                     Envoyer
                 </button>
@@ -86,41 +86,3 @@
     </div>
 </main>
 
-<style>
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-</style>
-
-<script>
-    const modal = document.getElementById('forgot-password-modal');
-    const link = document.getElementById('forgot-password-link');
-    const closeBtn = document.getElementsByClassName('close')[0];
-    const forgotPasswordForm = document.getElementById('forgot-password-form');
-    const submitButton = document.getElementById('submit-forgot-password');
-    const loadingIndicator = document.getElementById('loading-indicator');
-
-    link.onclick = function(e) {
-        e.preventDefault();
-        modal.style.display = 'block';
-    }
-
-    closeBtn.onclick = function() {
-        modal.style.display = 'none';
-    }
-
-    window.onclick = function(event) {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    }
-
-    forgotPasswordForm.onsubmit = function() {
-        submitButton.disabled = true;
-        submitButton.style.opacity = '0.6';
-        submitButton.style.cursor = 'not-allowed';
-        submitButton.textContent = 'Envoi en cours...';
-        loadingIndicator.style.display = 'block';
-    }
-</script>
