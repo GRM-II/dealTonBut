@@ -143,7 +143,17 @@ final class marketpageController
         if (!class_exists('offerModel', false)) {
             require_once constants::modelsRepository() . 'offerModel.php';
         }
-        return offerModel::getAllOffers();
+
+        $offers = [];
+
+        $cat = ['Maths' => 'Maths', 'Programmation' => 'Programmation', 'Network' => 'Réseau', 'DB' => 'BD', 'Other' => 'Autre'];
+
+        foreach (offerModel::getAllOffers() as $offer) {
+            $offer['category'] = $cat[$offer['category']];
+            $offers[] = $offer;
+        }
+
+        return $offers;
     }
 
     /**

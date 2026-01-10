@@ -79,7 +79,7 @@ final class offerModel
 
             $sql = "SELECT o.id, o.user_id, o.title, o.description, o.category, o.price, o.created_at, u.username
                     FROM Offers o
-                    LEFT JOIN User u ON o.user_id = u.id
+                    LEFT JOIN Users u ON o.user_id = u.id
                     ORDER BY o.created_at DESC";
 
             $stmt = $pdo->prepare($sql);
