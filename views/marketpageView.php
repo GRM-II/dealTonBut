@@ -31,6 +31,9 @@ if (!empty($A_view['offers'])) {
         <a href="?controller=profilepage&action=index" class="nav-btn nav-btn-profile" title="Profil">
             <img id="home-nav-icon" src="/public/assets/img/Home_Day.svg" alt="Profil" class="nav-icon">
         </a>
+        <a href="?controller=sitemap&action=index" class="nav-btn nav-btn-maps" title="Plan du site">
+            <img id="maps-nav-icon" src="/public/assets/img/Maps.svg" alt="Plan du site" class="nav-icon">
+        </a>
         <button id="scroll-to-top-btn" class="nav-btn scroll-to-top-btn" title="Remonter en haut">
             <img id="scroll-icon" src="/public/assets/img/Blue_Arrow.svg" alt="Remonter" class="nav-icon">
         </button>

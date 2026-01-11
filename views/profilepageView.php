@@ -13,6 +13,9 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             <a href="?controller=tradeplace&action=index" class="nav-btn nav-btn-trade" title="Trading">
                 <img id="trade-nav-icon" src="/public/assets/img/Trade_Day.svg" alt="Trading" class="nav-icon">
             </a>
+            <a href="?controller=sitemap&action=index" class="nav-btn nav-btn-maps" title="Plan du site">
+                <img id="maps-nav-icon" src="/public/assets/img/Maps.svg" alt="Plan du site" class="nav-icon">
+            </a>
             <button id="scroll-to-top-btn" class="nav-btn scroll-to-top-btn" title="Remonter en haut">
                 <img id="scroll-icon" src="/public/assets/img/Blue_Arrow.svg" alt="Remonter" class="nav-icon">
             </button>
