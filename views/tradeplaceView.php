@@ -94,7 +94,9 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
                             <span class="detail-value"><?php echo htmlspecialchars($selectedOffer['category'] ?? 'Autre', ENT_QUOTES, 'UTF-8'); ?></span>
                         </div>
                     </div>
-
+                    <div class="offer-purchase">
+                        <button type="button" id="purchase-offer-btn" class="button offer-purchase-btn">Effectuer la transaction</button>
+                    </div>
 
                 </div>
             <?php else: ?>
@@ -106,4 +108,17 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
     </div>
     </div>
 </div>
+
+<!-- Modal de confirmation de transaction -->
+<div id="purchase-modal">
+    <div class="modal-content">
+        <h3>Confirmer la transaction</h3>
+        <p>Êtes-vous sûr de vouloir conclure la transaction ?</p>
+        <form method="post" action="?controller=tradeplace&action=purchaseOffer">
+            <button type="submit" class="button btn-purchase">Oui</button>
+            <button type="button" id="cancel-purchase-btn" class="button btn-cancel">Non</button>
+        </form>
+    </div>
+</div>
+
 

@@ -131,33 +131,34 @@ final class offerModel
         }
     }
 
-    public static function purchaseOffer(array $offer, int $user_id): array{
+    public static function purchaseOffer(array $offer, array $user): array{
         try {
             $pdo = self::getConnection();
 
-            $sql = "UPDATE Users SET ". trim($offer['category'])."_points = :price  WHERE id = :user_id;
-                    UPDATE Users SET ". trim($offer['category'])."_points = :price  WHERE id = :user_id;";
+            $sql = "SELECT ". trim($offer['category']) ."_points FROM Users WHERE id = :user_id;";
+            $stmt = $pdo->prepare($sql);
+            $result = $stmt->execute(['user_id' => $user['id']]);
+
+            $sql = "UPDATE Users SET ". trim($offer['category']) ."_points = :price WHERE id = :user_id;
+                    UPDATE Users SET ". trim($offer['category']) ."_points = :price WHERE id = :user_id;
+                    DELETE FROM Offers WHERE id = :offer_id;";
 
             $stmt = $pdo->prepare($sql);
-            $result = $stmt->execute(['user_id' => $user_id,
-                'title' => $title,
-                'description' => $description,
-                'price' => $price,
-                'category' => $category
+            $result = $stmt->execute(['user_id' => $user['id'], 'price' => $offer['price'], 'offer_id' => $offer['id'],
             ]);
 
             if ($result) {
                 return ['success' => true,
-                    'message' => 'Offre créée avec succès !'
+                    'message' => 'Transaction effectuée avec succès !'
                 ];
             } else {
                 return ['success' => false,
-                    'message' => 'Erreur lors de la création de l\'offre.'
+                    'message' => 'Erreur lors de la transaction.'
                 ];
             }
 
         } catch (PDOException $e) {
-            error_log("Erreur createOffer : " . $e->getMessage());
+            error_log("Erreur purchaseOffer : " . $e->getMessage());
             return [];
         }
     }

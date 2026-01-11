@@ -92,6 +92,8 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     } else if (document.getElementById('open-modal-btn')) {
         initMarketplace();
+    } else if (document.getElementById('purchase-offer-btn')) {
+        initTradeplace();
     } else if (document.getElementById('register-form')) {
         const dbUnavailableElem = document.querySelector('.db-unavailable-message');
         const dbUnavailable = dbUnavailableElem !== null;
@@ -257,6 +259,58 @@ function initMarketplace() {
                     }
                 });
             });
+        });
+    }
+}
+
+function initTradeplace() {
+
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'flex';
+            void modal.offsetHeight;
+            modal.style.opacity = '1';
+            const modalContent = modal.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.style.transform = 'scale(1)';
+            }
+        }
+    }
+
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.opacity = '0';
+            const modalContent = modal.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.style.transform = 'scale(0.9)';
+            }
+            setTimeout(function() {
+                modal.style.display = 'none';
+            }, 400);
+        }
+    }
+
+    const purchaseOfferBtn = document.getElementById('purchase-offer-btn');
+    const purchaseModal = document.getElementById('purchase-modal');
+    const cancelPurchaseBtn = document.getElementById('cancel-purchase-btn');
+
+    if (purchaseOfferBtn && purchaseModal) {
+        purchaseOfferBtn.addEventListener('click', function() {
+            openModal('purchase-modal');
+        });
+
+        if (cancelPurchaseBtn) {
+            cancelPurchaseBtn.addEventListener('click', function() {
+                closeModal('purchase-modal');
+            });
+        }
+
+        purchaseModal.addEventListener('click', function(e) {
+            if (e.target === purchaseModal) {
+                closeModal('purchase-modal');
+            }
         });
     }
 }

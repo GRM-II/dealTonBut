@@ -43,8 +43,6 @@ class tradeplaceController
                     break;
                 }
             }
-        } elseif (!empty($offers)) {
-            $selectedOffer = $offers[0];
         }
 
         View::show('tradeplaceView', [
@@ -102,6 +100,13 @@ class tradeplaceController
         }
 
         return $offers;
+    }
+
+    private function purchaseOffer(): array
+    {
+        var_dump($_GET['offer'], $_SESSION['user']);
+        exit;
+        return offerModel::purchaseOffer($_GET['offer'], $_SESSION['user']);
     }
 
     /**
