@@ -96,10 +96,47 @@ final class offerModel
     }
 
     public static function createOffer(int $user_id, string $title, string $description, float $price, string $category): array {
+        if ($price < 0 || $price > 20) {
+            return [
+                'success' => false,
+                'message' => 'Le prix doit être compris entre 0 et 20.'];
+        }
+
         try {
             $pdo = self::getConnection();
 
             $sql = "INSERT INTO Offers (user_id, title, description, price, category) VALUES (:user_id, :title, :description, :price, :category)";
+
+            $stmt = $pdo->prepare($sql);
+            $result = $stmt->execute(['user_id' => $user_id,
+                'title' => $title,
+                'description' => $description,
+                'price' => $price,
+                'category' => $category
+            ]);
+
+            if ($result) {
+                return ['success' => true,
+                    'message' => 'Offre créée avec succès !'
+                ];
+            } else {
+                return ['success' => false,
+                    'message' => 'Erreur lors de la création de l\'offre.'
+                ];
+            }
+
+        } catch (PDOException $e) {
+            error_log("Erreur createOffer : " . $e->getMessage());
+            return [];
+        }
+    }
+
+    public static function purchaseOffer(array $offer, int $user_id): array{
+        try {
+            $pdo = self::getConnection();
+
+            $sql = "UPDATE Users SET ". trim($offer['category'])."_points = :price  WHERE id = :user_id;
+                    UPDATE Users SET ". trim($offer['category'])."_points = :price  WHERE id = :user_id;";
 
             $stmt = $pdo->prepare($sql);
             $result = $stmt->execute(['user_id' => $user_id,

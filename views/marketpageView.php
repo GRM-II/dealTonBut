@@ -109,7 +109,7 @@ if (!empty($A_view['offers'])) {
                             </div>
                         <?php else: ?>
                             <?php foreach ($offers as $offer): ?>
-                                <div class="offer-card" data-offer-id="<?php echo $offer['id']; ?>" onclick="if(!event.target.closest('.product-delete-form')) window.location.href='?controller=marketpage&action=viewOffer&id=<?php echo $offer['id']; ?>'">
+                                <div class="offer-card" data-offer-id="<?php echo $offer['id']; ?>" onclick="if(!event.target.closest('.product-delete-form')) window.location.href='?controller=tradeplace&action=index&offer_id=<?php echo $offer['id']; ?>'">
                                     <div class="offer-card-content">
                                         <h3 class="offer-title"><?php echo htmlspecialchars($offer['title'], ENT_QUOTES, 'UTF-8'); ?></h3>
                                         <p class="offer-price"><?php echo number_format($offer['price'], 0, ',', ' '); ?> points</p>
@@ -151,7 +151,7 @@ if (!empty($A_view['offers'])) {
 
                     <textarea name="description" class="input-rectangle textarea-field" placeholder="Description de l'offre" rows="4" required <?php echo $disabledAttr; ?>></textarea>
 
-                    <input type="number" name="price" class="input-rectangle" placeholder="Prix (points)" step="0.01" min="0" required <?php echo $disabledAttr; ?>>
+                    <input type="number" name="price" class="input-rectangle" placeholder="Prix (points)" step="0.01" min="0" max="20" required <?php echo $disabledAttr; ?>>
 
                     <select name="category" class="input-rectangle" required <?php echo $disabledAttr; ?>>
                         <option value="">-- Catégorie --</option>

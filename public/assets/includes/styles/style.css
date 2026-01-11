@@ -1817,6 +1817,28 @@ body.dark-theme .login-right-separator {
 }
 
 /* Styles spécifiques pour la page tradeplace */
+.tradeplace-title-container {
+    width: 80%;
+    max-width: 1400px;
+    margin-bottom: 30px;
+}
+
+.tradeplace-title {
+    text-align: center;
+    font-size: 2rem;
+    padding: 1rem;
+    background-color: var(--surface-light);
+    color: var(--text-light);
+    box-shadow: var(--shadow-default);
+    border-radius: var(--radius-default);
+    margin: 0 20px;
+}
+
+body.dark-theme .tradeplace-title {
+    color: var(--text-dark);
+    background-color: var(--surface-dark);
+}
+
 .trade-nav-buttons {
     position: fixed;
     left: calc((100vw - 80%) / 4 - 32px);
