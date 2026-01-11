@@ -18,8 +18,9 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
                 <img src="/public/assets/img/placeholder-meme.jpeg" alt="Remonter" class="nav-icon">
             </button>
         </div>
-
-    <h1 class="page-title">Trade place</h1>
+    <div class="tradeplace-title-container">
+        <h1 class="tradeplace-title">Trade place</h1>
+    </div>
 
     <?php if ($dbUnavailable): ?>
         <div class="flash-message flash-warning">
@@ -81,7 +82,7 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
                         <?php if (isset($selectedOffer['price']) && $selectedOffer['price'] > 0): ?>
                             <div class="detail-box">
                                 <span class="detail-label">Prix :</span>
-                                <span class="detail-value"><?php echo htmlspecialchars($selectedOffer['price'], ENT_QUOTES, 'UTF-8'); ?>€</span>
+                                <span class="detail-value"><?php echo htmlspecialchars($selectedOffer['price'], ENT_QUOTES, 'UTF-8'); ?> points</span>
                             </div>
                         <?php endif; ?>
 
