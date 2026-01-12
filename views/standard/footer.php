@@ -5,5 +5,7 @@
         <p class="footer-text">Page instagram</p>
         <p class="footer-text">⠀|⠀</p>
         <p class="footer-text">GRM - Kiko - Akcyl - mimojeej - Louloute - Olivier G. (Le G c'est le S)</p>
+        <p class="footer-text">⠀|⠀</p>
+        <a href="?controller=legalnotice&action=index" class="footer-legal-link">Mentions légales</a>
     </div>
 </footer>

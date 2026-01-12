@@ -559,3 +559,74 @@ function drawChart(gradesData) {
         chart.draw(view, options);
     });
 }
+
+// Sticky image animation for legal notice page
+document.addEventListener('DOMContentLoaded', function() {
+    const imageContainer = document.querySelector('.legal-notice-image-container');
+    if (!imageContainer) return;
+
+    const wrapper = document.querySelector('.legal-notice-wrapper');
+    const textRectangle = document.querySelector('.legal-notice-wrapper .login-rectangle');
+    if (!wrapper || !textRectangle) return;
+
+    const topOffset = 110; // Distance from top when fixed
+    let ticking = false;
+    let lastTranslateY = 0;
+
+    function updateImagePosition() {
+        const wrapperRect = wrapper.getBoundingClientRect();
+        const textRect = textRectangle.getBoundingClientRect();
+        const imageHeight = imageContainer.offsetHeight;
+
+        // Calculate boundaries
+        const wrapperTop = wrapperRect.top;
+        const wrapperBottom = wrapperRect.bottom;
+        const textHeight = textRect.height;
+
+        let translateY = 0;
+
+        if (wrapperTop <= topOffset) {
+            // Wrapper has scrolled past the top offset
+            const scrolled = topOffset - wrapperTop;
+            const maxScroll = Math.max(0, textHeight - imageHeight);
+
+            // Clamp the translation
+            translateY = Math.min(scrolled, maxScroll);
+
+            // Stop if we've reached the bottom
+            if (wrapperBottom <= imageHeight + topOffset) {
+                translateY = maxScroll;
+            }
+        } else {
+            // Wrapper is below the top offset, image at top
+            translateY = 0;
+        }
+
+        // Apply smooth transform
+        if (translateY !== lastTranslateY) {
+            imageContainer.style.transform = `translateY(${translateY}px)`;
+            lastTranslateY = translateY;
+        }
+
+        ticking = false;
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(updateImagePosition);
+            ticking = true;
+        }
+    }
+
+    // Initialize
+    imageContainer.style.transform = 'translateY(0)';
+
+    // Listen to scroll with debouncing via requestAnimationFrame
+    window.addEventListener('scroll', requestTick, { passive: true });
+    window.addEventListener('resize', requestTick, { passive: true });
+
+    // Initial position
+    updateImagePosition();
+});
+
+

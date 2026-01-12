@@ -34,14 +34,14 @@
                     </p>
                 </a>
 
-                <div class="sitemap-item">
+                <a href="?controller=legalnotice&action=index" class="sitemap-item sitemap-item-link">
                     <h3 class="sitemap-page-title">
                         Mentions légales
                     </h3>
                     <p class="sitemap-page-description">
                         Page regroupant les mentions légales du site.
                     </p>
-                </div>
+                </a>
 
                 <?php if (isset($A_view['isLoggedIn']) && $A_view['isLoggedIn']): ?>
                     <a href="?controller=profilepage&action=index" class="sitemap-item sitemap-item-link">
