@@ -131,20 +131,36 @@ final class offerModel
         }
     }
 
-    public static function purchaseOffer(array $offer, array $user): array{
+    public static function purchaseOffer(array $offer, int $user_id): array{
         try {
             $pdo = self::getConnection();
 
-            $sql = "SELECT ". trim($offer['category']) ."_points FROM Users WHERE id = :user_id;";
-            $stmt = $pdo->prepare($sql);
-            $result = $stmt->execute(['user_id' => $user['id']]);
+            $stmt = $pdo->prepare("SELECT ". trim($offer['category']) ."_points FROM Users WHERE id = :user_id;");
+            $stmt->execute(['user_id' => $user_id]);
+            $buyerPoints = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $sql = "UPDATE Users SET ". trim($offer['category']) ."_points = :price WHERE id = :user_id;
-                    UPDATE Users SET ". trim($offer['category']) ."_points = :price WHERE id = :user_id;
+            if ($buyerPoints - $offer['price'] < 0) {
+                return ['success' => false,
+                    'message' => "Vous n'avez pas assez de points"
+                ];
+            } else {
+                $newBuyerPoints = $buyerPoints - $offer['price'];
+            }
+
+            $stmt = $pdo->prepare("SELECT ". trim($offer['category']) ."_points FROM Users WHERE id = :user_id;");
+            $stmt->execute(['user_id' => $offer['user_id']]);
+            $newSellerPoints = min($stmt->fetch(PDO::FETCH_ASSOC) + $offer['price'], 20);
+
+            $sql = "UPDATE Users SET ". trim($offer['category']) ."_points = :newBuyerPoints WHERE id = :buyer_id;
+                    UPDATE Users SET ". trim($offer['category']) ."_points = :newSellerPoints WHERE id = :seller_id;
                     DELETE FROM Offers WHERE id = :offer_id;";
 
             $stmt = $pdo->prepare($sql);
-            $result = $stmt->execute(['user_id' => $user['id'], 'price' => $offer['price'], 'offer_id' => $offer['id'],
+            $result = $stmt->execute(['newBuyerPoints' => $newBuyerPoints,
+                'newSellerPoints' => $newSellerPoints,
+                'buyer_id' => $user_id,
+                'seller_id' => $offer['user_id'],
+                'offer_id' => $offer['id']
             ]);
 
             if ($result) {

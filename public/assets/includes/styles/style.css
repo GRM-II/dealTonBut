@@ -1839,6 +1839,78 @@ body.dark-theme .tradeplace-title {
     background-color: var(--surface-dark);
 }
 
+#purchase-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    align-items: center;
+    justify-content: center;
+}
+
+#purchase-modal .modal-content {
+    background: var(--bg-light);
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 400px;
+    text-align: center;
+    transform: scale(0.9);
+    transition: transform 0.4s ease;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-theme #purchase-modal .modal-content {
+    background: var(--bg-dark);
+    color: var(--white-color);
+}
+
+#purchase-modal h3 {
+    color: var(--primary-color);
+    margin-top: 0;
+}
+
+#purchase-modal p {
+    color: #333;
+}
+
+body.dark-theme #purchase-modal p {
+    color: var(--white-color);
+}
+
+#purchase-modal form {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#purchase-modal .input-rectangle {
+    padding: 10px 20px;
+    height: auto;
+    width: auto;
+}
+
+#purchase-modal .btn-purchase {
+    background: var(--primary-color);
+    color: var(--white-color);
+}
+
+#purchase-modal .btn-cancel {
+    background: var(--primary-color);
+    color: var(--white-color);
+}
+
+body.dark-theme #purchase-modal .btn-cancel {
+    background: var(--primary-color);
+    color: var(--white-color);
+}
+
 .trade-nav-buttons {
     position: fixed;
     left: calc((100vw - 80%) / 4 - 32px);

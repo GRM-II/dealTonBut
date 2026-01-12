@@ -1,6 +1,7 @@
 <?php if (session_status() === PHP_SESSION_NONE) session_start();
 $dbUnavailable = isset($A_view['db_status']) && isset($A_view['db_status']['available']) && !$A_view['db_status']['available'];
 $dbMessage = $dbUnavailable ? ($A_view['db_status']['message'] . (isset($A_view['db_status']['details']) ? ' – ' . $A_view['db_status']['details'] : '')) : '';
+$disabledAttr = $dbUnavailable ? 'disabled' : '';
 $isLoggedIn = $A_view['isLoggedIn'] ?? false;
 $offers = $A_view['offers'] ?? [];
 $selectedOffer = $A_view['selectedOffer'] ?? null;
@@ -95,7 +96,7 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
                         </div>
                     </div>
                     <div class="offer-purchase">
-                        <button type="button" id="purchase-offer-btn" class="button offer-purchase-btn">Effectuer la transaction</button>
+                        <button type="button" id="purchase-offer-btn" class="button offer-purchase-btn" <?php echo $disabledAttr;?>>Effectuer la transaction</button>
                     </div>
 
                 </div>
