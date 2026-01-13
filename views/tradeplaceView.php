@@ -115,7 +115,7 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
     <div class="modal-content">
         <h3>Confirmer la transaction</h3>
         <p>Êtes-vous sûr de vouloir conclure la transaction ?</p>
-        <form method="post" action="?controller=tradeplace&action=purchaseOffer">
+        <form method="post" action="?controller=tradeplace&action=purchaseOffer&offer_id=<?php echo htmlspecialchars($selectedOffer['id'], ENT_QUOTES, 'UTF-8'); ?>">
             <button type="submit" class="button btn-purchase">Oui</button>
             <button type="button" id="cancel-purchase-btn" class="button btn-cancel">Non</button>
         </form>

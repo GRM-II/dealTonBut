@@ -109,16 +109,24 @@ class tradeplaceController
         return $offers;
     }
 
-    private function purchaseOffer(): void
+    /**
+     * Allows a user to purchase an offer
+     *
+     * Gets offer identification from URL and offer model.
+     * Gets buyer identification from active session.
+     * @return void
+     */
+    public function purchaseOffer(): void
     {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         if (!isset($_SESSION['user_id'])) {
             header('Location: ?controller=homepage&action=login');
             exit;
         }
         try {
-            var_dump($_GET['offer'], $_SESSION['user_id']);
-            exit;
-            $result = offerModel::purchaseOffer($_GET['offer'], $_SESSION['user_id']);
+            $result = offerModel::purchaseOffer(offerModel::getOfferById(intval($_GET['offer_id'])), $_SESSION['user_id']);
 
             if ($result['success']) {
                 $_SESSION['flash'] = ['success' => true, 'message' => $result['message']];

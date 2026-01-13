@@ -47,7 +47,6 @@ function toggleTheme() {
     setThemeIcon();
     updateNavigationIcons();
 
-    // Redessiner le graphique de la page de profil, sinon le texte ne change pas de couleur avec le thème
     const chartElement = document.getElementById('barchart_values');
     if (chartElement && typeof google !== 'undefined' && google.charts) {
         initGradesChartFromData();
@@ -170,6 +169,33 @@ function initForgotPasswordModal() {
 
 function initMarketplace() {
 
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'flex';
+            void modal.offsetHeight;
+            modal.style.opacity = '1';
+            const modalContent = modal.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.style.transform = 'scale(1)';
+            }
+        }
+    }
+
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.opacity = '0';
+            const modalContent = modal.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.style.transform = 'scale(0.9)';
+            }
+            setTimeout(function() {
+                modal.style.display = 'none';
+            }, 400);
+        }
+    }
+
     const modal = document.getElementById('offer-modal');
     const openBtn = document.getElementById('open-modal-btn');
     const closeBtn = document.getElementById('close-modal');
@@ -190,6 +216,28 @@ function initMarketplace() {
         modal.addEventListener('click', function(e) {
             if (e.target === modal) {
                 modal.style.display = 'none';
+            }
+        });
+    }
+
+    const deleteOfferBtn = document.getElementById('delete-offer-btn');
+    const offerDeleteModal = document.getElementById('offer-delete-modal');
+    const cancelDeleteOfferBtn = document.getElementById('cancel-delete-offer-btn');
+
+    if (deleteOfferBtn && offerDeleteModal) {
+        deleteOfferBtn.addEventListener('click', function() {
+            openModal('offer-delete-modal');
+        });
+
+        if (cancelDeleteOfferBtn) {
+            cancelDeleteOfferBtn.addEventListener('click', function() {
+                closeModal('offer-delete-modal');
+            });
+        }
+
+        offerDeleteModal.addEventListener('click', function(e) {
+            if (e.target === offerDeleteModal) {
+                closeModal('offer-delete-modal');
             }
         });
     }

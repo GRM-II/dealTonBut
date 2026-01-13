@@ -1,7 +1,12 @@
 <?php
-
+/**
+ * Sitemap controller
+ */
 final class sitemapController
 {
+    /**
+     * Displays a map linked to every page
+     */
     public function index(): void
     {
         if (session_status() === PHP_SESSION_NONE) {

@@ -117,7 +117,7 @@ if (!empty($A_view['offers'])) {
                                     <?php if ($isLoggedIn && $offer['user_id'] == $_SESSION['user_id']): ?>
                                         <form method="post" action="?controller=marketpage&action=deleteOffer" class="product-delete-form" onclick="event.stopPropagation();">
                                             <input type="hidden" name="offer_id" value="<?php echo $offer['id']; ?>">
-                                            <button type="submit" class="button delete-offer" onclick="return confirm('Supprimer cette offre ?');" <?php echo $disabledAttr; ?>>
+                                            <button type="button" id="delete-offer-btn" class="button offer-delete-btn" <?php echo $disabledAttr; ?>>
                                                 ✕
                                             </button>
                                         </form>
@@ -164,6 +164,17 @@ if (!empty($A_view['offers'])) {
 
                     <button type="submit" class="button btn-submit">Publier l'offre</button>
                 </div>
+            </form>
+        </div>
+    </div>
+    <!-- Modal de confirmation de suppression de l'offre -->
+    <div id="offer-delete-modal">
+        <div class="modal-content">
+            <h3>Confirmer la suppression</h3>
+            <p>Êtes-vous sûr de vouloir supprimer cette offre ?</p>
+            <form method="post" action="?controller=marketpage&action=deleteOffer">
+                <button type="submit" class="button btn-delete-offer">Oui</button>
+                <button type="button" id="cancel-delete-offer-btn" class="button btn-cancel">Non</button>
             </form>
         </div>
     </div>

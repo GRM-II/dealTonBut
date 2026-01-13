@@ -283,7 +283,7 @@ body.dark-theme .login-text {
     color: var(--text-dark);
 }
 
-/* Grille de connexion en deux colonnes */
+/* Two columns login grid*/
 .login-grid {
     display: grid;
     grid-template-columns: 0.54fr 1fr;
@@ -292,7 +292,7 @@ body.dark-theme .login-text {
     gap: 20px;
 }
 
-/* Colonne gauche : formulaire */
+/* Left column : form*/
 .login-left {
     display: flex;
     flex-direction: column;
@@ -322,7 +322,7 @@ body.dark-theme .login-text {
     text-decoration: underline;
 }
 
-/* Message d'erreur de connexion */
+/* Login error message */
 .login-error-message {
     color: var(--red-color);
     padding: 8px;
@@ -355,7 +355,7 @@ body.dark-theme .login-success-message {
     border-color: #2d5a4a;
 }
 
-/* Colonne droite : contenu supplémentaire */
+/* Right Column : additional content */
 .login-right {
     display: flex;
     flex-direction: column;
@@ -387,7 +387,7 @@ body.dark-theme .login-right-placeholder {
     font-size: 1.1em;
 }
 
-/* Responsive : sur petits écrans, passer en une colonne */
+/* Responsive : switch to only one column */
 @media (max-width: 768px) {
     .content {
         padding: 80px 0 30px 0;
@@ -454,7 +454,7 @@ body.dark-theme .login-right-placeholder {
         border-top-color: var(--text-dark);
     }
 
-    /* Responsive pour la page de profil */
+    /* ProfilePage responsive */
     .profile-forms-container,
     .profile-logout-container,
     .profile-danger-zone {
@@ -779,7 +779,6 @@ body.dark-theme .error {
     background: var(--surface-dark);
 }
 
-/* Dimitri saches que je ne comprends pas ce choix de couleur autant catastrophique que GavinzBeats (même lui est mieux) */
 .dbunavailable {
     margin:10px 0;
     padding:10px;
@@ -1123,7 +1122,7 @@ body.dark-theme .text-link:hover {
     }
 }
 
-/* Suppresion de compte */
+/* Account delete */
 #delete-modal {
     display: none;
     position: fixed;
@@ -1370,7 +1369,7 @@ body.dark-theme .profile-danger-zone {
     background: var(--dark-red-color);
 }
 
-/* Styles pour la section des moyennes */
+/* Grades section */
 .grades-section {
     margin-top: 20px;
     text-align: center;
@@ -1481,7 +1480,7 @@ body.dark-theme .grade-help-text {
     width: auto;
 }
 
-/* Conteneur du graphique */
+/* Graphic container */
 .chart-container {
     width: 100%;
     padding: 15px;
@@ -1509,7 +1508,7 @@ body.dark-theme .chart-container {
     max-height: 400px;
 }
 
-/* Section des informations du compte */
+/* Account information section */
 .account-info-section {
     margin-top: 30px;
     padding-top: 30px;
@@ -1533,7 +1532,7 @@ body.dark-theme .section-subtitle {
     color: var(--primary-color);
 }
 
-/* Conteneur du graphique */
+/* Graphic container */
 .chart-container {
     width: 100%;
     background: rgba(19, 96, 170, 0.05);
@@ -1567,7 +1566,7 @@ body.dark-theme .chart-container {
     }
 }
 
-/* Responsive pour tablettes */
+/* Ipad responsive */
 @media (max-width: 1024px) and (min-width: 769px) {
     .login-grid {
         grid-template-columns: 1fr 1fr;
@@ -1598,7 +1597,7 @@ body.dark-theme .chart-container {
     }
 }
 
-/* Responsive pour petits mobiles */
+/* Small phone responsive */
 @media (max-width: 480px) {
     .content {
         padding: 75px 0 25px 0;
@@ -1700,14 +1699,14 @@ body.dark-theme .chart-container {
     }
 }
 
-/* Conteneur et bouton pour modifier toutes les notes */
+/* Container and grades update button */
 .grades-edit-container {
     margin-top: 20px;
     text-align: center;
     width: 100%;
 }
 
-/* Modal pour toutes les notes */
+/* Grades modal */
 .modal-content-large {
     max-width: 700px;
 }
@@ -1740,7 +1739,7 @@ body.dark-theme .grade-modal-item label {
 }
 
 
-/* Styles pour les modals de profil */
+/* Profile modals */
 .profile-modal {
     display: none;
     position: fixed;
@@ -1840,7 +1839,7 @@ body.dark-theme .login-right-separator {
     background-color: var(--text-dark);
 }
 
-/* Styles spécifiques pour la page tradeplace */
+/* Tradeplace style */
 .tradeplace-title-container {
     width: 80%;
     max-width: 1400px;
@@ -1943,7 +1942,7 @@ body.dark-theme #purchase-modal .btn-cancel {
     z-index: 1000;
 }
 
-/* Styles spécifiques pour la page marketpage */
+/* Marketpage style */
 .market-nav-buttons {
     position: fixed;
     left: calc((100vw - 80%) / 4 - 32px);
@@ -1952,7 +1951,79 @@ body.dark-theme #purchase-modal .btn-cancel {
     z-index: 1000;
 }
 
-/* Styles pour les pages login et register */
+#offer-delete-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    align-items: center;
+    justify-content: center;
+}
+
+#offer-delete-modal .modal-content {
+    background: var(--bg-light);
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 400px;
+    text-align: center;
+    transform: scale(0.9);
+    transition: transform 0.4s ease;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-theme #offer-delete-modal .modal-content {
+    background: var(--bg-dark);
+    color: var(--white-color);
+}
+
+#offer-delete-modal h3 {
+    color: var(--primary-color);
+    margin-top: 0;
+}
+
+#offer-delete-modal p {
+    color: #333;
+}
+
+body.dark-theme #offer-delete-modal p {
+    color: var(--white-color);
+}
+
+#offer-delete-modal form {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#offer-delete-modal .input-rectangle {
+    padding: 10px 20px;
+    height: auto;
+    width: auto;
+}
+
+#offer-delete-modal .btn-delete-offer {
+    background: var(--red-color);
+    color: var(--white-color);
+}
+
+#offer-delete-modal .btn-cancel {
+    background: var(--primary-color);
+    color: var(--white-color);
+}
+
+body.dark-theme #offer-delete-modal .btn-cancel {
+    background: var(--primary-color);
+    color: var(--white-color);
+}
+
+/* Login/Register style */
 .login-submit-btn,
 .register-submit-btn {
     background: #1360AA;
@@ -2044,7 +2115,7 @@ body.dark-theme .legal-notice-image-container {
     object-fit: cover;
 }
 
-/* Section commentaires */
+/* Comments section */
 .legal-comments-section {
     width: 100%;
     background: var(--bg-light);
@@ -2088,7 +2159,7 @@ body.dark-theme .legal-comments-count {
     color: #aaa;
 }
 
-/* Champ de saisie de commentaire */
+/* Text field style */
 .legal-comment-input {
     display: flex;
     gap: 12px;
@@ -2136,7 +2207,7 @@ body.dark-theme .legal-comment-field {
     color: #888;
 }
 
-/* Liste des commentaires */
+/* Comments list */
 .legal-comments-list {
     display: flex;
     flex-direction: column;
@@ -2276,7 +2347,7 @@ body.dark-theme .nav-btn {
     max-width: 100%;
 }
 
-/* Styles pour la page Sitemap */
+/* Sitemap style */
 .sitemap-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -2707,7 +2778,7 @@ body.dark-theme .btn-back-profile {
     color: var(--bg-light);
 }
 
-/* Wrapper pour centrer le contenu de la marketplace */
+/* Main marketplace wrapper */
 .marketplace-wrapper {
     width: 80%;
     max-width: 1400px;
@@ -2735,7 +2806,7 @@ body.dark-theme .marketplace-title {
     background-color: var(--surface-dark);
 }
 
-/* Barre de recherche */
+/* Search bar */
 .market-search-container {
     display: flex;
     justify-content: center;
@@ -2751,7 +2822,7 @@ body.dark-theme .marketplace-title {
     font-size: 1rem;
 }
 
-/* Layout avec sidebar */
+/* Sidebar layout */
 .market-layout {
     display: flex;
     gap: 20px;
@@ -2759,7 +2830,7 @@ body.dark-theme .marketplace-title {
     padding: 0 20px;
 }
 
-/* Barre latérale du marché */
+/* Market sidebar */
 .market-sidebar {
     width: 280px;
     min-width: 280px;
@@ -2872,14 +2943,14 @@ body.dark-theme .price-range span {
     color: var(--text-dark);
 }
 
-/* Conteneur principal du marché */
+/* Main market container */
 .market-container {
     flex: 1;
     width: 100%;
     padding: 0;
 }
 
-/* Section de catégorie */
+/* category section */
 .category-section {
     margin-bottom: 40px;
 }
@@ -2940,7 +3011,7 @@ body.dark-theme .arrow-btn {
     content: '▶';
 }
 
-/* Carrousel de produits */
+/* Product carousel */
 .products-carousel-wrapper {
     overflow: hidden;
     width: 100%;
@@ -2960,7 +3031,7 @@ body.dark-theme .arrow-btn {
     display: none; /* Chrome/Safari */
 }
 
-/* Carte produit */
+/* Product card */
 .product-card {
     flex: 0 0 200px;
     background: var(--surface-light);
@@ -3009,7 +3080,7 @@ body.dark-theme .product-points {
     color: var(--grey-light);
 }
 
-/* Catégorie vide */
+/* Empty category */
 .empty-category {
     width: 100%;
     padding: 40px 20px;
@@ -3033,7 +3104,7 @@ body.dark-theme .empty-category p {
     color: var(--text-dark);
 }
 
-/* Formulaire de création d'offre */
+/* CreateOffer form */
 .create-offer-section {
     width: 100%;
     max-width: 800px;
@@ -3123,7 +3194,7 @@ body.dark-theme .form-group select {
     transform: translateY(-2px);
 }
 
-/* Bouton flottant pour créer une offre */
+/* floating createOffer button */
 .add-offer-btn {
     position: fixed;
     bottom: 30px;
@@ -3154,7 +3225,7 @@ body.dark-theme .add-offer-btn {
     background: var(--primary-color);
 }
 
-/* Modal pour créer une offre */
+/* CreateOffer modal */
 .modal {
     display: none;
     position: fixed;
@@ -3248,7 +3319,7 @@ body.dark-theme .close-modal:hover {
     font-family: Arial, sans-serif;
 }
 
-/* Styles pour les cartes d'offres */
+/* Offer card style */
 .offer-card {
     flex: 0 0 200px;
     background: var(--surface-light);
@@ -3567,7 +3638,7 @@ body.dark-theme .empty-offers {
         padding: 15px;
     }
 
-    /* Responsive pour sitemap */
+    /* Sitemap responsive */
     .sitemap-container {
         padding: 30px 15px;
     }
@@ -3615,7 +3686,7 @@ body.dark-theme .empty-offers {
         gap: 15px;
     }
 
-    /* Responsive spécifique pour tradeplace entre tablette et mobile */
+    /* Marketplace Ipad/phone responsive */
     .trade-place-container {
         gap: 18px;
         padding: 15px 8px;
@@ -3744,7 +3815,7 @@ body.dark-theme .empty-offers {
         padding: 30px 15px;
     }
 
-    /* Responsive sitemap mobile */
+    /* Phone sitemap responsive */
     .sitemap-container {
         padding: 25px 10px;
     }
@@ -3972,7 +4043,7 @@ body.dark-theme .empty-offers {
         padding: 25px 12px;
     }
 
-    /* Responsive sitemap petits mobiles */
+    /* Small phone sitemap responsive */
     .sitemap-container {
         padding: 20px 8px;
     }
@@ -4237,13 +4308,13 @@ body.dark-theme .empty-offers {
     }
 }
 
-/* Animation pour le loader de forgot password */
+/* Forgot password loader animation */
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
 
-/* Modal mot de passe oublié */
+/* Forgot password modal */
 #forgot-password-modal {
     display: none;
     position: fixed;
@@ -4359,4 +4430,3 @@ body.dark-theme #forgot-password-modal .close:focus {
     transform: scale(0.98);
     box-shadow: 0 2px 6px rgba(19, 96, 170, 0.2) !important;
 }
-
