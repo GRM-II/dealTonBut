@@ -173,7 +173,6 @@ h1 {
 
 body.dark-theme h1 {
     color: var(--text-dark);
-    background-color: var(--surface-dark);
 }
 
 p {
@@ -227,28 +226,36 @@ footer {
     text-align: left;
 }
 
-.footer-legal-link {
-    text-decoration: none;
-    color: var(--bg-light);
-    font-size: 1.1em;
+.footer-legal-btn,
+.footer-instagram-btn {
+    background: var(--primary-color);
+    border: none;
+    color: var(--white-color);
+    font-size: 1em;
     margin-left: 50px;
-    padding: 5px 10px;
-    border-radius: var(--radius-small);
-    transition: background-color 0.2s, color 0.2s;
+    padding: 10px 20px;
+    height: 40px;
+    border-radius: var(--radius-button);
+    cursor: pointer;
+    transition: background var(--transition-fast);
+    font-weight: 500;
+    box-shadow: var(--shadow-default);
 }
 
-.footer-legal-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #fff;
+.footer-legal-btn:hover,
+.footer-instagram-btn:hover {
+    background: var(--primary-dark);
 }
 
-body.dark-theme .footer-legal-link {
-    color: var(--bg-dark);
+body.dark-theme .footer-legal-btn,
+body.dark-theme .footer-instagram-btn {
+    background: var(--primary-color);
+    color: var(--white-color);
 }
 
-body.dark-theme .footer-legal-link:hover {
-    background-color: rgba(0, 0, 0, 0.2);
-    color: #fff;
+body.dark-theme .footer-legal-btn:hover,
+body.dark-theme .footer-instagram-btn:hover {
+    background: var(--primary-dark);
 }
 
 .profile-wrapper {
@@ -283,7 +290,7 @@ body.dark-theme .login-text {
     color: var(--text-dark);
 }
 
-/* Two columns login grid*/
+/* Grille de connexion en deux colonnes */
 .login-grid {
     display: grid;
     grid-template-columns: 0.54fr 1fr;
@@ -292,7 +299,7 @@ body.dark-theme .login-text {
     gap: 20px;
 }
 
-/* Left column : form*/
+/* Colonne gauche : formulaire */
 .login-left {
     display: flex;
     flex-direction: column;
@@ -322,7 +329,7 @@ body.dark-theme .login-text {
     text-decoration: underline;
 }
 
-/* Login error message */
+/* Message d'erreur de connexion */
 .login-error-message {
     color: var(--red-color);
     padding: 8px;
@@ -355,7 +362,6 @@ body.dark-theme .login-success-message {
     border-color: #2d5a4a;
 }
 
-/* Right Column : additional content */
 .login-right {
     display: flex;
     flex-direction: column;
@@ -387,7 +393,6 @@ body.dark-theme .login-right-placeholder {
     font-size: 1.1em;
 }
 
-/* Responsive : switch to only one column */
 @media (max-width: 768px) {
     .content {
         padding: 80px 0 30px 0;
@@ -454,7 +459,7 @@ body.dark-theme .login-right-placeholder {
         border-top-color: var(--text-dark);
     }
 
-    /* ProfilePage responsive */
+    /* Responsive pour la page de profil */
     .profile-forms-container,
     .profile-logout-container,
     .profile-danger-zone {
@@ -755,6 +760,34 @@ body.dark-theme .submit-rectangle {
     outline-offset: 2px;
 }
 
+.text-link-btn {
+    display: block;
+    margin-top: 2vh;
+    text-align: center;
+    color: var(--primary-color);
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px solid var(--primary-color);
+    border-radius: var(--radius-button);
+    width: 100%;
+    font-weight: 500;
+}
+
+.text-link-btn:hover {
+    background: var(--primary-color);
+    color: var(--bg-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-default);
+}
+
+.text-link-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(19, 96, 170, 0.3);
+}
+
 .log-img {
     display: block;
     margin: 0 auto 2vh auto;
@@ -847,7 +880,6 @@ body.dark-theme .flash-error {
     border: 1px solid #9b1c1c;
 }
 
-/* Boutons stylisés */
 .btn-submit {
     background: var(--primary-color);
     color: var(--bg-light);
@@ -891,6 +923,16 @@ body.dark-theme .text-link {
 
 body.dark-theme .text-link:hover {
     color: var(--primary-color);
+}
+
+body.dark-theme .text-link-btn {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+body.dark-theme .text-link-btn:hover {
+    background: var(--primary-color);
+    color: var(--bg-dark);
 }
 
 /* Medium screens */
@@ -1120,9 +1162,33 @@ body.dark-theme .text-link:hover {
     p {
         font-size: 0.95em;
     }
+
+    .legal-notice-wrapper {
+        flex-direction: column !important;
+        width: 95% !important;
+        margin: 20px auto !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+
+    .legal-notice-wrapper .login-rectangle {
+        width: 100% !important;
+        max-width: 600px !important;
+        margin: 0 auto !important;
+    }
+
+    .legal-notice-image-container {
+        display: none !important;
+    }
+
+    .button-center-container {
+        display: flex !important;
+        justify-content: center !important;
+    }
 }
 
-/* Account delete */
 #delete-modal {
     display: none;
     position: fixed;
@@ -1369,7 +1435,7 @@ body.dark-theme .profile-danger-zone {
     background: var(--dark-red-color);
 }
 
-/* Grades section */
+/* Styles pour la section des moyennes */
 .grades-section {
     margin-top: 20px;
     text-align: center;
@@ -1480,7 +1546,7 @@ body.dark-theme .grade-help-text {
     width: auto;
 }
 
-/* Graphic container */
+/* Conteneur du graphique */
 .chart-container {
     width: 100%;
     padding: 15px;
@@ -1508,7 +1574,7 @@ body.dark-theme .chart-container {
     max-height: 400px;
 }
 
-/* Account information section */
+/* Section des informations du compte */
 .account-info-section {
     margin-top: 30px;
     padding-top: 30px;
@@ -1532,7 +1598,7 @@ body.dark-theme .section-subtitle {
     color: var(--primary-color);
 }
 
-/* Graphic container */
+/* Conteneur du graphique */
 .chart-container {
     width: 100%;
     background: rgba(19, 96, 170, 0.05);
@@ -1566,7 +1632,7 @@ body.dark-theme .chart-container {
     }
 }
 
-/* Ipad responsive */
+/* Responsive pour tablettes */
 @media (max-width: 1024px) and (min-width: 769px) {
     .login-grid {
         grid-template-columns: 1fr 1fr;
@@ -1597,7 +1663,7 @@ body.dark-theme .chart-container {
     }
 }
 
-/* Small phone responsive */
+/* Responsive pour petits mobiles */
 @media (max-width: 480px) {
     .content {
         padding: 75px 0 25px 0;
@@ -1687,6 +1753,37 @@ body.dark-theme .chart-container {
     .log-img {
         max-width: 100px;
     }
+
+    .legal-notice-wrapper {
+        flex-direction: column !important;
+        width: 98% !important;
+        margin: 10px auto !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+
+    .legal-notice-wrapper .login-rectangle {
+        width: 100% !important;
+        max-width: 500px !important;
+        padding: 10px !important;
+        margin: 0 auto !important;
+    }
+
+    .legal-notice-image-container {
+        display: none !important;
+    }
+
+    .button-center-container {
+        display: flex !important;
+        justify-content: center !important;
+    }
+
+    .input-rectangles section p {
+        font-size: 0.9em;
+        line-height: 1.5;
+    }
 }
 
 @media (max-width: 1200px) {
@@ -1699,14 +1796,14 @@ body.dark-theme .chart-container {
     }
 }
 
-/* Container and grades update button */
+/* Conteneur et bouton pour modifier toutes les notes */
 .grades-edit-container {
     margin-top: 20px;
     text-align: center;
     width: 100%;
 }
 
-/* Grades modal */
+/* Modal pour toutes les notes */
 .modal-content-large {
     max-width: 700px;
 }
@@ -1739,7 +1836,7 @@ body.dark-theme .grade-modal-item label {
 }
 
 
-/* Profile modals */
+/* Styles pour les modals de profil */
 .profile-modal {
     display: none;
     position: fixed;
@@ -1839,7 +1936,6 @@ body.dark-theme .login-right-separator {
     background-color: var(--text-dark);
 }
 
-/* Tradeplace style */
 .tradeplace-title-container {
     width: 80%;
     max-width: 1400px;
@@ -1942,7 +2038,6 @@ body.dark-theme #purchase-modal .btn-cancel {
     z-index: 1000;
 }
 
-/* Marketpage style */
 .market-nav-buttons {
     position: fixed;
     left: calc((100vw - 80%) / 4 - 32px);
@@ -1951,79 +2046,7 @@ body.dark-theme #purchase-modal .btn-cancel {
     z-index: 1000;
 }
 
-#offer-delete-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 10000;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    align-items: center;
-    justify-content: center;
-}
-
-#offer-delete-modal .modal-content {
-    background: var(--bg-light);
-    padding: 30px;
-    border-radius: 8px;
-    max-width: 400px;
-    text-align: center;
-    transform: scale(0.9);
-    transition: transform 0.4s ease;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-}
-
-body.dark-theme #offer-delete-modal .modal-content {
-    background: var(--bg-dark);
-    color: var(--white-color);
-}
-
-#offer-delete-modal h3 {
-    color: var(--primary-color);
-    margin-top: 0;
-}
-
-#offer-delete-modal p {
-    color: #333;
-}
-
-body.dark-theme #offer-delete-modal p {
-    color: var(--white-color);
-}
-
-#offer-delete-modal form {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-#offer-delete-modal .input-rectangle {
-    padding: 10px 20px;
-    height: auto;
-    width: auto;
-}
-
-#offer-delete-modal .btn-delete-offer {
-    background: var(--red-color);
-    color: var(--white-color);
-}
-
-#offer-delete-modal .btn-cancel {
-    background: var(--primary-color);
-    color: var(--white-color);
-}
-
-body.dark-theme #offer-delete-modal .btn-cancel {
-    background: var(--primary-color);
-    color: var(--white-color);
-}
-
-/* Login/Register style */
+/* Styles pour les pages login et register */
 .login-submit-btn,
 .register-submit-btn {
     background: #1360AA;
@@ -2115,7 +2138,6 @@ body.dark-theme .legal-notice-image-container {
     object-fit: cover;
 }
 
-/* Comments section */
 .legal-comments-section {
     width: 100%;
     background: var(--bg-light);
@@ -2159,7 +2181,7 @@ body.dark-theme .legal-comments-count {
     color: #aaa;
 }
 
-/* Text field style */
+/* Champ de saisie de commentaire */
 .legal-comment-input {
     display: flex;
     gap: 12px;
@@ -2207,7 +2229,7 @@ body.dark-theme .legal-comment-field {
     color: #888;
 }
 
-/* Comments list */
+/* Liste des commentaires */
 .legal-comments-list {
     display: flex;
     flex-direction: column;
@@ -2347,7 +2369,7 @@ body.dark-theme .nav-btn {
     max-width: 100%;
 }
 
-/* Sitemap style */
+/* Styles pour la page Sitemap */
 .sitemap-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -2778,7 +2800,7 @@ body.dark-theme .btn-back-profile {
     color: var(--bg-light);
 }
 
-/* Main marketplace wrapper */
+/* Wrapper pour centrer le contenu de la marketplace */
 .marketplace-wrapper {
     width: 80%;
     max-width: 1400px;
@@ -2806,7 +2828,7 @@ body.dark-theme .marketplace-title {
     background-color: var(--surface-dark);
 }
 
-/* Search bar */
+/* Barre de recherche */
 .market-search-container {
     display: flex;
     justify-content: center;
@@ -2822,7 +2844,7 @@ body.dark-theme .marketplace-title {
     font-size: 1rem;
 }
 
-/* Sidebar layout */
+/* Layout avec sidebar */
 .market-layout {
     display: flex;
     gap: 20px;
@@ -2830,7 +2852,6 @@ body.dark-theme .marketplace-title {
     padding: 0 20px;
 }
 
-/* Market sidebar */
 .market-sidebar {
     width: 280px;
     min-width: 280px;
@@ -2943,14 +2964,12 @@ body.dark-theme .price-range span {
     color: var(--text-dark);
 }
 
-/* Main market container */
 .market-container {
     flex: 1;
     width: 100%;
     padding: 0;
 }
 
-/* category section */
 .category-section {
     margin-bottom: 40px;
 }
@@ -3011,7 +3030,7 @@ body.dark-theme .arrow-btn {
     content: '▶';
 }
 
-/* Product carousel */
+/* Carrousel de produits */
 .products-carousel-wrapper {
     overflow: hidden;
     width: 100%;
@@ -3031,7 +3050,7 @@ body.dark-theme .arrow-btn {
     display: none; /* Chrome/Safari */
 }
 
-/* Product card */
+/* Carte produit */
 .product-card {
     flex: 0 0 200px;
     background: var(--surface-light);
@@ -3080,7 +3099,6 @@ body.dark-theme .product-points {
     color: var(--grey-light);
 }
 
-/* Empty category */
 .empty-category {
     width: 100%;
     padding: 40px 20px;
@@ -3104,7 +3122,6 @@ body.dark-theme .empty-category p {
     color: var(--text-dark);
 }
 
-/* CreateOffer form */
 .create-offer-section {
     width: 100%;
     max-width: 800px;
@@ -3194,7 +3211,6 @@ body.dark-theme .form-group select {
     transform: translateY(-2px);
 }
 
-/* floating createOffer button */
 .add-offer-btn {
     position: fixed;
     bottom: 30px;
@@ -3225,7 +3241,6 @@ body.dark-theme .add-offer-btn {
     background: var(--primary-color);
 }
 
-/* CreateOffer modal */
 .modal {
     display: none;
     position: fixed;
@@ -3319,7 +3334,7 @@ body.dark-theme .close-modal:hover {
     font-family: Arial, sans-serif;
 }
 
-/* Offer card style */
+/* Styles pour les cartes d'offres */
 .offer-card {
     flex: 0 0 200px;
     background: var(--surface-light);
@@ -3638,7 +3653,7 @@ body.dark-theme .empty-offers {
         padding: 15px;
     }
 
-    /* Sitemap responsive */
+    /* Responsive pour sitemap */
     .sitemap-container {
         padding: 30px 15px;
     }
@@ -3686,7 +3701,6 @@ body.dark-theme .empty-offers {
         gap: 15px;
     }
 
-    /* Marketplace Ipad/phone responsive */
     .trade-place-container {
         gap: 18px;
         padding: 15px 8px;
@@ -3815,7 +3829,7 @@ body.dark-theme .empty-offers {
         padding: 30px 15px;
     }
 
-    /* Phone sitemap responsive */
+    /* Responsive sitemap mobile */
     .sitemap-container {
         padding: 25px 10px;
     }
@@ -4043,7 +4057,7 @@ body.dark-theme .empty-offers {
         padding: 25px 12px;
     }
 
-    /* Small phone sitemap responsive */
+    /* Responsive sitemap petits mobiles */
     .sitemap-container {
         padding: 20px 8px;
     }
@@ -4308,13 +4322,12 @@ body.dark-theme .empty-offers {
     }
 }
 
-/* Forgot password loader animation */
+/* Animation pour le loader de forgot password */
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
 
-/* Forgot password modal */
 #forgot-password-modal {
     display: none;
     position: fixed;
@@ -4430,3 +4443,4 @@ body.dark-theme #forgot-password-modal .close:focus {
     transform: scale(0.98);
     box-shadow: 0 2px 6px rgba(19, 96, 170, 0.2) !important;
 }
+

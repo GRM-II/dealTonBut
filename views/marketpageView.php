@@ -4,7 +4,6 @@ $dbMessage = $dbUnavailable ? ($A_view['db_status']['message'] . (isset($A_view[
 $disabledAttr = $dbUnavailable ? 'disabled' : '';
 $isLoggedIn = $A_view['isLoggedIn'] ?? false;
 
-// Organiser les offres par catégorie
 $offersByCategory = [];
 $categories = ['Maths', 'Programmation', 'Réseau', 'BD', 'Autre'];
 foreach ($categories as $cat) {

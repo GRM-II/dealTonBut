@@ -43,8 +43,8 @@
                         </button>
                     </form>
 
-                    <a href="#" class="text-link" id="forgot-password-link">Mot de passe oublié ?</a>
-                    <a href="/index.php?controller=user&action=register" class="text-link">Vous ne possédez pas de compte ?</a>
+                    <button type="button" class="text-link-btn" id="forgot-password-link">Mot de passe oublié ?</button>
+                    <button type="button" onclick="window.location.href='/index.php?controller=user&action=register'" class="text-link-btn">Vous ne possédez pas de compte ?</button>
                 </div>
 
                 <div class="login-right">

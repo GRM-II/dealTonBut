@@ -103,8 +103,6 @@
             </div>
         </div>
 
-            <!-- Feedback section -->
-
         <div class="legal-notice-image-container">
             <video autoplay muted loop playsinline>
                 <source src="/public/assets/vid/MinecraftGameplay.mp4" type="video/mp4">
@@ -234,6 +232,6 @@
                 </div>
             </div>
         </div>
-    </div>
+
     </div>
 </main>
