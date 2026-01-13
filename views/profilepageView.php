@@ -137,7 +137,6 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
     </div>
 </div>
 
-<!-- Modal de confirmation de suppression -->
 <div id="delete-modal">
     <div class="modal-content">
         <h3>Confirmer la suppression</h3>
@@ -149,7 +148,6 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
     </div>
 </div>
 
-<!-- Modal modification nom d'utilisateur -->
 <div id="username-modal" class="profile-modal">
     <div class="modal-content">
         <h3>Modifier le nom d'utilisateur</h3>
@@ -164,7 +162,6 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
     </div>
 </div>
 
-<!-- Modal modification email -->
 <div id="email-modal" class="profile-modal">
     <div class="modal-content">
         <h3>Modifier l'email</h3>
@@ -179,7 +176,6 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
     </div>
 </div>
 
-<!-- Modal modification mot de passe -->
 <div id="password-modal" class="profile-modal">
     <div class="modal-content">
         <h3>Modifier le mot de passe</h3>
@@ -194,7 +190,6 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
     </div>
 </div>
 
-<!-- Modal modification de toutes les moyennes -->
 <div id="all-grades-modal" class="profile-modal">
     <div class="modal-content modal-content-large">
         <h3>Modifier les moyennes</h3>

@@ -567,7 +567,7 @@ body.dark-theme .rectangle-title {
 }
 
 body.dark-theme .input-rectangle {
-    background: var(--bg-dark);
+    background: var(--surface-dark);
     color: var(--text-dark);
 }
 
@@ -1257,6 +1257,83 @@ body.dark-theme #delete-modal p {
 }
 
 body.dark-theme #delete-modal .btn-cancel {
+    background: var(--primary-color);
+    color: var(--white-color);
+}
+
+#offer-delete-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    align-items: center;
+    justify-content: center;
+}
+
+#offer-delete-modal .modal-content {
+    background: var(--bg-light);
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 400px;
+    text-align: center;
+    transform: scale(0.9);
+    transition: transform 0.4s ease;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-theme #offer-delete-modal .modal-content {
+    background: var(--bg-dark);
+    color: var(--white-color);
+}
+
+#offer-delete-modal h3 {
+    color: var(--red-color);
+    margin-top: 0;
+}
+
+#offer-delete-modal p {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+body.dark-theme #offer-delete-modal p {
+    color: var(--white-color);
+}
+
+#offer-delete-modal form {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 0;
+}
+
+#offer-delete-modal .modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+#offer-delete-modal .btn-delete {
+    background: var(--red-color);
+    color: var(--white-color);
+    padding: 10px 20px;
+    height: auto;
+}
+
+#offer-delete-modal .btn-cancel {
+    background: var(--primary-color);
+    color: var(--white-color);
+    padding: 10px 20px;
+    height: auto;
+}
+
+body.dark-theme #offer-delete-modal .btn-cancel {
     background: var(--primary-color);
     color: var(--white-color);
 }

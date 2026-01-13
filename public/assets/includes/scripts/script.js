@@ -629,4 +629,65 @@ document.addEventListener('DOMContentLoaded', function() {
     updateImagePosition();
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteOfferButtons = document.querySelectorAll('#delete-offer-btn');
+    const deleteModal = document.getElementById('offer-delete-modal');
+    const deleteForm = document.getElementById('delete-offer-form');
+    const deleteOfferIdInput = document.getElementById('delete-offer-id');
+    const cancelDeleteBtn = document.getElementById('cancel-delete-offer-btn');
+
+    if (deleteOfferButtons && deleteModal) {
+        deleteOfferButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const form = this.closest('.product-delete-form');
+                if (form) {
+                    const offerIdInput = form.querySelector('input[name="offer_id"]');
+                    if (offerIdInput && deleteOfferIdInput) {
+                        deleteOfferIdInput.value = offerIdInput.value;
+
+                        deleteModal.style.display = 'flex';
+                        setTimeout(() => {
+                            deleteModal.style.opacity = '1';
+                            const modalContent = deleteModal.querySelector('.modal-content');
+                            if (modalContent) {
+                                modalContent.style.transform = 'scale(1)';
+                            }
+                        }, 10);
+                    }
+                }
+            });
+        });
+    }
+
+    function closeDeleteModal() {
+        if (deleteModal) {
+            deleteModal.style.opacity = '0';
+            const modalContent = deleteModal.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.style.transform = 'scale(0.9)';
+            }
+            setTimeout(() => {
+                deleteModal.style.display = 'none';
+                if (deleteOfferIdInput) {
+                    deleteOfferIdInput.value = '';
+                }
+            }, 400);
+        }
+    }
+
+    if (cancelDeleteBtn) {
+        cancelDeleteBtn.addEventListener('click', closeDeleteModal);
+    }
+
+    if (deleteModal) {
+        deleteModal.addEventListener('click', function(e) {
+            if (e.target === deleteModal) {
+                closeDeleteModal();
+            }
+        });
+    }
+});
 

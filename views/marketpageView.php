@@ -22,7 +22,6 @@ if (!empty($A_view['offers'])) {
 ?>
 
 <div class="content">
-    <!-- Boutons de navigation -->
     <div class="nav-buttons market-nav-buttons">
         <a href="?controller=tradeplace&action=index" class="nav-btn nav-btn-trade" title="Trade Place">
             <img id="trade-nav-icon" src="/public/assets/img/Trade_Day.svg" alt="Trade Place" class="nav-icon">
@@ -55,7 +54,6 @@ if (!empty($A_view['offers'])) {
             </div>
         <?php endif; ?>
 
-        <!-- Barre de recherche -->
         <div class="market-search-container">
             <input type="text" id="search-input" placeholder="Recherche" class="input-rectangle">
         </div>
@@ -88,7 +86,6 @@ if (!empty($A_view['offers'])) {
                 </div>
             </aside>
 
-            <!-- Contenu principal -->
             <div class="market-container">
         <?php foreach ($offersByCategory as $category => $offers): ?>
             <div class="category-section">
@@ -131,14 +128,12 @@ if (!empty($A_view['offers'])) {
             </div>
         </div>
 
-        <!-- Bouton flottant pour ajouter une offre -->
         <?php if ($isLoggedIn): ?>
             <button class="add-offer-btn" id="open-modal-btn" <?php echo $disabledAttr; ?>>+</button>
         <?php endif; ?>
     </div>
 </div>
 
-<!-- Modal pour créer une offre -->
 <?php if ($isLoggedIn): ?>
     <div id="offer-modal" class="modal">
         <div class="modal-content">
@@ -166,14 +161,17 @@ if (!empty($A_view['offers'])) {
             </form>
         </div>
     </div>
-    <!-- Modal de confirmation de suppression de l'offre -->
-    <div id="offer-delete-modal">
+
+    <div id="offer-delete-modal" class="modal">
         <div class="modal-content">
             <h3>Confirmer la suppression</h3>
             <p>Êtes-vous sûr de vouloir supprimer cette offre ?</p>
-            <form method="post" action="?controller=marketpage&action=deleteOffer">
-                <button type="submit" class="button btn-delete-offer">Oui</button>
-                <button type="button" id="cancel-delete-offer-btn" class="button btn-cancel">Non</button>
+            <form id="delete-offer-form" method="post" action="?controller=marketpage&action=deleteOffer">
+                <input type="hidden" name="offer_id" id="delete-offer-id" value="">
+                <div class="modal-buttons">
+                    <button type="submit" class="button btn-delete">Oui, supprimer</button>
+                    <button type="button" id="cancel-delete-offer-btn" class="button btn-cancel">Annuler</button>
+                </div>
             </form>
         </div>
     </div>
