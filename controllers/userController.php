@@ -104,8 +104,12 @@ final class userController
             $password = $_POST['password'] ?? '';
 
             if (empty($login) || empty($password)) {
-                view::show('user/login', ['error' => 'Veuillez remplir tous les champs.']);
-                return;
+                $_SESSION['flash_message'] = [
+                    'success' => false,
+                    'message' => 'Veuillez remplir tous les champs.'
+                ];
+                header('Location: ?controller=homepage&action=index');
+                exit;
             }
 
             try {
@@ -132,14 +136,22 @@ final class userController
                     exit;
                 }
 
-                // If unsuccessful: display the login page with the error message
-                view::show('user/login', ['error' => $result['message']]);
-                return;
+                // If unsuccessful: redirect to homepage with error message
+                $_SESSION['flash_message'] = [
+                    'success' => false,
+                    'message' => $result['message']
+                ];
+                header('Location: ?controller=homepage&action=index');
+                exit;
 
             } catch (Exception $e) {
                 error_log("Erreur login: " . $e->getMessage());
-                view::show('user/login', ['error' => 'Une erreur est survenue lors de la connexion.']);
-                return;
+                $_SESSION['flash_message'] = [
+                    'success' => false,
+                    'message' => 'Une erreur est survenue lors de la connexion.'
+                ];
+                header('Location: ?controller=homepage&action=index');
+                exit;
             }
         }
 

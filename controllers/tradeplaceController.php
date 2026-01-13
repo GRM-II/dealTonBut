@@ -43,8 +43,6 @@ class tradeplaceController
                     break;
                 }
             }
-        } elseif (!empty($offers)) {
-            $selectedOffer = $offers[0];
         }
 
         View::show('tradeplaceView', [
@@ -91,7 +89,59 @@ class tradeplaceController
         if (!class_exists('offerModel', false)) {
             require_once 'models/offerModel.php';
         }
-        return offerModel::getAllOffers();
+        try {
+
+            $offers = [];
+            $cat = ['Maths' => 'Maths', 'Programmation' => 'Programmation', 'Network' => 'Réseau', 'DB' => 'BD', 'Other' => 'Autre'];
+
+            foreach (offerModel::getAllOffers() as $offer) {
+                $offer['category'] = $cat[$offer['category']];
+                $offers[] = $offer;
+            }
+
+        } catch (Exception $e) {
+            error_log("Erreur getOffers: " . $e->getMessage());
+            $_SESSION['flash'] = [
+                'success' => false,
+                'message' => "Une erreur est survenue lors de l'obtention des offres."
+            ];
+        }
+        return $offers;
+    }
+
+    /**
+     * Allows a user to purchase an offer
+     *
+     * Gets offer identification from URL and offer model.
+     * Gets buyer identification from active session.
+     * @return void
+     */
+    public function purchaseOffer(): void
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ?controller=homepage&action=login');
+            exit;
+        }
+        try {
+            $result = offerModel::purchaseOffer(offerModel::getOfferById(intval($_GET['offer_id'])), $_SESSION['user_id']);
+
+            if ($result['success']) {
+                $_SESSION['flash'] = ['success' => true, 'message' => $result['message']];
+            } else {
+                $_SESSION['flash'] = ['success' => false, 'message' => $result['message']];
+            }
+        } catch (Exception $e) {
+            error_log("Erreur purchaseOffer: " . $e->getMessage());
+            $_SESSION['flash'] = [
+                'success' => false,
+                'message' => "Une erreur est survenue lors de l'achat de l'offre."
+            ];
+        }
+        header('Location: ?controller=tradeplace&action=index');
+        exit;
     }
 
     /**

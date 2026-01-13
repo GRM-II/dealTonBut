@@ -16,7 +16,6 @@ if ($isProduction) {
     error_reporting(E_ALL);
 }
 
-// Démarrage de la session une seule fois
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -27,25 +26,20 @@ require_once 'core/controller.php';
 require_once 'core/exception/controllerException.php';
 
 try {
-    // Récupérer le contrôleur et l'action depuis les paramètres GET
     $S_controller = $_GET['controller'] ?? 'homepage';
     $S_action = $_GET['action'] ?? 'login';
 
     view::openBuffer();
 
-    // Exécution du contrôleur et de l'action
     $C_controller = new controller($S_controller, $S_action);
     $C_controller->execute();
 
-    // Récupère le contenu tamponné
     $displayContent = view::getBufferContent();
     $A_params = $C_controller->getParams();
 
-    // Utilise le layout avec le contenu
     view::show('standard/layout', ['body' => $displayContent]);
 
 } catch (ControllerException $e) {
-    // Erreur spécifique aux contrôleurs
     error_log("ControllerException: " . $e->getMessage());
     http_response_code(404);
     echo $isProduction
@@ -53,7 +47,6 @@ try {
         : "Erreur contrôleur: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
 
 } catch (RuntimeException $e) {
-    // Erreur d'exécution
     error_log("RuntimeException: " . $e->getMessage());
     http_response_code(500);
     echo $isProduction

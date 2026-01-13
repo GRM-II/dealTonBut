@@ -1,122 +1,73 @@
 <?php
+
 use PHPUnit\Framework\TestCase;
 
-class LegalnoticeControllerTest extends TestCase
+require_once __DIR__ . '/../../../controllers/legalnoticeController.php';
+
+class legalnoticeControllerTest extends TestCase
 {
-    private $controller;
+    private legalnoticeController $controller;
 
     protected function setUp(): void
     {
         $this->controller = new legalnoticeController();
     }
 
-    /**
-     * Tests that legalnotice exists
-     */
-    public function testLegalNoticeMethodExists()
+    public function testIndexMethodExists(): void
     {
         $this->assertTrue(
-            method_exists($this->controller, 'legalNotice'),
-            "La méthode legalNotice devrait exister"
+            method_exists($this->controller, 'index'),
+            'The index method should exist in legalnoticeController'
         );
     }
 
-    /**
-     * Tests that legal notice can be called with no errors
-     */
-    public function testLegalNoticeCanBeCalled()
+    public function testIndexMethodIsCallable(): void
     {
-        ob_start();
-        $this->controller->legalNotice();
-        $output = ob_get_clean();
-
-        $this->assertIsString($output);
-    }
-
-    /**
-     * Tests that the view file exists
-     */
-    public function testViewFileExists()
-    {
-        $viewPath = 'views/legalnoticeView.php';
-
-        $this->assertFileExists(
-            $viewPath,
-            "Le fichier de vue {$viewPath} devrait exister"
+        $this->assertTrue(
+            is_callable([$this->controller, 'index']),
+            'The index method should be callable'
         );
     }
 
-    /**
-     * Tests that the view file is included
-     */
-    public function testViewIsIncluded()
+    public function testIndexMethodReturnsVoid(): void
     {
-        $tempViewPath = sys_get_temp_dir() . '/legalnoticeView.php';
-        file_put_contents($tempViewPath, '<?php echo "Legal Notice View"; ?>');
+        $reflection = new ReflectionMethod($this->controller, 'index');
+        $returnType = $reflection->getReturnType();
 
-        $testController = new class {
-            public function legalNotice() {
-                $A_view = [];
-                require sys_get_temp_dir() . '/legalnoticeView.php';
-            }
-        };
+        $this->assertNotNull($returnType, 'The index method should have a return type');
+        $this->assertEquals('void', $returnType->getName(), 'The index method should return void');
+    }
 
+    public function testIndexIncludesViewFile(): void
+    {
         ob_start();
-        $testController->legalNotice();
-        $output = ob_get_clean();
 
-        $this->assertStringContainsString('Legal Notice View', $output);
-
-        unlink($tempViewPath);
-    }
-
-    /**
-     * Test that $A_view is a table
-     */
-    public function testAViewIsArray()
-    {
-        $testController = new class extends legalnoticeController {
-            public function legalNoticeTestable() {
-                $A_view = [];
-                return $A_view;
-            }
-        };
-
-        $result = $testController->legalNoticeTestable();
-        $this->assertIsArray($result);
-    }
-
-    /**
-     * Test that $A_view is empty
-     */
-    public function testAViewIsEmptyArray()
-    {
-        $testController = new class extends legalnoticeController {
-            public function legalNoticeTestable() {
-                $A_view = [];
-                return $A_view;
-            }
-        };
-
-        $result = $testController->legalNoticeTestable();
-        $this->assertEmpty($result);
-        $this->assertIsArray($result);
-    }
-
-    /**
-     * Tests that the complete legal notice is displayed
-     */
-    public function testLegalNoticeIntegration()
-    {
-        if (file_exists('views/legalnoticeView.php')) {
-            ob_start();
-            $this->controller->legalNotice();
-            $output = ob_get_clean();
-
-            $this->assertNotNull($output);
-        } else {
-            $this->markTestSkipped('Le fichier de vue n\'existe pas');
+        try {
+            $this->controller->index();
+            ob_end_clean();
+            $this->assertTrue(true);
+        } catch (Exception $e) {
+            ob_end_clean();
+            $this->fail('The index method should include the view file without errors: ' . $e->getMessage());
         }
+    }
+
+    public function testControllerClassExists(): void
+    {
+        $this->assertTrue(
+            class_exists('legalnoticeController'),
+            'The legalnoticeController class should exist'
+        );
+    }
+
+    public function testControllerCanBeInstantiated(): void
+    {
+        $controller = new legalnoticeController();
+        $this->assertInstanceOf(
+            legalnoticeController::class,
+            $controller,
+            'Should be able to instantiate legalnoticeController'
+        );
     }
 
     protected function tearDown(): void
@@ -124,4 +75,4 @@ class LegalnoticeControllerTest extends TestCase
         $this->controller = null;
     }
 }
-?>
+

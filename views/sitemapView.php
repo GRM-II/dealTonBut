@@ -14,72 +14,63 @@
         <div class="sitemap-sections">
 
             <div class="sitemap-section">
-                <h2 class="sitemap-section-title">Pages publiques</h2>
+                <h2 class="sitemap-section-title">Liste des pages</h2>
 
-                <div class="sitemap-item">
+                <a href="?controller=homepage&action=login" class="sitemap-item sitemap-item-link">
                     <h3 class="sitemap-page-title">
-                        <a href="?controller=homepage&action=login">Connexion / Index</a>
+                        Connexion / Index
                     </h3>
                     <p class="sitemap-page-description">
                         Page d'accueil du site qui permet de se connecter et de comprendre quel est l'intérêt du site.
                     </p>
-                </div>
+                </a>
 
-                <div class="sitemap-item">
+                <a href="?controller=user&action=register" class="sitemap-item sitemap-item-link">
                     <h3 class="sitemap-page-title">
-                        <a href="?controller=user&action=register">Création de compte</a>
+                        Création de compte
                     </h3>
                     <p class="sitemap-page-description">
                         Page permettant de rejoindre l'aventure DealTonBut.
                     </p>
-                </div>
+                </a>
 
-                <div class="sitemap-item">
+                <a href="?controller=legalnotice&action=index" class="sitemap-item sitemap-item-link">
                     <h3 class="sitemap-page-title">
                         Mentions légales
                     </h3>
                     <p class="sitemap-page-description">
                         Page regroupant les mentions légales du site.
                     </p>
-                </div>
-            </div>
+                </a>
 
-            <div class="sitemap-section">
-                <h2 class="sitemap-section-title">
-                    Pages nécessitant une authentification
-                </h2>
-
-                <?php if (isset($A_view['isLoggedIn'])): ?>
-
-                    <div class="sitemap-item">
+                <?php if (isset($A_view['isLoggedIn']) && $A_view['isLoggedIn']): ?>
+                    <a href="?controller=profilepage&action=index" class="sitemap-item sitemap-item-link">
                         <h3 class="sitemap-page-title">
-                            <a href="?controller=profilepage&action=index">Profilepage</a>
+                            Profilepage
                         </h3>
                         <p class="sitemap-page-description">
                             Page permettant de voir les informations de votre compte.
                         </p>
-                    </div>
+                    </a>
 
-                    <div class="sitemap-item">
+                    <a href="?controller=marketpage&action=index" class="sitemap-item sitemap-item-link">
                         <h3 class="sitemap-page-title">
-                            <a href="?controller=marketpage&action=index">Market</a>
+                            Market
                         </h3>
                         <p class="sitemap-page-description">
                             Page permettant l'achat de service.
                         </p>
-                    </div>
+                    </a>
 
-                    <div class="sitemap-item">
+                    <a href="?controller=tradeplace&action=index" class="sitemap-item sitemap-item-link">
                         <h3 class="sitemap-page-title">
-                            <a href="?controller=tradeplace&action=index">Trade</a>
+                            Trade
                         </h3>
                         <p class="sitemap-page-description">
                             Page permettant l'échange de service.
                         </p>
-                    </div>
-
+                    </a>
                 <?php else: ?>
-
                     <div class="sitemap-item sitemap-item-locked">
                         <h3 class="sitemap-page-title">
                             Profilepage 🔒
@@ -109,16 +100,9 @@
                         </p>
                         <p class="sitemap-auth-message">Vous devez être connecté pour accéder à cette page.</p>
                     </div>
-
                 <?php endif; ?>
             </div>
 
         </div>
-
-        <div class="sitemap-footer">
-            <p>Pour toute question, n'hésitez pas à nous contacter.</p>
-        </div>
-
     </div>
 </div>
-

@@ -44,10 +44,10 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                         <label class="login-text" for="confirm-password">Confirmer le mot de passe</label>
                         <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirmer" class="input-rectangle" required <?php echo $disabledAttr; ?> title="<?php echo $dbUnavailable ? htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8') : ''; ?>">
 
-                        <button type="submit" class="input-rectangle register-submit-btn" <?php echo $disabledAttr; ?>>Créer le compte</button>
+                        <button type="submit" class="button register-submit-btn" <?php echo $disabledAttr; ?>>Créer le compte</button>
                     </form>
 
-                    <a href="?controller=user&action=login" class="text-link">Vous possédez déjà un compte ?</a>
+                    <a href="?controller=homepage&action=index" class="text-link">Vous possédez déjà un compte ?</a>
                 </div>
 
                 <div class="login-right">
@@ -60,12 +60,3 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         </div>
     </div>
 </main>
-
-<script>
-    window.addEventListener('DOMContentLoaded', function() {
-        initRegisterForm(
-                <?php echo $dbUnavailable ? 'true' : 'false'; ?>,
-                <?php echo json_encode($dbMessage, JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT); ?>
-        );
-    });
-</script>

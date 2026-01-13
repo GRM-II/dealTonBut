@@ -1,15 +1,19 @@
 <?php
-
+/**
+ * Sitemap controller
+ */
 final class sitemapController
 {
+    /**
+     * Displays a map linked to every page
+     */
     public function index(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
-        // Vérifier si l'utilisateur est connecté
-        $isLoggedIn = !empty($_SESSION['user']) && is_array($_SESSION['user']);
+        $isLoggedIn = isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
 
         view::show('sitemapView', [
             'isLoggedIn' => $isLoggedIn,

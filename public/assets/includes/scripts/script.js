@@ -14,6 +14,7 @@ function updateNavigationIcons() {
     const tradeIcon = document.getElementById('trade-nav-icon');
     const marketIcon = document.getElementById('market-nav-icon');
     const homeIcon = document.getElementById('home-nav-icon');
+    const scrollIcon = document.getElementById('scroll-icon');
 
     if (tradeIcon) {
         tradeIcon.src = isDark ? '/public/assets/img/Trade_Night.svg' : '/public/assets/img/Trade_Day.svg';
@@ -23,6 +24,9 @@ function updateNavigationIcons() {
     }
     if (homeIcon) {
         homeIcon.src = isDark ? '/public/assets/img/Home_Night.svg' : '/public/assets/img/Home_Day.svg';
+    }
+    if (scrollIcon) {
+        scrollIcon.src = isDark ? '/public/assets/img/Black_Arrow.svg' : '/public/assets/img/Blue_Arrow.svg';
     }
 }
 
@@ -42,10 +46,15 @@ function toggleTheme() {
     localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
     setThemeIcon();
     updateNavigationIcons();
+
+    // Redessiner le graphique de la page de profil, sinon le texte ne change pas de couleur avec le thème
+    const chartElement = document.getElementById('barchart_values');
+    if (chartElement && typeof google !== 'undefined' && google.charts) {
+        initGradesChartFromData();
+    }
 }
 
 function initRegisterForm(dbUnavailable, dbMessage) {
-    applySavedTheme();
     const form = document.getElementById('register-form');
     if (!form) return;
 
@@ -70,20 +79,31 @@ function initRegisterForm(dbUnavailable, dbMessage) {
 window.addEventListener('DOMContentLoaded', function() {
     applySavedTheme();
 
-    // Auto-détection de la page et initialisation appropriée
     if (document.getElementById('delete-account-btn')) {
-        // Page de profil détectée donc initialiser
         initProfilePage();
+
+        const chartElement = document.getElementById('barchart_values');
+        if (chartElement) {
+            if (typeof google !== 'undefined' && google.charts) {
+                initGradesChartFromData();
+            } else {
+                setTimeout(initGradesChartFromData, 500);
+            }
+        }
     } else if (document.getElementById('open-modal-btn')) {
-        // Page marketplace détectée donc initialiser
         initMarketplace();
+    } else if (document.getElementById('purchase-offer-btn')) {
+        initTradeplace();
+    } else if (document.getElementById('register-form')) {
+        const dbUnavailableElem = document.querySelector('.db-unavailable-message');
+        const dbUnavailable = dbUnavailableElem !== null;
+        const dbMessage = dbUnavailable ? dbUnavailableElem.textContent.trim() : '';
+        initRegisterForm(dbUnavailable, dbMessage);
     }
 
-    // Initialiser la modale de mot de passe oublié
     initForgotPasswordModal();
 });
 
-// Gestion de la modale mot de passe oublié
 function initForgotPasswordModal() {
     const forgotPasswordLink = document.getElementById('forgot-password-link');
     const forgotPasswordModal = document.getElementById('forgot-password-modal');
@@ -93,13 +113,10 @@ function initForgotPasswordModal() {
         forgotPasswordLink.addEventListener('click', function(e) {
             e.preventDefault();
 
-            // Afficher le modal avec display flex pour le centrage
             forgotPasswordModal.style.display = 'flex';
 
-            // Force un reflow pour que la transition CSS fonctionne
             void forgotPasswordModal.offsetHeight;
 
-            // Démarrer l'animation de fade-in
             forgotPasswordModal.style.opacity = '1';
             const modalContent = forgotPasswordModal.querySelector('.modal-content');
             if (modalContent) {
@@ -109,42 +126,50 @@ function initForgotPasswordModal() {
 
         if (closeBtn) {
             closeBtn.addEventListener('click', function() {
-                // Animation de fade-out
                 forgotPasswordModal.style.opacity = '0';
                 const modalContent = forgotPasswordModal.querySelector('.modal-content');
                 if (modalContent) {
                     modalContent.style.transform = 'scale(0.9)';
                 }
-                // Masquer après l'animation (400ms)
                 setTimeout(function() {
                     forgotPasswordModal.style.display = 'none';
                 }, 400);
             });
         }
 
-        // Fermer le modal si on clique en dehors
         forgotPasswordModal.addEventListener('click', function(e) {
             if (e.target === forgotPasswordModal) {
-                // Animation de fade-out
                 forgotPasswordModal.style.opacity = '0';
                 const modalContent = forgotPasswordModal.querySelector('.modal-content');
                 if (modalContent) {
                     modalContent.style.transform = 'scale(0.9)';
                 }
-                // Masquer après l'animation (400ms)
                 setTimeout(function() {
                     forgotPasswordModal.style.display = 'none';
                 }, 400);
             }
         });
     }
+
+    const forgotPasswordForm = document.getElementById('forgot-password-form');
+    const submitButton = document.getElementById('submit-forgot-password');
+    const loadingIndicator = document.getElementById('loading-indicator');
+
+    if (forgotPasswordForm && submitButton) {
+        forgotPasswordForm.addEventListener('submit', function() {
+            submitButton.disabled = true;
+            submitButton.style.opacity = '0.6';
+            submitButton.style.cursor = 'not-allowed';
+            submitButton.textContent = 'Envoi en cours...';
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'block';
+            }
+        });
+    }
 }
 
-// Marketplace: Gestion du modal et du carrousel
 function initMarketplace() {
-    applySavedTheme();
 
-    // Gestion du modal
     const modal = document.getElementById('offer-modal');
     const openBtn = document.getElementById('open-modal-btn');
     const closeBtn = document.getElementById('close-modal');
@@ -169,7 +194,6 @@ function initMarketplace() {
         });
     }
 
-    // Navigation carrousel
     document.querySelectorAll('.arrow-left, .arrow-btn[data-direction="left"]').forEach(btn => {
         btn.addEventListener('click', function() {
             const category = this.getAttribute('data-category');
@@ -190,7 +214,6 @@ function initMarketplace() {
         });
     });
 
-    // Recherche
     const searchInput = document.getElementById('search-input');
     if (searchInput) {
         searchInput.addEventListener('input', function() {
@@ -205,152 +228,193 @@ function initMarketplace() {
             });
         });
     }
+
+    const categoryCheckboxes = document.querySelectorAll('.filter-option input[type="checkbox"]');
+    const allCheckbox = document.querySelector('.filter-option input[value="all"]');
+
+    if (categoryCheckboxes.length > 0) {
+        categoryCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.value === 'all' && this.checked) {
+                    categoryCheckboxes.forEach(cb => {
+                        if (cb.value !== 'all') cb.checked = false;
+                    });
+                } else if (this.value !== 'all' && this.checked) {
+                    if (allCheckbox) allCheckbox.checked = false;
+                }
+
+                const selectedCategories = Array.from(categoryCheckboxes)
+                    .filter(cb => cb.checked && cb.value !== 'all')
+                    .map(cb => cb.value);
+
+                document.querySelectorAll('.category-section').forEach(section => {
+                    const categoryName = section.querySelector('.category-name').textContent;
+
+                    if (allCheckbox && allCheckbox.checked || selectedCategories.length === 0) {
+                        section.style.display = 'block';
+                    } else if (selectedCategories.includes(categoryName)) {
+                        section.style.display = 'block';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+            });
+        });
+    }
 }
 
-// Profile: Gestion de l'édition des champs utilisateur
-function initProfilePage() {
-    // Edit username
-    const editUsernameBtn = document.getElementById('edit-username-btn');
-    const saveUsernameBtn = document.getElementById('save-username-btn');
-    const cancelUsernameBtn = document.getElementById('cancel-username-btn');
-    const usernameDisplay = document.getElementById('username-display');
-    const usernameInput = document.getElementById('new_username');
+function initTradeplace() {
 
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'flex';
+            void modal.offsetHeight;
+            modal.style.opacity = '1';
+            const modalContent = modal.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.style.transform = 'scale(1)';
+            }
+        }
+    }
+
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.opacity = '0';
+            const modalContent = modal.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.style.transform = 'scale(0.9)';
+            }
+            setTimeout(function() {
+                modal.style.display = 'none';
+            }, 400);
+        }
+    }
+
+    const purchaseOfferBtn = document.getElementById('purchase-offer-btn');
+    const purchaseModal = document.getElementById('purchase-modal');
+    const cancelPurchaseBtn = document.getElementById('cancel-purchase-btn');
+
+    if (purchaseOfferBtn && purchaseModal) {
+        purchaseOfferBtn.addEventListener('click', function() {
+            openModal('purchase-modal');
+        });
+
+        if (cancelPurchaseBtn) {
+            cancelPurchaseBtn.addEventListener('click', function() {
+                closeModal('purchase-modal');
+            });
+        }
+
+        purchaseModal.addEventListener('click', function(e) {
+            if (e.target === purchaseModal) {
+                closeModal('purchase-modal');
+            }
+        });
+    }
+}
+
+function initProfilePage() {
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'flex';
+            void modal.offsetHeight;
+            modal.style.opacity = '1';
+            const modalContent = modal.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.style.transform = 'scale(1)';
+            }
+        }
+    }
+
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.opacity = '0';
+            const modalContent = modal.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.style.transform = 'scale(0.9)';
+            }
+            setTimeout(function() {
+                modal.style.display = 'none';
+            }, 400);
+        }
+    }
+
+    const editUsernameBtn = document.getElementById('edit-username-btn');
     if (editUsernameBtn) {
         editUsernameBtn.addEventListener('click', function() {
-            usernameDisplay.style.display = 'none';
-            usernameInput.style.display = '';
-            saveUsernameBtn.style.display = '';
-            cancelUsernameBtn.style.display = '';
-            editUsernameBtn.style.display = 'none';
-            usernameInput.focus();
-        });
-
-        cancelUsernameBtn.addEventListener('click', function() {
-            usernameDisplay.style.display = '';
-            usernameInput.style.display = 'none';
-            saveUsernameBtn.style.display = 'none';
-            cancelUsernameBtn.style.display = 'none';
-            editUsernameBtn.style.display = '';
-            usernameInput.value = usernameDisplay.textContent;
+            openModal('username-modal');
         });
     }
 
-    // Edit email
     const editEmailBtn = document.getElementById('edit-email-btn');
-    const saveEmailBtn = document.getElementById('save-email-btn');
-    const cancelEmailBtn = document.getElementById('cancel-email-btn');
-    const emailDisplay = document.getElementById('email-display');
-    const emailInput = document.getElementById('new_email');
-
     if (editEmailBtn) {
         editEmailBtn.addEventListener('click', function() {
-            emailDisplay.style.display = 'none';
-            emailInput.style.display = '';
-            saveEmailBtn.style.display = '';
-            cancelEmailBtn.style.display = '';
-            editEmailBtn.style.display = 'none';
-            emailInput.focus();
-        });
-
-        cancelEmailBtn.addEventListener('click', function() {
-            emailDisplay.style.display = '';
-            emailInput.style.display = 'none';
-            saveEmailBtn.style.display = 'none';
-            cancelEmailBtn.style.display = 'none';
-            editEmailBtn.style.display = '';
-            emailInput.value = emailDisplay.textContent;
+            openModal('email-modal');
         });
     }
 
-    // Edit password
     const editPasswordBtn = document.getElementById('edit-password-btn');
-    const savePasswordBtn = document.getElementById('save-password-btn');
-    const cancelPasswordBtn = document.getElementById('cancel-password-btn');
-    const passwordDisplay = document.getElementById('password-display');
-    const passwordInput = document.getElementById('new_password');
-
     if (editPasswordBtn) {
         editPasswordBtn.addEventListener('click', function() {
-            passwordDisplay.style.display = 'none';
-            passwordInput.style.display = '';
-            savePasswordBtn.style.display = '';
-            cancelPasswordBtn.style.display = '';
-            editPasswordBtn.style.display = 'none';
-            passwordInput.focus();
-        });
-
-        cancelPasswordBtn.addEventListener('click', function() {
-            passwordDisplay.style.display = '';
-            passwordInput.style.display = 'none';
-            savePasswordBtn.style.display = 'none';
-            cancelPasswordBtn.style.display = 'none';
-            editPasswordBtn.style.display = '';
-            passwordInput.value = '';
+            openModal('password-modal');
         });
     }
 
-    // Delete account modal
+    const editAllGradesBtn = document.getElementById('edit-all-grades-btn');
+    if (editAllGradesBtn) {
+        editAllGradesBtn.addEventListener('click', function() {
+            openModal('all-grades-modal');
+        });
+    }
+
+    const cancelButtons = document.querySelectorAll('.cancel-modal');
+    cancelButtons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const modalId = this.getAttribute('data-modal');
+            closeModal(modalId);
+        });
+    });
+
+    const profileModals = document.querySelectorAll('.profile-modal');
+    profileModals.forEach(function(modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal(modal.id);
+            }
+        });
+    });
+
     const deleteAccountBtn = document.getElementById('delete-account-btn');
     const deleteModal = document.getElementById('delete-modal');
     const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
 
     if (deleteAccountBtn && deleteModal) {
         deleteAccountBtn.addEventListener('click', function() {
-
-            // Afficher le modal avec display flex pour le centrage
-            deleteModal.style.display = 'flex';
-
-            // Force un reflow pour que la transition CSS fonctionne
-            void deleteModal.offsetHeight;
-
-            // Démarrer l'animation de fade-in
-            deleteModal.style.opacity = '1';
-            const innerDiv = deleteModal.querySelector('div');
-            if (innerDiv) {
-                innerDiv.style.transform = 'scale(1)';
-            }
+            openModal('delete-modal');
         });
 
         if (cancelDeleteBtn) {
             cancelDeleteBtn.addEventListener('click', function() {
-                // Animation de fade-out
-                deleteModal.style.opacity = '0';
-                const innerDiv = deleteModal.querySelector('div');
-                if (innerDiv) {
-                    innerDiv.style.transform = 'scale(0.9)';
-                }
-                // Masquer après l'animation (400ms)
-                setTimeout(function() {
-                    deleteModal.style.display = 'none';
-                }, 400);
+                closeModal('delete-modal');
             });
         }
 
-        // Fermer le modal si on clique en dehors
         deleteModal.addEventListener('click', function(e) {
             if (e.target === deleteModal) {
-                // Animation de fade-out
-                deleteModal.style.opacity = '0';
-                const innerDiv = deleteModal.querySelector('div');
-                if (innerDiv) {
-                    innerDiv.style.transform = 'scale(0.9)';
-                }
-                // Masquer après l'animation (400ms)
-                setTimeout(function() {
-                    deleteModal.style.display = 'none';
-                }, 400);
+                closeModal('delete-modal');
             }
         });
     }
 }
 
-// Bouton pour remonter en haut de la page
 function initScrollToTop() {
     const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
 
     if (scrollToTopBtn) {
-        // Afficher/masquer le bouton lors du scroll
         window.addEventListener('scroll', function() {
             if (window.scrollY > 50) {
                 scrollToTopBtn.style.opacity = '1';
@@ -361,7 +425,6 @@ function initScrollToTop() {
             }
         });
 
-        // Remonter en haut au clic
         scrollToTopBtn.addEventListener('click', function() {
             window.scrollTo({
                 top: 0,
@@ -371,6 +434,260 @@ function initScrollToTop() {
     }
 }
 
-// Initialiser le bouton de remontée
 initScrollToTop();
+
+function initGradesChartFromData() {
+    const chartElement = document.getElementById('barchart_values');
+    if (!chartElement) return;
+
+    const gradesData = {
+        maths: chartElement.getAttribute('data-maths') || '0',
+        programmation: chartElement.getAttribute('data-programmation') || '0',
+        network: chartElement.getAttribute('data-network') || '0',
+        db: chartElement.getAttribute('data-db') || '0',
+        other: chartElement.getAttribute('data-other') || '0'
+    };
+
+    initGradesChart(gradesData);
+}
+
+function initGradesChart(gradesData) {
+    if (typeof google === 'undefined' || !google.charts) {
+        console.error('Google Charts n\'est pas chargé');
+        return;
+    }
+
+    google.charts.load("current", {packages:["corechart"]});
+    google.charts.setOnLoadCallback(function() {
+        drawChart(gradesData);
+    });
+}
+
+function getCSSVariable(variableName) {
+    return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
+}
+
+function drawChart(gradesData) {
+    const isDark = document.body.classList.contains('dark-theme');
+
+    // Récupération des couleurs depuis les variables CSS
+    const primaryColor = getCSSVariable('--primary-color');
+    const textColor = isDark ? getCSSVariable('--text-dark') : getCSSVariable('--text-light');
+    const gridColor = isDark ? getCSSVariable('--chart-grid-dark') : getCSSVariable('--chart-grid-light');
+
+    const data = google.visualization.arrayToDataTable([
+        ["Moyennes", "Moyenne", { role: "style" }],
+        ["Maths", parseFloat(gradesData.maths) || 0, `color: ${primaryColor}`],
+        ["Programmation", parseFloat(gradesData.programmation) || 0, `color: ${primaryColor}`],
+        ["Réseau", parseFloat(gradesData.network) || 0, `color: ${primaryColor}`],
+        ["BD", parseFloat(gradesData.db) || 0, `color: ${primaryColor}`],
+        ["Autres", parseFloat(gradesData.other) || 0, `color: ${primaryColor}`]
+    ]);
+
+    const view = new google.visualization.DataView(data);
+    view.setColumns([0, 1,
+        {
+            calc: "stringify",
+            sourceColumn: 1,
+            type: "string",
+            role: "annotation"
+        },
+        2
+    ]);
+
+    const chartElement = document.getElementById("barchart_values");
+    const containerWidth = chartElement ? chartElement.parentElement.clientWidth : 600;
+    const isMobile = window.innerWidth < 768;
+    const chartHeight = isMobile ? Math.min(250, window.innerHeight * 0.3) : Math.min(400, window.innerHeight * 0.5);
+
+    const options = {
+        title: "Aperçu visuel de vos moyennes",
+        width: containerWidth - 30,
+        height: chartHeight,
+        backgroundColor: 'transparent',
+        bar: {groupWidth: isMobile ? "50%" : "60%"},
+        legend: { position: "none" },
+        titleTextStyle: {
+            color: textColor,
+            fontSize: isMobile ? 14 : 16,
+            bold: true
+        },
+        hAxis: {
+            title: 'Points / 20',
+            titleTextStyle: {
+                color: textColor,
+                fontSize: isMobile ? 11 : 13
+            },
+            textStyle: {
+                color: textColor,
+                fontSize: isMobile ? 10 : 12
+            },
+            viewWindow: {
+                max: 20,
+                min: 0
+            },
+            gridlines: {
+                color: gridColor
+            }
+        },
+        vAxis: {
+            textStyle: {
+                color: textColor,
+                fontSize: isMobile ? 10 : 12
+            },
+            gridlines: {
+                color: gridColor
+            }
+        },
+        chartArea: {
+            width: '70%',
+            height: '70%'
+        }
+    };
+
+    const chart = new google.visualization.BarChart(chartElement);
+    chart.draw(view, options);
+
+    window.addEventListener('resize', function() {
+        const newWidth = chartElement.parentElement.clientWidth;
+        const newIsMobile = window.innerWidth < 768;
+        const newHeight = newIsMobile ? Math.min(250, window.innerHeight * 0.3) : Math.min(400, window.innerHeight * 0.5);
+        options.width = newWidth - 30;
+        options.height = newHeight;
+        options.bar.groupWidth = newIsMobile ? "50%" : "60%";
+        options.titleTextStyle.fontSize = newIsMobile ? 14 : 16;
+        chart.draw(view, options);
+    });
+}
+
+// Sticky image animation for legal notice page
+document.addEventListener('DOMContentLoaded', function() {
+    const imageContainer = document.querySelector('.legal-notice-image-container');
+    if (!imageContainer) return;
+
+    const wrapper = document.querySelector('.legal-notice-wrapper');
+    const textRectangle = document.querySelector('.legal-notice-wrapper .login-rectangle');
+    if (!wrapper || !textRectangle) return;
+
+    const topOffset = 110; // Distance from top when fixed
+    let ticking = false;
+    let lastTranslateY = 0;
+
+    function updateImagePosition() {
+        const wrapperRect = wrapper.getBoundingClientRect();
+        const textRect = textRectangle.getBoundingClientRect();
+        const imageHeight = imageContainer.offsetHeight;
+
+        // Calculate boundaries
+        const wrapperTop = wrapperRect.top;
+        const wrapperBottom = wrapperRect.bottom;
+        const textHeight = textRect.height;
+
+        let translateY = 0;
+
+        if (wrapperTop <= topOffset) {
+            // Wrapper has scrolled past the top offset
+            const scrolled = topOffset - wrapperTop;
+            const maxScroll = Math.max(0, textHeight - imageHeight);
+
+            // Clamp the translation
+            translateY = Math.min(scrolled, maxScroll);
+
+            // Stop if we've reached the bottom
+            if (wrapperBottom <= imageHeight + topOffset) {
+                translateY = maxScroll;
+            }
+        } else {
+            // Wrapper is below the top offset, image at top
+            translateY = 0;
+        }
+
+        // Apply smooth transform
+        if (translateY !== lastTranslateY) {
+            imageContainer.style.transform = `translateY(${translateY}px)`;
+            lastTranslateY = translateY;
+        }
+
+        ticking = false;
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(updateImagePosition);
+            ticking = true;
+        }
+    }
+
+    // Initialize
+    imageContainer.style.transform = 'translateY(0)';
+
+    // Listen to scroll with debouncing via requestAnimationFrame
+    window.addEventListener('scroll', requestTick, { passive: true });
+    window.addEventListener('resize', requestTick, { passive: true });
+
+    // Initial position
+    updateImagePosition();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteOfferButtons = document.querySelectorAll('#delete-offer-btn');
+    const deleteModal = document.getElementById('offer-delete-modal');
+    const deleteForm = document.getElementById('delete-offer-form');
+    const deleteOfferIdInput = document.getElementById('delete-offer-id');
+    const cancelDeleteBtn = document.getElementById('cancel-delete-offer-btn');
+
+    if (deleteOfferButtons && deleteModal) {
+        deleteOfferButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const form = this.closest('.product-delete-form');
+                if (form) {
+                    const offerIdInput = form.querySelector('input[name="offer_id"]');
+                    if (offerIdInput && deleteOfferIdInput) {
+                        deleteOfferIdInput.value = offerIdInput.value;
+
+                        deleteModal.style.display = 'flex';
+                        setTimeout(() => {
+                            deleteModal.style.opacity = '1';
+                            const modalContent = deleteModal.querySelector('.modal-content');
+                            if (modalContent) {
+                                modalContent.style.transform = 'scale(1)';
+                            }
+                        }, 10);
+                    }
+                }
+            });
+        });
+    }
+
+    function closeDeleteModal() {
+        if (deleteModal) {
+            deleteModal.style.opacity = '0';
+            const modalContent = deleteModal.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.style.transform = 'scale(0.9)';
+            }
+            setTimeout(() => {
+                deleteModal.style.display = 'none';
+                if (deleteOfferIdInput) {
+                    deleteOfferIdInput.value = '';
+                }
+            }, 400);
+        }
+    }
+
+    if (cancelDeleteBtn) {
+        cancelDeleteBtn.addEventListener('click', closeDeleteModal);
+    }
+
+    if (deleteModal) {
+        deleteModal.addEventListener('click', function(e) {
+            if (e.target === deleteModal) {
+                closeDeleteModal();
+            }
+        });
+    }
+});
 
