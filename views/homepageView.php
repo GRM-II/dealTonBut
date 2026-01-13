@@ -43,8 +43,8 @@
                         </button>
                     </form>
 
-                    <button type="button" class="text-link-btn" id="forgot-password-link">Mot de passe oublié ?</button>
-                    <button type="button" onclick="window.location.href='/index.php?controller=user&action=register'" class="text-link-btn">Vous ne possédez pas de compte ?</button>
+                    <a href="#" class="text-link" id="forgot-password-link">Mot de passe oublié ?</a>
+                    <a href="?controller=user&action=register" class="text-link">Vous ne possédez pas de compte ?</a>
                 </div>
 
                 <div class="login-right">
@@ -57,7 +57,6 @@
         </div>
     </div>
 
-    <!-- Modal pour mot de passe oublié -->
     <div id="forgot-password-modal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -77,9 +76,9 @@
                         id="submit-forgot-password">
                     Envoyer
                 </button>
-                <div id="loading-indicator" style="display: none; text-align: center; margin-top: 15px;">
-                    <div style="border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
-                    <p style="margin-top: 10px; color: #666;">Envoi en cours, veuillez patienter...</p>
+                <div id="loading-indicator" class="loading-indicator">
+                    <div class="loading-spinner"></div>
+                    <p class="loading-text">Envoi en cours, veuillez patienter...</p>
                 </div>
             </form>
         </div>
