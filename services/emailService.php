@@ -101,9 +101,6 @@ final class emailService
 
         } catch (Exception $e) {
             $errorDetails = "Erreur envoi email à $toEmail : " . $e->getMessage();
-            if (isset($mail)) {
-                $errorDetails .= " | PHPMailer: " . $mail->ErrorInfo;
-            }
             error_log($errorDetails);
 
             return [
@@ -140,7 +137,8 @@ final class emailService
     {
         ob_start();
         include __DIR__ . '/../views/mail/mailView.php';
-        return ob_get_clean();
+        $content = ob_get_clean();
+        return $content !== false ? $content : '';
     }
 }
 
