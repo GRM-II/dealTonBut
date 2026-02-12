@@ -7,6 +7,8 @@ $offers = $A_view['offers'] ?? [];
 $selectedOffer = $A_view['selectedOffer'] ?? null;
 ?>
 
+// Le pas de 0.05 pour le slider des points ne marche pas, je sais pas pourquoi
+
 <div class="content">
         <div class="nav-buttons trade-nav-buttons">
             <a href="?controller=marketpage&action=index" class="nav-btn nav-btn-market" title="Marché">
@@ -48,7 +50,7 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
                 <?php foreach ($offers as $offer): ?>
                     <a href="?controller=tradeplace&action=index&offer_id=<?php echo htmlspecialchars($offer['id'], ENT_QUOTES, 'UTF-8'); ?>"
                        class="trade-offer-item <?php echo ($selectedOffer && $selectedOffer['id'] == $offer['id']) ? 'active' : ''; ?>">
-                        <span class="offer-category"><?php echo htmlspecialchars(substr($offer['category'] ?? 'Autre', 0, 20), ENT_QUOTES, 'UTF-8'); ?></span>
+                        <span class="offer-category">Offre de <?php echo htmlspecialchars($offer['username'] ?? 'User', ENT_QUOTES, 'UTF-8'); ?> - <?php echo htmlspecialchars($offer['category'] ?? 'Autre', ENT_QUOTES, 'UTF-8'); ?></span>
                         <span class="offer-arrow"></span>
                     </a>
                 <?php endforeach; ?>
@@ -57,46 +59,60 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
 
         <main class="trade-place-main">
             <?php if ($selectedOffer): ?>
-                <div class="offer-detail-card">
-                    <h2 class="offer-title"><?php echo htmlspecialchars($selectedOffer['title'] ?? 'Offre pour le G', ENT_QUOTES, 'UTF-8'); ?></h2>
-
-                    <div class="offer-description-box">
-                        <p class="offer-description">
-                            <?php echo nl2br(htmlspecialchars($selectedOffer['description'] ?? 'Aucune description disponible.', ENT_QUOTES, 'UTF-8')); ?>
-                        </p>
+                <div class="trade-window">
+                    <div class="trade-header">
+                        <h2>Échange avec <?php echo htmlspecialchars($selectedOffer['username'] ?? 'User', ENT_QUOTES, 'UTF-8'); ?></h2>
                     </div>
 
-                    <div class="offer-meta">
-                        <?php if (isset($selectedOffer['username'])): ?>
-                            <div class="offer-meta-item">
-                                <span class="meta-label">Proposé par :</span>
-                                <span class="meta-value"><?php echo htmlspecialchars($selectedOffer['username'], ENT_QUOTES, 'UTF-8'); ?></span>
-                            </div>
-                        <?php endif; ?>
+                    <div class="trade-content">
 
-                        <?php if (isset($selectedOffer['created_at'])): ?>
-                            <div class="offer-meta-item">
-                                <span class="meta-label">Publié le :</span>
-                                <span class="meta-value"><?php echo htmlspecialchars(date('d/m/Y', strtotime($selectedOffer['created_at'])), ENT_QUOTES, 'UTF-8'); ?></span>
+                        <div class="trade-section your-offerings">
+                            <h3>Votre offre :</h3>
+                            <p class="offerings-subtitle">Vos conditions de réalisation.</p>
+                            <div class="offerings-grid" id="your-offerings-grid">
+                                <div class="offering-slot" data-slot="0"></div>
+                                <div class="offering-slot" data-slot="1"></div>
+                                <div class="offering-slot" data-slot="2"></div>
+                                <div class="offering-slot" data-slot="3"></div>
+                                <div class="offering-slot" data-slot="4"></div>
+                                <div class="offering-slot" data-slot="5"></div>
+                                <div class="offering-slot" data-slot="6"></div>
+                                <div class="offering-slot" data-slot="7"></div>
                             </div>
-                        <?php endif; ?>
-                    </div>
-
-                    <div class="offer-details-grid">
-                        <?php if (isset($selectedOffer['price']) && $selectedOffer['price'] > 0): ?>
-                            <div class="detail-box">
-                                <span class="detail-label">Prix :</span>
-                                <span class="detail-value"><?php echo htmlspecialchars($selectedOffer['price'], ENT_QUOTES, 'UTF-8'); ?> points</span>
+                            <div class="trade-actions">
+                                <button type="button" class="btn-add-points" id="btn-add-points">Ajouter points</button>
+                                <button type="button" class="btn-add-custom" id="btn-add-custom">Ajouter une faveur</button>
                             </div>
-                        <?php endif; ?>
+                        </div>
 
-                        <div class="detail-box">
-                            <span class="detail-label">Catégorie</span>
-                            <span class="detail-value"><?php echo htmlspecialchars($selectedOffer['category'] ?? 'Autre', ENT_QUOTES, 'UTF-8'); ?></span>
+                        <div class="trade-separator">
+                            <div class="separator-line"></div>
+                            <div class="separator-icon">⇄</div>
+                            <div class="separator-line"></div>
+                        </div>
+
+                        <div class="trade-section their-offerings">
+                            <h3>Offre de <?php echo htmlspecialchars($selectedOffer['username'] ?? 'User', ENT_QUOTES, 'UTF-8'); ?> :</h3>
+                            <p class="offerings-subtitle">Ce que vous êtes prêt à céder, que ce soit des points ou autre.</p>
+                            <div class="offerings-grid" id="their-offerings-grid">
+                                <div class="offering-slot" data-slot="0" data-initial-offer="<?php echo htmlspecialchars($selectedOffer['title'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"></div>
+                                <div class="offering-slot" data-slot="1"></div>
+                                <div class="offering-slot" data-slot="2"></div>
+                                <div class="offering-slot" data-slot="3"></div>
+                                <div class="offering-slot" data-slot="4"></div>
+                                <div class="offering-slot" data-slot="5"></div>
+                                <div class="offering-slot" data-slot="6"></div>
+                                <div class="offering-slot" data-slot="7"></div>
+                            </div>
+                            <div class="trade-actions">
+                                <button type="button" class="btn-add-points" id="btn-add-points-their">Ajouter points</button>
+                                <button type="button" class="btn-add-custom" id="btn-add-custom-their">Ajouter une faveur</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="offer-purchase">
-                        <button type="button" id="purchase-offer-btn" class="button offer-purchase-btn" <?php echo $disabledAttr;?>>Effectuer la transaction</button>
+
+                    <div class="trade-footer">
+                        <button type="button" class="btn-confirm-trade" id="btn-confirm-trade">Confirmer l'échange</button>
                     </div>
 
                 </div>
@@ -107,19 +123,36 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
             <?php endif; ?>
         </main>
     </div>
+</div>
+
+<div id="points-modal">
+    <div class="modal-content">
+        <p>Sélectionnez le montant de points à ajouter :</p>
+        <div class="points-slider-container">
+            <label for="points-slider" style="display: none;">Montant de points</label>
+            <input type="range" id="points-slider" min="0.1" max="1" value="0.5" step="0.05" class="slider">
+            <div class="slider-value-display">
+                <span id="slider-value-text">0.5</span> point<span id="plural-s">s</span>
+            </div>
+        </div>
+        <div class="modal-buttons">
+            <button type="button" id="confirm-points-btn" class="button btn-confirm">Ajouter</button>
+            <button type="button" id="cancel-points-btn" class="button btn-cancel">Annuler</button>
+        </div>
     </div>
 </div>
 
-<!-- Modal de confirmation de transaction -->
-<div id="purchase-modal">
+<div id="custom-message-modal">
     <div class="modal-content">
-        <h3>Confirmer la transaction</h3>
-        <p>Êtes-vous sûr de vouloir conclure la transaction ?</p>
-        <form method="post" action="?controller=tradeplace&action=purchaseOffer&offer_id=<?php echo htmlspecialchars($selectedOffer['id'], ENT_QUOTES, 'UTF-8'); ?>">
-            <button type="submit" class="button btn-purchase">Oui</button>
-            <button type="button" id="cancel-purchase-btn" class="button btn-cancel">Non</button>
+        <p>Quel objet ou tâche êtes vous prêt à échanger ?</p>
+        <form id="custom-message-form">
+            <label for="custom-message-input" style="display: none;">Custom message</label>
+            <input id="custom-message-input" class="input-rectangle" placeholder="Aucun remboursement possible.">
+            <div class="modal-buttons">
+                <button type="submit" class="button btn-confirm">Add</button>
+                <button type="button" id="cancel-custom-message-btn" class="button btn-cancel">Cancel</button>
+            </div>
         </form>
     </div>
 </div>
-
 
