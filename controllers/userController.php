@@ -123,6 +123,7 @@ final class userController
                     $_SESSION['user'] = $result['user'];
                     $_SESSION['user_id'] = $result['user']['id'];
                     $_SESSION['logged_in'] = true;
+                    $_SESSION['is_admin'] = ($result['user']['role'] === 'admin');
 
                     // Check if there is a pending redirection
                     if (isset($_SESSION['redirect_after_login'])) {
