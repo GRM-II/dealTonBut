@@ -73,6 +73,15 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                     </form>
                 </div>
 
+                <!-- Bouton Admin (visible uniquement pour les admins) -->
+                <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
+                    <div class="profile-logout-container">
+                        <a href="?controller=admin&action=index" class="button profile-logout-btn" style="background-color: #e74c3c; text-decoration: none; display: block; text-align: center;">
+                            Panel Administrateur
+                        </a>
+                    </div>
+                <?php endif; ?>
+
                 <!-- Zone de danger -->
                 <div class="profile-danger-zone">
                     <strong class="danger-title">⚠️ Zone de danger</strong>

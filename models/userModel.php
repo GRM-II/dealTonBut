@@ -305,10 +305,10 @@ final class userModel
         try {
             $pdo = self::getConnection();
 
-            $sql = "SELECT id, username, email, mdp 
-                    FROM Users
-                    WHERE username = :login OR email = :login 
-                    LIMIT 1";
+            $sql = "SELECT id, username, email, mdp, role 
+                FROM Users
+                WHERE username = :login OR email = :login 
+                LIMIT 1";
 
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(':login', $login, PDO::PARAM_STR);
@@ -372,7 +372,8 @@ final class userModel
             'user' => [
                 'id' => $user['id'],
                 'username' => $user['username'],
-                'email' => $user['email']
+                'email' => $user['email'],
+                'role' => $user['role'] ?? 'user'
             ]
         ];
     }
@@ -592,6 +593,112 @@ final class userModel
         } catch (PDOException $e) {
             error_log("Erreur updateGrades : " . $e->getMessage());
             return ['success' => false, 'message' => 'Erreur lors de la mise à jour des moyennes.'];
+        }
+    }
+
+    public function getUserWithRole(string $username): ?array
+    {
+        try {
+            $pdo = self::getConnection();
+            $stmt = $pdo->prepare("SELECT id, username, email, role FROM Users WHERE username = :username");
+            $stmt->execute(['username' => $username]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $user ?: null;
+        } catch (PDOException $e) {
+            error_log("Erreur getUserWithRole: " . $e->getMessage());
+            return null;
+        }
+    }
+
+    public function isAdmin(int $userId): bool
+    {
+        try {
+            $pdo = self::getConnection();
+            $stmt = $pdo->prepare("SELECT role FROM Users WHERE id = :userId");
+            $stmt->execute(['userId' => $userId]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $result && $result['role'] === 'admin';
+        } catch (PDOException $e) {
+            error_log("Erreur isAdmin: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function getAllUsers(int $limit = 50, int $offset = 0): array
+    {
+        try {
+            $pdo = self::getConnection();
+            $stmt = $pdo->prepare("SELECT id, username, email, role, created_at 
+                               FROM Users 
+                               ORDER BY created_at DESC 
+                               LIMIT :limit OFFSET :offset");
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Erreur getAllUsers: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    public function countUsers(): int
+    {
+        try {
+            $pdo = self::getConnection();
+            $stmt = $pdo->query("SELECT COUNT(*) as count FROM Users");
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return (int)($result['count'] ?? 0);
+        } catch (PDOException $e) {
+            error_log("Erreur countUsers: " . $e->getMessage());
+            return 0;
+        }
+    }
+
+    public function updateUserRole(int $userId, string $role): array
+    {
+        if (!in_array($role, ['user', 'admin'])) {
+            return ['success' => false, 'message' => 'Rôle invalide.'];
+        }
+
+        try {
+            $pdo = self::getConnection();
+            $stmt = $pdo->prepare("UPDATE Users SET role = :role WHERE id = :userId");
+            $stmt->execute([
+                'role' => $role,
+                'userId' => $userId
+            ]);
+
+            if ($stmt->rowCount() > 0) {
+                return ['success' => true, 'message' => 'Rôle mis à jour avec succès.'];
+            }
+
+            return ['success' => false, 'message' => 'Aucune modification effectuée.'];
+        } catch (PDOException $e) {
+            error_log("Erreur updateUserRole: " . $e->getMessage());
+            return ['success' => false, 'message' => 'Erreur lors de la mise à jour du rôle.'];
+        }
+    }
+
+    public function searchUsers(string $search): array
+    {
+        try {
+            $pdo = self::getConnection();
+            $stmt = $pdo->prepare("SELECT id, username, email, role, created_at 
+                               FROM Users 
+                               WHERE username LIKE :search OR email LIKE :search
+                               ORDER BY created_at DESC 
+                               LIMIT 50");
+            $stmt->execute(['search' => "%$search%"]);
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Erreur searchUsers: " . $e->getMessage());
+            return [];
         }
     }
 }
