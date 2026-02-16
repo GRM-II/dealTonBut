@@ -117,9 +117,7 @@ final class userModel
     {
         try {
             $pdo = self::getConnection();
-            $stmt = $pdo->prepare("SELECT id, username, email, 
-                       maths_points, programmation_points, network_points, 
-                       DB_points, other_points FROM Users WHERE username = :username");
+            $stmt = $pdo->prepare("SELECT id, username, email FROM Users WHERE username = :username");
             $stmt->execute(['username' => $username]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -151,6 +149,55 @@ final class userModel
         } catch (PDOException $e) {
             error_log("Erreur getUserIdByUsername: " . $e->getMessage());
             return null;
+        }
+    }
+
+    public function getUserPoints(int $userId): array
+    {
+        try {
+            $pdo = self::getConnection();
+            $stmt = $pdo->prepare("SELECT maths_points, programmation_points, network_points, 
+                               DB_points, other_points 
+                               FROM points 
+                               WHERE id = :user_id");
+            $stmt->execute(['user_id' => $userId]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$result) {
+                $this->createUserPoints($userId);
+                return [
+                    'maths_points' => 0,
+                    'programmation_points' => 0,
+                    'network_points' => 0,
+                    'DB_points' => 0,
+                    'other_points' => 0
+                ];
+            }
+
+            return $result;
+        } catch (PDOException $e) {
+            error_log("Erreur getUserPoints: " . $e->getMessage());
+            return [
+                'maths_points' => 0,
+                'programmation_points' => 0,
+                'network_points' => 0,
+                'DB_points' => 0,
+                'other_points' => 0
+            ];
+        }
+    }
+
+    private function createUserPoints(int $userId): bool
+    {
+        try {
+            $pdo = self::getConnection();
+            $stmt = $pdo->prepare("INSERT INTO points (id, maths_points, programmation_points, 
+                              network_points, DB_points, other_points) 
+                              VALUES (:user_id, 0, 0, 0, 0, 0)");
+            return $stmt->execute(['user_id' => $userId]);
+        } catch (PDOException $e) {
+            error_log("Erreur createUserPoints: " . $e->getMessage());
+            return false;
         }
     }
 
@@ -213,6 +260,9 @@ final class userModel
             ]);
 
             if ($result) {
+                $userId = (int)$pdo->lastInsertId();
+                $this->createUserPoints($userId);
+
                 return [
                     'success' => true,
                     'message' => 'Compte créé avec succès ! Vous pouvez maintenant vous connecter.'
@@ -527,15 +577,9 @@ final class userModel
                 return ['success' => false, 'message' => 'Aucune moyenne valide à mettre à jour.'];
             }
 
-            $sql = "UPDATE Users SET " . implode(', ', $fields) . " WHERE id = :userId";
+            // CHANGEMENT ICI : UPDATE points au lieu de UPDATE Users
+            $sql = "UPDATE points SET " . implode(', ', $fields) . " WHERE id = :userId";
             $stmt = $pdo->prepare($sql);
-
-            foreach ($gradesData as $field => $value) {
-                if (in_array($field, $allowedFields)) {
-                    $stmt->bindValue(":$field", $field, PDO::PARAM_STR);
-                }
-            }
-            $stmt->bindValue(':userId', $userId, PDO::PARAM_STR);
 
             $result = $stmt->execute($params);
 

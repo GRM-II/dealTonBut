@@ -56,16 +56,17 @@ final class profilepageController
             header('Location: ?controller=user&action=login&session_expired=1');
             exit;
         }
+        $userPoints = $this->userModel->getUserPoints($userExists['id']);
 
         // Uses the data from the database
         view::show('profilepageView', [
             'username' => $userExists['username'],
             'email' => $userExists['email'],
-            'maths_points' => $userExists['maths_points'] ?? 0,
-            'programmation_points' => $userExists['programmation_points'] ?? 0,
-            'network_points' => $userExists['network_points'] ?? 0,
-            'DB_points' => $userExists['DB_points'] ?? 0,
-            'other_points' => $userExists['other_points'] ?? 0
+            'maths_points' => $userPoints['maths_points'] ?? 0,
+            'programmation_points' => $userPoints['programmation_points'] ?? 0,
+            'network_points' => $userPoints['network_points'] ?? 0,
+            'DB_points' => $userPoints['DB_points'] ?? 0,
+            'other_points' => $userPoints['other_points'] ?? 0
         ]);
     }
 
@@ -94,6 +95,7 @@ final class profilepageController
         }
 
         $currentUsername = $_SESSION['user']['username'];
+        $userId = $_SESSION['user']['id'];
 
         // Updates the username
         if (isset($_POST['new_username']) && !empty(trim($_POST['new_username']))) {
@@ -164,7 +166,7 @@ final class profilepageController
         }
 
         if ($gradesUpdated) {
-            $result = $this->userModel->updateGrades($_SESSION['user']['id'], $gradesData);
+            $result = $this->userModel->updateGrades($userId, $gradesData);
 
             if ($result['success']) {
                 $_SESSION['flash'] = ['success' => true, 'message' => $result['message']];
