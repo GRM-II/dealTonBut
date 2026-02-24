@@ -2,23 +2,23 @@
 <main>
     <div class="content legal-notice-content">
         <div class="nav-buttons default-nav-buttons">
-            <a href="?controller=marketpage&action=index" class="nav-btn nav-btn-market" title="Marché">
-                <img id="market-nav-icon" src="/public/assets/img/Market_Day.svg" alt="Marché" class="nav-icon">
+            <a href="?controller=marketpage&action=index" class="button nav nav-btn-market" title="Marché">
+                <img src="/public/assets/img/market.svg" alt="Marché" class="nav-icon">
             </a>
-            <a href="?controller=tradeplace&action=index" class="nav-btn nav-btn-trade" title="Trading">
-                <img id="trade-nav-icon" src="/public/assets/img/Trade_Day.svg" alt="Trading" class="nav-icon">
+            <a href="?controller=tradeplace&action=index" class="button nav nav-btn-trade" title="Trading">
+                <img src="/public/assets/img/trading.svg" alt="Trading" class="nav-icon">
             </a>
-            <a href="?controller=sitemap&action=index" class="nav-btn nav-btn-maps" title="Plan du site">
-                <img id="maps-nav-icon" src="/public/assets/img/Maps.svg" alt="Plan du site" class="nav-icon">
+            <a href="?controller=sitemap&action=index" class="button nav nav-btn-maps" title="Plan du site">
+                <img src="/public/assets/img/sitemap-icon.svg" alt="Plan du site" class="nav-icon">
             </a>
-            <button id="scroll-to-top-btn" class="nav-btn scroll-to-top-btn" title="Remonter en haut">
+            <button id="scroll-to-top-btn" class="button nav scroll-to-top-btn" title="Remonter en haut">
                 <img id="scroll-icon" src="/public/assets/img/Blue_Arrow.svg" alt="Remonter" class="nav-icon">
             </button>
         </div>
 
         <div class="legal-notice-wrapper">
             <div class="login-rectangle">
-            <div class="rectangle-title">Mentions légales</div>
+            <h1 class="title">Mentions légales</h1>
 
             <?php if (isset($A_view['flash'])): ?>
                 <div class="flash-message <?php echo $A_view['flash']['success'] ? 'flash-success' : 'flash-error'; ?>">
@@ -97,7 +97,7 @@
                 $isLoggedIn = isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
                 $redirectUrl = $isLoggedIn ? '?controller=profilepage&action=index' : '?controller=homepage&action=index';
                 ?>
-                <button onclick="window.location.href='<?php echo $redirectUrl; ?>'" class="input-rectangle login-submit-btn" type="button">
+                <button onclick="window.location.href='<?php echo $redirectUrl; ?>'" class="button" type="button">
                     Retour à l'accueil
                 </button>
             </div>
@@ -133,9 +133,9 @@
                                 <span class="legal-comment-author">@xXxArthurProxXx</span>
                                 <span class="legal-comment-date">il y a 2 heures</span>
                             </div>
-                            <div class="legal-comment-text">
+                            <p>
                                 J'ADORE LE GAMEPLAY MINECRAFT, JE VEUX ÇA DE PARTOUT DANS MA VIE
-                            </div>
+                            </p>
                             <div class="legal-comment-actions">
                                 <button class="legal-comment-like">👍 <span>67</span></button>
                                 <button class="legal-comment-dislike">👎</button>
@@ -153,9 +153,9 @@
                                 <span class="legal-comment-author">@Louis_Parmentier</span>
                                 <span class="legal-comment-date">il y a 5 heures</span>
                             </div>
-                            <div class="legal-comment-text">
+                            <p>
                                 J'avais envie de lire les mentions légales... mais la vidéo était trop intéressante..
-                            </div>
+                            </p>
                             <div class="legal-comment-actions">
                                 <button class="legal-comment-like">👍 <span>2</span></button>
                                 <button class="legal-comment-dislike">👎</button>
@@ -173,9 +173,9 @@
                                 <span class="legal-comment-author">@Fan1DealTonBUT</span>
                                 <span class="legal-comment-date">il y a 1 jour</span>
                             </div>
-                            <div class="legal-comment-text">
+                            <p>
                                 Je voulais en apprendre plus sur les mentions légales, mais je suis resté 4 années entières à regarder cette vidéo de gameplay Minecraft captivant
-                            </div>
+                            </p>
                             <div class="legal-comment-actions">
                                 <button class="legal-comment-like">👍 <span>156</span></button>
                                 <button class="legal-comment-dislike">👎</button>
@@ -193,9 +193,9 @@
                                 <span class="legal-comment-author">@bob4anetdemie</span>
                                 <span class="legal-comment-date">il y a 2 jours</span>
                             </div>
-                            <div class="legal-comment-text">
+                            <p>
                                 zqz mé cète pqje 2 mqnssion légql é tro bi1 fqilisssitqion
-                            </div>
+                            </p>
                             <div class="legal-comment-actions">
                                 <button class="legal-comment-like">👍 <span>54</span></button>
                                 <button class="legal-comment-dislike">👎</button>
@@ -213,7 +213,7 @@
                                 <span class="legal-comment-author">@AvocatDeLaDéfenseNationaleDuPatrimoineFrançais</span>
                                 <span class="legal-comment-date">il y a 3 jours</span>
                             </div>
-                            <div class="legal-comment-text">
+                            <p>
                                 En tant qu'avocat, je dois dire que ces mentions légales sont d'une clarté et d'une précision exemplaires.
                                 On peut ressentir la plume du professionnel ayant créé cette page, glisser le long de son clavier tel un virtuose de la langue française.
                                 Cette page est un chef-d'œuvre juridique qui allie rigueur, exhaustivité et accessibilité.
@@ -221,7 +221,7 @@
                                 La construction des phrases est fluide, les termes juridiques sont utilisés avec justesse, et chaque paragraphe est soigneusement rédigé pour éviter toute ambiguïté.
                                 La personne ayant rédigé ces mentions légales mérite des éloges pour son professionnalisme et son souci du détail.
                                 masterclass frr tié un lavabo
-                            </div>
+                            </p>
                             <div class="legal-comment-actions">
                                 <button class="legal-comment-like">👍 <span>512</span></button>
                                 <button class="legal-comment-dislike">👎</button>

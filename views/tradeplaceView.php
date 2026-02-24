@@ -11,21 +11,21 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
 
 <div class="content">
         <div class="nav-buttons trade-nav-buttons">
-            <a href="?controller=marketpage&action=index" class="nav-btn nav-btn-market" title="Marché">
-                <img id="market-nav-icon" src="/public/assets/img/Market_Day.svg" alt="Marché" class="nav-icon">
+            <a href="?controller=marketpage&action=index" class="button nav nav-btn-market" title="Marché">
+                <img src="/public/assets/img/market.svg" alt="Marché" class="nav-icon">
             </a>
-            <a href="?controller=profilepage&action=index" class="nav-btn nav-btn-profile" title="Accueil">
-                <img id="home-nav-icon" src="/public/assets/img/Home_Day.svg" alt="Accueil" class="nav-icon">
+            <a href="?controller=profilepage&action=index" class="button nav nav-btn-profile" title="Accueil">
+                <img src="/public/assets/img/home.svg" alt="Accueil" class="nav-icon">
             </a>
-            <a href="?controller=sitemap&action=index" class="nav-btn nav-btn-maps" title="Plan du site">
-                <img id="maps-nav-icon" src="/public/assets/img/Maps.svg" alt="Plan du site" class="nav-icon">
+            <a href="?controller=sitemap&action=index" class="button nav nav-btn-maps" title="Plan du site">
+                <img src="/public/assets/img/sitemap-icon.svg" alt="Plan du site" class="nav-icon">
             </a>
-            <button id="scroll-to-top-btn" class="nav-btn scroll-to-top-btn" title="Remonter en haut">
+            <button id="scroll-to-top-btn" class="button nav scroll-to-top-btn" title="Remonter en haut">
                 <img id="scroll-icon" src="/public/assets/img/Blue_Arrow.svg" alt="Remonter" class="nav-icon">
             </button>
         </div>
     <div class="tradeplace-title-container">
-        <h1 class="tradeplace-title">Trade place</h1>
+        <h1 class="tradeplace">Trade place</h1>
     </div>
 
     <?php if ($dbUnavailable): ?>
@@ -132,12 +132,12 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
             <label for="points-slider" style="display: none;">Montant de points</label>
             <input type="range" id="points-slider" min="0.1" max="1" value="0.5" step="0.05" class="slider">
             <div class="slider-value-display">
-                <span id="slider-value-text">0.5</span> point<span id="plural-s">s</span>
+                <span id="slider-value-text">0.5</span> point
             </div>
         </div>
         <div class="modal-buttons">
             <button type="button" id="confirm-points-btn" class="button btn-confirm">Ajouter</button>
-            <button type="button" id="cancel-points-btn" class="button btn-cancel">Annuler</button>
+            <button type="button" id="cancel-points-btn" class="button cancel">Annuler</button>
         </div>
     </div>
 </div>
@@ -150,7 +150,7 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
             <input id="custom-message-input" class="input-rectangle" placeholder="Aucun remboursement possible.">
             <div class="modal-buttons">
                 <button type="submit" class="button btn-confirm">Add</button>
-                <button type="button" id="cancel-custom-message-btn" class="button btn-cancel">Cancel</button>
+                <button type="button" id="cancel-custom-message-btn" class="button cancel">Cancel</button>
             </div>
         </form>
     </div>

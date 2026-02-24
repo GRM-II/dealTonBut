@@ -1,6 +1,6 @@
 <div class="content">
     <div class="sitemap-container">
-        <h1 class="sitemap-title">Plan du site</h1>
+        <h1 class="sitemap">Plan du site</h1>
 
         <div class="sitemap-description">
             <p>Bienvenue sur le plan du site DealTonBut. Vous trouverez ci-dessous toutes les pages accessibles.</p>
@@ -14,7 +14,7 @@
         <div class="sitemap-sections">
 
             <div class="sitemap-section">
-                <h2 class="sitemap-section-title">Liste des pages</h2>
+                <h2 class="section-title">Liste des pages</h2>
 
                 <a href="?controller=homepage&action=login" class="sitemap-item sitemap-item-link">
                     <h3 class="sitemap-page-title">

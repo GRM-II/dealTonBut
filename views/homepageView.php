@@ -4,7 +4,7 @@
             <div class="login-grid">
                 <div class="login-left">
                     <img src="/public/assets/img/placeholder-meme.jpeg" alt="Logo Deal Ton BUT" class="log-img">
-                    <div class="rectangle-title">Connexion</div>
+                    <h1 class="title">Connexion</h1>
 
                     <?php if (isset($error)): ?>
                         <div class="login-error-message">
@@ -20,15 +20,15 @@
                     <?php endif; ?>
 
                     <form class="input-rectangles" method="POST" action="?controller=user&action=login">
-                        <label class="login-text" for="username">Identifiant</label>
+                        <label for="username">Identifiant</label>
                         <input type="text"
                                id="username"
-                               placeholder="Nom d'utilisateur ou mail"
+                               placeholder="Pseudo ou email"
                                name="login"
                                class="input-rectangle"
                                required>
 
-                        <label class="login-text" for="password">Mot de passe</label>
+                        <label for="password">Mot de passe</label>
                         <input type="password"
                                id="password"
                                placeholder="********"
@@ -48,10 +48,35 @@
                 </div>
 
                 <div class="login-right">
-                    <div class="login-right-placeholder">
-                        <h1>Deal tom BIOUT</h1>
-                        <h2>Commence ton nouveau chapitre de comédien !</h2>
+                    <h1>Bienvenue sur Deal ton BUT !</h1>
+                    <div class="homepage-meme-container" id="homepage-meme-container">
+                        <p>Chargement...</p>
                     </div>
+
+                    <?php
+                    $directory = 'public/assets/homepageMemes';
+                    $mediaExtensions = ['webp', 'webm'];
+                    $mediaFiles = [];
+
+                    if (is_dir($directory)) {
+                        $allFiles = scandir($directory);
+                        foreach ($allFiles as $file) {
+                            if ($file === '.' || $file === '..') continue;
+                            $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                            if (in_array($ext, $mediaExtensions)) {
+                                $mediaFiles[] = [
+                                    'filename' => $file,
+                                    'path' => '/' . $directory . '/' . $file,
+                                    'type' => in_array($ext, ['webp', 'webm']) ? 'video' : 'image'
+                                ];
+                            }
+                        }
+                    }
+                    ?>
+
+                    <script>
+                        window.homepageMemes = <?= json_encode($mediaFiles) ?>;
+                    </script>
                 </div>
             </div>
         </div>

@@ -859,3 +859,35 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+function displayRandomMeme() {
+    const container = document.getElementById('homepage-meme-container');
+
+    if (!container) {
+        return;
+    }
+
+    if (!window.homepageMemes || window.homepageMemes.length === 0) {
+        container.innerHTML = '<p>Aucun meme n\'est disponible pour le moment, problème de chez nous ça</p>';
+        return;
+    }
+
+    const randomIndex = Math.floor(Math.random() * window.homepageMemes.length);
+    const media = window.homepageMemes[randomIndex];
+
+    if (media.type === 'video') {
+        container.innerHTML = `
+            <video loop autoplay controls muted>
+                <source src="${media.path}" type="video/${media.filename.split('.').pop()}">
+                Votre navigateur ne supporte pas la lecture de vidéos. Seems like a skill issue 👽
+            </video>
+        `;
+    } else {
+        container.innerHTML = `
+            <img src="${media.path}" alt="Meme aléatoire">
+        `;
+    }
+}
+document.addEventListener('DOMContentLoaded', function() {
+    displayRandomMeme();
+});
+
