@@ -7,16 +7,16 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
 <div class="content">
     <div class="profile-wrapper">
         <div class="nav-buttons default-nav-buttons">
-            <a href="?controller=marketpage&action=index" class="nav-btn nav-btn-market" title="Marché">
-                <img id="market-nav-icon" src="/public/assets/img/Market_Day.svg" alt="Marché" class="nav-icon">
+            <a href="?controller=marketpage&action=index" class="button nav nav-btn-market" title="Marché">
+                <img src="/public/assets/img/market.svg" alt="Marché" class="nav-icon">
             </a>
-            <a href="?controller=tradeplace&action=index" class="nav-btn nav-btn-trade" title="Trading">
-                <img id="trade-nav-icon" src="/public/assets/img/Trade_Day.svg" alt="Trading" class="nav-icon">
+            <a href="?controller=tradeplace&action=index" class="button nav nav-btn-trade" title="Trading">
+                <img src="/public/assets/img/trading.svg" alt="Trading" class="nav-icon">
             </a>
-            <a href="?controller=sitemap&action=index" class="nav-btn nav-btn-maps" title="Plan du site">
-                <img id="maps-nav-icon" src="/public/assets/img/Maps.svg" alt="Plan du site" class="nav-icon">
+            <a href="?controller=sitemap&action=index" class="button nav nav-btn-maps" title="Plan du site">
+                <img src="/public/assets/img/sitemap-icon.svg" alt="Plan du site" class="nav-icon">
             </a>
-            <button id="scroll-to-top-btn" class="nav-btn scroll-to-top-btn" title="Remonter en haut">
+            <button id="scroll-to-top-btn" class="button nav scroll-to-top-btn" title="Remonter en haut">
                 <img id="scroll-icon" src="/public/assets/img/Blue_Arrow.svg" alt="Remonter" class="nav-icon">
             </button>
         </div>
@@ -27,7 +27,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                 <!-- Image de profil -->
                 <img src="/public/assets/img/placeholder-meme.jpeg" alt="Image de profil" class="log-img">
 
-                <div class="rectangle-title">Profil utilisateur</div>
+                <h1 class="title">Profil utilisateur</h1>
 
                 <?php if ($dbUnavailable): ?>
                     <div class="db-unavailable-message">
@@ -75,14 +75,14 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
 
                 <!-- Zone de danger -->
                 <div class="profile-danger-zone">
-                    <strong class="danger-title">⚠️ Zone de danger</strong>
-                    <p class="danger-warning-text">La suppression de votre compte est définitive et irréversible. Toutes vos données seront effacées.</p>
+                    <h3 class="danger">⚠️ Zone de danger</h3>
+                    <p class="warning">La suppression de votre compte est définitive et irréversible. Toutes vos données seront effacées.</p>
                     <button type="button" id="delete-account-btn" class="button profile-delete-btn" <?php echo $disabledAttr; ?>>Je veux supprimer mon compte</button>
                 </div>
             </div>
 
             <div class="login-right">
-                <h1 class="rectangle-title">Moyennes du semestre</h1>
+                <h1 class="title">Moyennes du semestre</h1>
 
                 <!-- Graphique des moyennes -->
                 <div class="chart-container">
@@ -142,8 +142,8 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         <h3>Confirmer la suppression</h3>
         <p>Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible et votre compte sera triste );</p>
         <form method="post" action="?controller=profilepage&action=deleteAccount">
-            <button type="submit" class="button btn-delete">Oui, supprimer</button>
-            <button type="button" id="cancel-delete-btn" class="button btn-cancel">Non, j'y tiens</button>
+            <button type="submit" class="button delete">Oui, supprimer</button>
+            <button type="button" id="cancel-delete-btn" class="button cancel">Non, j'y tiens</button>
         </form>
     </div>
 </div>
@@ -155,8 +155,8 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             <label for="modal_new_username">Nouveau nom d'utilisateur :</label>
             <input type="text" id="modal_new_username" name="new_username" value="<?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle" required <?php echo $disabledAttr; ?>>
             <div class="modal-buttons">
-                <button type="submit" class="button btn-save">Enregistrer</button>
-                <button type="button" class="button btn-cancel cancel-modal" data-modal="username-modal">Annuler</button>
+                <button type="submit" class="button save">Enregistrer</button>
+                <button type="button" class="button cancel cancel-modal" data-modal="username-modal">Annuler</button>
             </div>
         </form>
     </div>
@@ -169,8 +169,8 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             <label for="modal_new_email">Nouvel email :</label>
             <input type="email" id="modal_new_email" name="new_email" value="<?php echo htmlspecialchars($A_view['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle" required <?php echo $disabledAttr; ?>>
             <div class="modal-buttons">
-                <button type="submit" class="button btn-save">Enregistrer</button>
-                <button type="button" class="button btn-cancel cancel-modal" data-modal="email-modal">Annuler</button>
+                <button type="submit" class="button save">Enregistrer</button>
+                <button type="button" class="button cancel cancel-modal" data-modal="email-modal">Annuler</button>
             </div>
         </form>
     </div>
@@ -183,8 +183,8 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             <label for="modal_new_password">Nouveau mot de passe :</label>
             <input type="password" id="modal_new_password" name="new_password" placeholder="Nouveau mot de passe" class="input-rectangle" required <?php echo $disabledAttr; ?>>
             <div class="modal-buttons">
-                <button type="submit" class="button btn-save">Enregistrer</button>
-                <button type="button" class="button btn-cancel cancel-modal" data-modal="password-modal">Annuler</button>
+                <button type="submit" class="button save">Enregistrer</button>
+                <button type="button" class="button cancel cancel-modal" data-modal="password-modal">Annuler</button>
             </div>
         </form>
     </div>
@@ -222,8 +222,8 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
             </div>
 
             <div class="modal-buttons">
-                <button type="submit" class="button btn-save">Enregistrer toutes les moyennes</button>
-                <button type="button" class="button btn-cancel cancel-modal" data-modal="all-grades-modal">Annuler</button>
+                <button type="submit" class="button save">Enregistrer toutes les moyennes</button>
+                <button type="button" class="button cancel cancel-modal" data-modal="all-grades-modal">Annuler</button>
             </div>
         </form>
     </div>

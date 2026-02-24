@@ -23,16 +23,16 @@ if (!empty($A_view['offers'])) {
 
 <div class="content">
     <div class="nav-buttons market-nav-buttons">
-        <a href="?controller=tradeplace&action=index" class="nav-btn nav-btn-trade" title="Trade Place">
-            <img id="trade-nav-icon" src="/public/assets/img/Trade_Day.svg" alt="Trade Place" class="nav-icon">
+        <a href="?controller=tradeplace&action=index" class="button nav nav-btn-trade" title="Trade Place">
+            <img src="/public/assets/img/trading.svg" alt="Trade Place" class="nav-icon">
         </a>
-        <a href="?controller=profilepage&action=index" class="nav-btn nav-btn-profile" title="Profil">
-            <img id="home-nav-icon" src="/public/assets/img/Home_Day.svg" alt="Profil" class="nav-icon">
+        <a href="?controller=profilepage&action=index" class="button nav nav-btn-profile" title="Profil">
+            <img src="/public/assets/img/home.svg" alt="Profil" class="nav-icon">
         </a>
-        <a href="?controller=sitemap&action=index" class="nav-btn nav-btn-maps" title="Plan du site">
-            <img id="maps-nav-icon" src="/public/assets/img/Maps.svg" alt="Plan du site" class="nav-icon">
+        <a href="?controller=sitemap&action=index" class="button nav nav-btn-maps" title="Plan du site">
+            <img src="/public/assets/img/sitemap-icon.svg" alt="Plan du site" class="nav-icon">
         </a>
-        <button id="scroll-to-top-btn" class="nav-btn scroll-to-top-btn" title="Remonter en haut">
+        <button id="scroll-to-top-btn" class="button nav scroll-to-top-btn" title="Remonter en haut">
             <img id="scroll-icon" src="/public/assets/img/Blue_Arrow.svg" alt="Remonter" class="nav-icon">
         </button>
     </div>
@@ -138,7 +138,7 @@ if (!empty($A_view['offers'])) {
     <div id="offer-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal" id="close-modal">&times;</span>
-            <h2 class="rectangle-title">Créer une offre</h2>
+            <h2 class="title">Créer une offre</h2>
             <form method="post" action="?controller=marketpage&action=createOffer">
                 <div class="input-rectangles">
                     <input type="text" name="title" class="input-rectangle" placeholder="Titre de l'offre" required <?php echo $disabledAttr; ?>>
@@ -156,7 +156,7 @@ if (!empty($A_view['offers'])) {
                         <option value="Other">Autre</option>
                     </select>
 
-                    <button type="submit" class="button btn-submit">Publier l'offre</button>
+                    <button type="submit" class="button submit">Publier l'offre</button>
                 </div>
             </form>
         </div>
@@ -169,8 +169,8 @@ if (!empty($A_view['offers'])) {
             <form id="delete-offer-form" method="post" action="?controller=marketpage&action=deleteOffer">
                 <input type="hidden" name="offer_id" id="delete-offer-id" value="">
                 <div class="modal-buttons">
-                    <button type="submit" class="button btn-delete">Oui, supprimer</button>
-                    <button type="button" id="cancel-delete-offer-btn" class="button btn-cancel">Annuler</button>
+                    <button type="submit" class="button delete">Oui, supprimer</button>
+                    <button type="button" id="cancel-delete-offer-btn" class="button cancel">Annuler</button>
                 </div>
             </form>
         </div>
