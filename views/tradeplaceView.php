@@ -145,7 +145,7 @@ $userPoints = $A_view['userPoints'] ?? [];
             </select>
         </div>
         <div class="points-slider-container">
-            <label for="points-slider" style="display: none;">Montant de points</label>
+            <label for="points-slider" >Montant de points</label>
             <input type="range" id="points-slider" min="0.1" max="1" value="0.5" step="0.05" class="slider">
             <div class="slider-value-display">
                 <span id="slider-value-text">0.5</span> point
@@ -162,7 +162,7 @@ $userPoints = $A_view['userPoints'] ?? [];
     <div class="modal-content">
         <p>Quel objet ou tâche êtes vous prêt à échanger ?</p>
         <form id="custom-message-form">
-            <label for="custom-message-input" style="display: none;">Custom message</label>
+            <label for="custom-message-input">Custom message</label>
             <input id="custom-message-input" class="input-rectangle" placeholder="Aucun remboursement possible.">
             <div class="modal-buttons">
                 <button type="submit" class="button btn-confirm">Add</button>
