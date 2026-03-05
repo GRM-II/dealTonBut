@@ -639,7 +639,7 @@ function drawChart(gradesData) {
     const isDark = document.body.classList.contains('dark-theme');
 
     // Récupération des couleurs depuis les variables CSS
-    const primaryColor = getCSSVariable('--primary-color');
+    const primaryColor = isDark ? getCSSVariable('--primary-dark') : getCSSVariable('--primary-light');
     const textColor = isDark ? getCSSVariable('--text-dark') : getCSSVariable('--text-light');
     const gridColor = isDark ? getCSSVariable('--chart-grid-dark') : getCSSVariable('--chart-grid-light');
 

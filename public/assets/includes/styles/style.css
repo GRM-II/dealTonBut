@@ -26,7 +26,7 @@
     --text-dark-secondary: #00DEDE;
 
     /* Chart */
-    --chart-grid-light: #F0F0F0;
+    --chart-grid-light: #cccccc;
     --chart-grid-dark: #474951;
 
     /* Visual effects */
@@ -36,8 +36,8 @@
     --radius-button: 8px;
 
     /* Transition */
-    --transition-fast: 0.2s ease;
-    --transition-medium: 0.3s ease;
+    --transition-fast: 0.2s ease-in-out;
+    --transition-medium: 0.3s ease-in-out;
 }
 
 *,
@@ -78,6 +78,10 @@ body {
 body.dark-theme {
     background: var(--bg-dark);
     color: var(--text-dark);
+}
+
+strong {
+    color: inherit;
 }
 
 header {
@@ -287,6 +291,14 @@ footer.dark-theme {
     position: relative;
     overflow: hidden;
     z-index: 1;
+    transition: transform var(--transition-fast);
+}
+
+.button:hover,
+.button.footer:hover,
+.footer-legal-btn:hover,
+.footer-instagram-btn:hover {
+    transform: scale(1.05);
 }
 
 .button::before,
@@ -681,7 +693,7 @@ body.dark-theme .input-rectangle:focus {
     width: 0;
     height: 100%;
     background: var(--bg-light);
-    transition: width 0.5s ease;
+    transition: width 0.5s ease-in-out;
     z-index: -1;
     border-radius: var(--radius-button);
 }
@@ -698,15 +710,6 @@ body.dark-theme .input-rectangle:focus {
     display: inline;
 }
 
-.profile-form strong,
-.login-rectangle strong {
-    color: var(--text-light);
-}
-
-body.dark-theme .profile-form strong,
-body.dark-theme .login-rectangle strong {
-    color: var(--text-dark);
-}
 
 .login-rectangle span {
     color: var(--text-light);
@@ -727,13 +730,6 @@ body.dark-theme .danger-zone {
     border-top: 1px solid var(--surface-dark);
 }
 
-.danger-zone strong {
-    color: var(--dark-warning-color);
-}
-
-body.dark-theme .danger-zone strong {
-    color: var(--warning-color);
-}
 
 .danger-zone p {
     font-size: 0.9em;
@@ -865,7 +861,7 @@ body.dark-theme .text-link:hover {
     width: 0;
     height: 100%;
     background: var(--primary-light);
-    transition: width 0.5s ease;
+    transition: width 0.5s ease-in-out;
     z-index: -1;
     border-radius: var(--radius-button);
 }
@@ -995,7 +991,7 @@ body.dark-theme .flash-error {
     width: 0;
     height: 100%;
     background: var(--primary-dark);
-    transition: width 0.5s ease;
+    transition: width 0.5s ease-in-out;
     z-index: -1;
     border-radius: var(--radius-button);
 }
@@ -1022,7 +1018,7 @@ body.dark-theme .flash-error {
     width: 0;
     height: 100%;
     background: var(--dark-warning-color);
-    transition: width 0.5s ease;
+    transition: width 0.5s ease-in-out;
     z-index: -1;
     border-radius: var(--radius-button);
 }
@@ -1059,7 +1055,7 @@ body.dark-theme .button.delete {
     width: 0;
     height: 100%;
     background: var(--primary-dark);
-    transition: width 0.5s ease;
+    transition: width 0.5s ease-in-out;
     z-index: -1;
     border-radius: var(--radius-button);
 }
@@ -1086,7 +1082,7 @@ body.dark-theme .button.delete {
     width: 0;
     height: 100%;
     background: var(--dark-warning-color);
-    transition: width 0.5s ease;
+    transition: width 0.5s ease-in-out;
     z-index: -1;
     border-radius: var(--radius-button);
 }
@@ -1378,7 +1374,7 @@ body.dark-theme .text-link-btn:hover::before {
     background: rgba(0, 0, 0, 0.5);
     z-index: 10000;
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.4s ease-in-out;
     align-items: center;
     justify-content: center;
 }
@@ -1390,7 +1386,7 @@ body.dark-theme .text-link-btn:hover::before {
     max-width: 400px;
     text-align: center;
     transform: scale(0.9);
-    transition: transform 0.4s ease;
+    transition: transform 0.4s ease-in-out;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
@@ -1432,11 +1428,17 @@ body.dark-theme #delete-modal p {
 
 .button.cancel,
 #delete-modal .btn-cancel {
-    background: var(--primary-light);
+    background: var(--warning-color);
     color: var(--white-color);
     position: relative;
     overflow: hidden;
     z-index: 1;
+    transition: transform var(--transition-fast);
+}
+
+.button.cancel:hover,
+#delete-modal .btn-cancel:hover {
+    transform: scale(1.05);
 }
 
 .button.cancel::before,
@@ -1447,8 +1449,8 @@ body.dark-theme #delete-modal p {
     right: 0;
     width: 0;
     height: 100%;
-    background: var(--bg-light);
-    transition: width 0.5s ease;
+    background: var(--primary-light);
+    transition: width 0.5s ease-in-out;
     z-index: -1;
     border-radius: var(--radius-button);
 }
@@ -1462,7 +1464,7 @@ body.dark-theme #delete-modal p {
 
 body.dark-theme .button.cancel,
 body.dark-theme #delete-modal .btn-cancel {
-    background: var(--primary-light);
+    background: var(--warning-color);
     color: var(--white-color);
 }
 
@@ -1476,7 +1478,7 @@ body.dark-theme #delete-modal .btn-cancel {
     background: rgba(0, 0, 0, 0.5);
     z-index: 10000;
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.4s ease-in-out;
     align-items: center;
     justify-content: center;
 }
@@ -1488,7 +1490,7 @@ body.dark-theme #delete-modal .btn-cancel {
     max-width: 400px;
     text-align: center;
     transform: scale(0.9);
-    transition: transform 0.4s ease;
+    transition: transform 0.4s ease-in-out;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
@@ -1575,8 +1577,12 @@ body.dark-theme #offer-delete-modal .btn-cancel {
     cursor: pointer;
     border: none;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease-in-out, transform var(--transition-fast);
     pointer-events: none;
+}
+
+.scroll-to-top-btn.visible:hover {
+    transform: scale(1.05);
 }
 
 .scroll-to-top-btn.visible {
@@ -1623,9 +1629,6 @@ body.dark-theme .profile-info-item {
     background: rgba(19, 96, 170, 0.15);
 }
 
-.profile-info-item strong {
-    color: var(--primary-light);
-}
 
 .profile-info-item span {
     flex: 1;
@@ -1658,6 +1661,12 @@ body.dark-theme .profile-info-item {
     white-space: nowrap;
     width: auto;
     display: inline-block;
+    transition: transform var(--transition-fast);
+}
+
+.profile-edit-btn:hover,
+.profile-cancel-btn:hover {
+    transform: scale(1.05);
 }
 
 .profile-save-btn {
@@ -1667,42 +1676,37 @@ body.dark-theme .profile-info-item {
     background: var(--secondary-light);
     color: var(--white-color);
     width: auto;
+    transition: transform var(--transition-fast);
+}
+
+.profile-save-btn:hover {
+    transform: scale(1.05);
 }
 
 .profile-logout-container {
-    margin-top: 30px;
+    margin-bottom: 30px;
     text-align: center;
     width: 100%;
     max-width: 500px;
 }
 
-.profile-logout-btn {
-    padding: 5px;
-    font-size: 1em;
-    width: auto;
-    display: inline-block;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-}
-
-.profile-logout-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 0;
-    height: 100%;
-    background: var(--primary-dark);
-    transition: width 0.5s ease;
-    z-index: -1;
-    border-radius: var(--radius-button);
-}
-
-.profile-logout-btn:hover::before {
+.profile-admin-container {
+    text-align: center;
     width: 100%;
-    right: auto;
-    left: 0;
+    max-width: 500px;
+}
+
+.profile-admin-btn {
+    background: var(--warning-color);
+    transition: transform var(--transition-fast);
+}
+
+.profile-admin-btn:hover {
+    transform: scale(1.05);
+}
+
+.profile-admin-btn::before {
+    background: 0 0;
 }
 
 .profile-danger-zone {
@@ -1724,16 +1728,19 @@ body.dark-theme .profile-danger-zone {
 .profile-delete-btn {
     background: var(--warning-color);
     color: var(--white-color);
-    cursor: pointer;
     margin-top: 15px;
     padding: 5px;
     font-weight: bold;
-    transition: background var(--transition-fast);
-    width: auto;
+    transition: background var(--transition-fast), transform var(--transition-fast);
+    width: 100%;
     display: inline-block;
     position: relative;
     overflow: hidden;
     z-index: 1;
+}
+
+.profile-delete-btn:hover {
+    transform: scale(1.05);
 }
 
 .profile-delete-btn::before {
@@ -1743,8 +1750,8 @@ body.dark-theme .profile-danger-zone {
     right: 0;
     width: 0;
     height: 100%;
-    background: var(--dark-warning-color);
-    transition: width 0.5s ease;
+    background: var(--primary-light);
+    transition: width 0.5s ease-in-out;
     z-index: -1;
     border-radius: var(--radius-button);
 }
@@ -1805,7 +1812,6 @@ body.dark-theme .grade-item {
 }
 
 .grade-item strong {
-    color: var(--primary-light);
     min-width: 130px;
     flex-shrink: 0;
 }
@@ -1853,6 +1859,12 @@ body.dark-theme .grade-help-text {
     flex-shrink: 0;
     width: auto;
     display: inline-block;
+    transition: transform var(--transition-fast);
+}
+
+.grade-edit-btn:hover,
+.grade-cancel-btn:hover {
+    transform: scale(1.05);
 }
 
 .grade-save-btn {
@@ -1863,6 +1875,11 @@ body.dark-theme .grade-help-text {
     color: var(--white-color);
     margin-left: 10px;
     width: auto;
+    transition: transform var(--transition-fast);
+}
+
+.grade-save-btn:hover {
+    transform: scale(1.05);
 }
 
 /* Conteneur du graphique */
@@ -1879,10 +1896,6 @@ body.dark-theme .grade-help-text {
     justify-content: center;
     margin-bottom: 20px;
     overflow: hidden;
-}
-
-body.dark-theme .chart-container {
-    background: rgba(19, 96, 170, 0.1);
 }
 
 #barchart_values {
@@ -1928,10 +1941,6 @@ body.dark-theme .section-subtitle {
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
-}
-
-body.dark-theme .chart-container {
-    background: rgba(19, 96, 170, 0.1);
 }
 
 #barchart_values {
@@ -2168,7 +2177,7 @@ body.dark-theme .grade-modal-item label {
     justify-content: center;
     align-items: center;
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.4s ease-in-out;
 }
 
 .profile-modal .modal-content {
@@ -2180,7 +2189,7 @@ body.dark-theme .grade-modal-item label {
     width: 90%;
     text-align: center;
     transform: scale(0.9);
-    transition: transform 0.4s ease;
+    transition: transform 0.4s ease-in-out;
 }
 
 body.dark-theme .profile-modal .modal-content {
@@ -2225,7 +2234,7 @@ body.dark-theme .profile-modal .modal-content h3 {
 
 .button.save,
 .btn-save {
-    background: var(--secondary-light);
+    background: var(--primary-light);
     color: var(--white-color);
     cursor: pointer;
     padding: 5px;
@@ -2234,6 +2243,12 @@ body.dark-theme .profile-modal .modal-content h3 {
     position: relative;
     overflow: hidden;
     z-index: 1;
+    transition: transform var(--transition-fast);
+}
+
+.button.save:hover,
+.btn-save:hover {
+    transform: scale(1.05);
 }
 
 .button.save::before,
@@ -2244,8 +2259,8 @@ body.dark-theme .profile-modal .modal-content h3 {
     right: 0;
     width: 0;
     height: 100%;
-    background: var(--primary-dark);
-    transition: width 0.5s ease;
+    background: var(--bg-light);
+    transition: width 0.5s ease-in-out;
     z-index: -1;
     border-radius: var(--radius-button);
 }
@@ -2255,6 +2270,11 @@ body.dark-theme .profile-modal .modal-content h3 {
     width: 100%;
     right: auto;
     left: 0;
+}
+
+body.dark-theme .button.save::before,
+body.dark-theme .btn-save::before {
+    background: var(--bg-dark);
 }
 
 .login-right-top,
@@ -2307,7 +2327,7 @@ body.dark-theme .tradeplace-title {
     background: rgba(0, 0, 0, 0.5);
     z-index: 10000;
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.4s ease-in-out;
     align-items: center;
     justify-content: center;
 }
@@ -2319,7 +2339,7 @@ body.dark-theme .tradeplace-title {
     max-width: 400px;
     text-align: center;
     transform: scale(0.9);
-    transition: transform 0.4s ease;
+    transition: transform 0.4s ease-in-out;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
@@ -2658,7 +2678,7 @@ body.dark-theme .legal-comment-content p {
     width: 0;
     height: 100%;
     background: rgba(0, 0, 0, 0.05);
-    transition: width 0.5s ease;
+    transition: width 0.5s ease-in-out;
     z-index: -1;
     border-radius: 18px;
 }
@@ -3319,7 +3339,7 @@ body.dark-theme .slot-content {
     width: 0;
     height: 100%;
     background: var(--dark-warning-color);
-    transition: width 0.5s ease;
+    transition: width 0.5s ease-in-out;
     z-index: -1;
     border-radius: 50%;
 }
@@ -3365,7 +3385,7 @@ body.dark-theme .slot-content {
     width: 0;
     height: 100%;
     background: var(--primary-dark);
-    transition: width 0.5s ease;
+    transition: width 0.5s ease-in-out;
     z-index: -1;
     border-radius: var(--radius-small);
 }
@@ -3428,7 +3448,7 @@ body.dark-theme .trade-footer {
     width: 0;
     height: 100%;
     background: var(--primary-dark);
-    transition: width 0.5s ease;
+    transition: width 0.5s ease-in-out;
     z-index: -1;
     border-radius: var(--radius-button);
 }
@@ -3471,7 +3491,7 @@ body.dark-theme .btn-confirm-trade:hover::before {
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease-in-out;
 }
 
 #custom-message-modal .modal-content {
@@ -3482,7 +3502,7 @@ body.dark-theme .btn-confirm-trade:hover::before {
     width: 90%;
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
     transform: scale(0.9);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease-in-out;
 }
 
 body.dark-theme #custom-message-modal .modal-content {
@@ -3521,7 +3541,7 @@ body.dark-theme #custom-message-modal .modal-content {
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease-in-out;
 }
 
 #points-modal .modal-content {
@@ -3532,7 +3552,7 @@ body.dark-theme #custom-message-modal .modal-content {
     width: 90%;
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
     transform: scale(0.9);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease-in-out;
 }
 
 body.dark-theme #points-modal .modal-content {
@@ -3940,7 +3960,7 @@ body.dark-theme .category-name {
     width: 0;
     height: 100%;
     background: var(--primary-dark);
-    transition: width 0.5s ease;
+    transition: width 0.5s ease-in-out;
     z-index: -1;
     border-radius: var(--radius-button);
 }
@@ -4154,7 +4174,7 @@ body.dark-theme .form-group select {
     width: 0;
     height: 100%;
     background: var(--primary-dark);
-    transition: width 0.5s ease;
+    transition: width 0.5s ease-in-out;
     z-index: -1;
     border-radius: var(--radius-button);
 }
@@ -4198,7 +4218,7 @@ body.dark-theme .form-group select {
     width: 0;
     height: 100%;
     background: var(--primary-dark);
-    transition: width 0.5s ease;
+    transition: width 0.5s ease-in-out;
     z-index: -1;
     border-radius: 50%;
 }
