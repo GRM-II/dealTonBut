@@ -27,6 +27,21 @@ class tradeplaceController
 
         $isLoggedIn = !empty($_SESSION['user']) && is_array($_SESSION['user']);
 
+        $userPoints = [];
+        $userId = $_SESSION['user_id'] ?? ($_SESSION['user']['id'] ?? null);
+        if ($isLoggedIn && $userId) {
+            if (!class_exists('userModel', false)) {
+                require_once 'models/userModel.php';
+            }
+            if (!class_exists('offerModel', false)) {
+                require_once 'models/offerModel.php';
+            }
+            $pdo = offerModel::getConnection();
+            $stmt = $pdo->prepare("SELECT maths_points, programmation_points, network_points, DB_points, other_points FROM points WHERE id = :id");
+            $stmt->execute(['id' => (int)$userId]);
+            $userPoints = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
+        }
+
         $status = $this->getDbStatus();
         $flash = $_SESSION['flash'] ?? null;
         unset($_SESSION['flash']);
@@ -51,7 +66,8 @@ class tradeplaceController
             'db_status' => $status,
             'flash' => $flash,
             'offers' => $offers,
-            'selectedOffer' => $selectedOffer
+            'selectedOffer' => $selectedOffer,
+            'userPoints' => $userPoints
         ]);
     }
 
@@ -126,8 +142,9 @@ class tradeplaceController
             exit;
         }
         try {
-            $result = offerModel::purchaseOffer(offerModel::getOfferById(intval($_GET['offer_id'])), $_SESSION['user_id']);
-
+            $buyerCategory = $_GET['buyer_category'] ?? null;
+            $buyerAmount = isset($_GET['buyer_amount']) ? floatval($_GET['buyer_amount']) : null;
+            $result = offerModel::purchaseOffer(offerModel::getOfferById(intval($_GET['offer_id'])), $_SESSION['user_id'], $buyerCategory, $buyerAmount);
             if ($result['success']) {
                 $_SESSION['flash'] = ['success' => true, 'message' => $result['message']];
             } else {

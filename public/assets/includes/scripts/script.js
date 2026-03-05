@@ -367,6 +367,15 @@ function initTradeplace() {
         const sliderValueText = document.getElementById('slider-value-text');
         const pluralS = document.getElementById('plural-s');
         const confirmPointsBtn = document.getElementById('confirm-points-btn');
+        const pointsCategory = document.getElementById('points-category');
+
+        const categoryKeyMap = {
+            'Maths': 'maths',
+            'Programmation': 'programmation',
+            'Network': 'network',
+            'DB': 'db',
+            'Other': 'other'
+        };
 
         if (pointsSlider && sliderValueText) {
             pointsSlider.addEventListener('input', function() {
@@ -379,10 +388,20 @@ function initTradeplace() {
         }
 
         if (confirmPointsBtn) {
-            confirmPointsBtn.addEventListener('click', function() {
+                confirmPointsBtn.addEventListener('click', function() {
                 const value = parseFloat(pointsSlider.value).toFixed(1);
                 const targetGrid = currentTargetGrid || yourOfferingsGrid;
                 const emptySlot = findNextEmptySlot(targetGrid);
+
+                const key = pointsCategory ? categoryKeyMap[pointsCategory.value] : null;
+                if (key) {
+                    const available = parseFloat(pointsModal.dataset['points' + key]) || 0;
+                    if (parseFloat(value) > available) {
+                        openModal('warning-modal');
+                        return;
+                    }
+                }
+
                 if (emptySlot) {
                     addItemToSlot(emptySlot, value + ' point' + ((value === '1.0') ? '' : 's'));
                     closeModal('points-modal');
@@ -403,13 +422,10 @@ function initTradeplace() {
             closeModal('points-modal');
         });
     }
-
-    if (pointsModal) {
-        pointsModal.addEventListener('click', function(e) {
-            if (e.target === pointsModal) {
-                currentTargetGrid = null;
-                closeModal('points-modal');
-            }
+    const cancelWarningBtn = document.getElementById('cancel-warning-btn');
+    if (cancelWarningBtn) {
+        cancelWarningBtn.addEventListener('click', function() {
+            closeModal('warning-modal');
         });
     }
 

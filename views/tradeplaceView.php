@@ -5,25 +5,26 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
 $isLoggedIn = $A_view['isLoggedIn'] ?? false;
 $offers = $A_view['offers'] ?? [];
 $selectedOffer = $A_view['selectedOffer'] ?? null;
+$userPoints = $A_view['userPoints'] ?? [];
 ?>
 
 // Le pas de 0.05 pour le slider des points ne marche pas, je sais pas pourquoi
 
 <div class="content">
-        <div class="nav-buttons trade-nav-buttons">
-            <a href="?controller=marketpage&action=index" class="button nav nav-btn-market" title="Marché">
-                <img src="/public/assets/img/market.svg" alt="Marché" class="nav-icon">
-            </a>
-            <a href="?controller=profilepage&action=index" class="button nav nav-btn-profile" title="Accueil">
-                <img src="/public/assets/img/home.svg" alt="Accueil" class="nav-icon">
-            </a>
-            <a href="?controller=sitemap&action=index" class="button nav nav-btn-maps" title="Plan du site">
-                <img src="/public/assets/img/sitemap-icon.svg" alt="Plan du site" class="nav-icon">
-            </a>
-            <button id="scroll-to-top-btn" class="button nav scroll-to-top-btn" title="Remonter en haut">
-                <img id="scroll-icon" src="/public/assets/img/Blue_Arrow.svg" alt="Remonter" class="nav-icon">
-            </button>
-        </div>
+    <div class="nav-buttons trade-nav-buttons">
+        <a href="?controller=marketpage&action=index" class="button nav nav-btn-market" title="Marché">
+            <img src="/public/assets/img/market.svg" alt="Marché" class="nav-icon">
+        </a>
+        <a href="?controller=profilepage&action=index" class="button nav nav-btn-profile" title="Accueil">
+            <img src="/public/assets/img/home.svg" alt="Accueil" class="nav-icon">
+        </a>
+        <a href="?controller=sitemap&action=index" class="button nav nav-btn-maps" title="Plan du site">
+            <img src="/public/assets/img/sitemap-icon.svg" alt="Plan du site" class="nav-icon">
+        </a>
+        <button id="scroll-to-top-btn" class="button nav scroll-to-top-btn" title="Remonter en haut">
+            <img id="scroll-icon" src="/public/assets/img/Blue_Arrow.svg" alt="Remonter" class="nav-icon">
+        </button>
+    </div>
     <div class="tradeplace-title-container">
         <h1 class="tradeplace">Trade place</h1>
     </div>
@@ -125,9 +126,24 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
     </div>
 </div>
 
-<div id="points-modal">
+<div id="points-modal"
+     data-pointsmaths="<?php echo htmlspecialchars($userPoints['maths_points'] ?? 0, ENT_QUOTES, 'UTF-8'); ?>"
+     data-pointsprogrammation="<?php echo htmlspecialchars($userPoints['programmation_points'] ?? 0, ENT_QUOTES, 'UTF-8'); ?>"
+     data-pointsnetwork="<?php echo htmlspecialchars($userPoints['network_points'] ?? 0, ENT_QUOTES, 'UTF-8'); ?>"
+     data-pointsdb="<?php echo htmlspecialchars($userPoints['DB_points'] ?? 0, ENT_QUOTES, 'UTF-8'); ?>"
+     data-pointsother="<?php echo htmlspecialchars($userPoints['other_points'] ?? 0, ENT_QUOTES, 'UTF-8'); ?>">
     <div class="modal-content">
         <p>Sélectionnez le montant de points à ajouter :</p>
+        <div class="points-category-container">
+            <label for="points-category">Matière :</label>
+            <select id="points-category" name="points-category">
+                <option value="Maths">Maths</option>
+                <option value="Programmation">Programmation</option>
+                <option value="Network">Réseau</option>
+                <option value="DB">BD</option>
+                <option value="Other">Autre</option>
+            </select>
+        </div>
         <div class="points-slider-container">
             <label for="points-slider" style="display: none;">Montant de points</label>
             <input type="range" id="points-slider" min="0.1" max="1" value="0.5" step="0.05" class="slider">
@@ -156,3 +172,11 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
     </div>
 </div>
 
+<div id="warning-modal" class="modal">
+    <div class="modal-content">
+        <p>Vous n'avez pas assez de points dans cette matière.</p>
+        <div class="modal-buttons">
+            <button type="button" class="button cancel" id="cancel-warning-btn">OK</button>
+        </div>
+    </div>
+</div>

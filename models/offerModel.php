@@ -197,7 +197,7 @@ final class offerModel
      * @param int $user_id
      * @return array{success: bool, message: string}
      */
-    public static function purchaseOffer(array $offer, int $user_id): array{
+    public static function purchaseOffer(array $offer, int $user_id, ?string $buyer_category = null, ?float $buyer_amount = null): array {
         if ($offer['user_id'] == $user_id) {
             return ['success' => false,
                 'message' => "Vous ne pouvez pas acheter votre propre offre."];
@@ -206,16 +206,17 @@ final class offerModel
         try {
             $pdo = self::getConnection();
 
-            $stmt = $pdo->prepare("SELECT ". trim($offer['category']."_points") ." FROM Users WHERE id = :user_id;");
+            $buyerCategory = $buyer_category ?? $offer['category'];
+            $buyerPrice = $buyer_amount ?? $offer['price'];
+
+            $stmt = $pdo->prepare("SELECT ". trim($buyerCategory."_points") ." FROM Users WHERE id = :user_id;");
             $stmt->execute(['user_id' => $user_id]);
             $buyerPoints = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ((intval($buyerPoints[$offer['category']."_points"]) - intval($offer['price']) < 0)) {
-                return ['success' => false,
-                    'message' => "Vous n'avez pas assez de points"
-                ];
+            if (($buyerPoints[$buyerCategory."_points"] - $buyerPrice) < 0) {
+                return ['success' => false, 'message' => "Vous n'avez pas assez de points en " . $buyerCategory];
             } else {
-                $newBuyerPoints = intval($buyerPoints[$offer['category']."_points"]) - intval($offer['price']);
+                $newBuyerPoints = $buyerPoints[$buyerCategory."_points"] - $buyerPrice;
             }
 
             $stmt = $pdo->prepare("SELECT ". trim($offer['category']."_points") ." FROM Users WHERE id = :user_id;");
@@ -223,7 +224,7 @@ final class offerModel
             $sellerPoints = $stmt->fetch(PDO::FETCH_ASSOC);
             $newSellerPoints = min(intval($sellerPoints[$offer['category']."_points"]) + intval($offer['price']), 20);
 
-            $sql = "UPDATE Users SET ". trim($offer['category']."_points") ." = :newBuyerPoints WHERE id = :buyer_id;
+            $sql = "UPDATE Users SET ". trim($buyerCategory."_points") ." = :newBuyerPoints WHERE id = :buyer_id;
                     UPDATE Users SET ". trim($offer['category']."_points") ." = :newSellerPoints WHERE id = :seller_id;
                     DELETE FROM Offers WHERE id = :offer_id;";
 
