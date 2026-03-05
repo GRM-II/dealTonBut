@@ -67,12 +67,12 @@ final class marketpageController
 
         $title = trim($_POST['title'] ?? '');
         $description = trim($_POST['description'] ?? '');
-        $price = trim($_POST['price'] ?? '');
+        $price = floatval(trim($_POST['price'] ?? ''));
         $category = trim($_POST['category'] ?? '');
 
         if (empty($title) || empty($description) || empty($price)) {
             $_SESSION['flash'] = ['success' => false, 'message' => 'Tous les champs sont requis.'];
-        } elseif (!is_numeric($price) || $price <= 0) {
+        } elseif (20 < $price || $price <= 0) {
             $_SESSION['flash'] = ['success' => false, 'message' => 'Le prix doit être un nombre valide.'];
         } else {
             if (!class_exists('offerModel', false)) {

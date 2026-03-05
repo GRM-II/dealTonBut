@@ -120,8 +120,8 @@ final class offerModel
      *
      * This method fetches complete offer information.
      *
-     * @param string $offer_id The offer to search for
-     * @return array{id: int|string, user_id: int|string,title: string, description: string, category: string, price: int, created_at: string}|null
+     * @param int $offer_id The offer to search for
+     * @return array{id: int|string, user_id: int|string, title: string, description: string, category: string, price: int, created_at: string}|array{}
      *         An associative array containing offer data, or null if not found or on error
      */
     public static function getOfferById(int $offer_id): array {
@@ -152,7 +152,7 @@ final class offerModel
      * @param string $description
      * @param float $price
      * @param string $category
-     * @return array{success: bool, message: string}
+     * @return array{success: bool, message: string}|array{}
      */
     public static function createOffer(int $user_id, string $title, string $description, float $price, string $category): array {
         if ($price < 0 || $price > 20) {
@@ -193,7 +193,7 @@ final class offerModel
     /**
      * Creates an offer from arguments
      *
-     * @param array{id: int|string, user_id: int|string,title: string, description: string, category: string, price: int}
+     * @param array{id: int|string, user_id: int|string, title: string, description: string, category: string, price: int} $offer
      * @param int $user_id
      * @return array{success: bool, message: string}
      */
@@ -257,7 +257,7 @@ final class offerModel
      *
      * @param int $id
      * @param int $user_id
-     * @return array{success: bool, message: string}
+     * @return array{success: bool, message: string}|array{}
      */
     public static function deleteOffer(int $id, int $user_id): array {
         try {
