@@ -112,11 +112,23 @@ final class userController
                 exit;
             }
 
+            $waitInfo = $this->checkLoginAttempts($login);
+
+            if ($waitInfo['must_wait']) {
+                $_SESSION['flash_message'] = [
+                    'success' => false,
+                    'message' => "Trop de tentatives. Veuillez attendre {$waitInfo['wait_seconds']} secondes avant de réessayer."
+                ];
+                header('Location: ?controller=homepage&action=index');
+                exit;
+            }
+
             try {
                 $result = $this->authenticate($login, $password);
 
                 if ($result['success'] && isset($result['user'])) {
-                    // Regenerate the session ID for security
+                    $this->clearLoginAttempts($login);
+
                     session_regenerate_id(true);
 
                     // Store user information in the session
@@ -137,10 +149,19 @@ final class userController
                     exit;
                 }
 
+                $this->recordLoginAttempt($login);
+
+                $waitInfo = $this->checkLoginAttempts($login);
+
+                $message = 'Identifiants incorrects.';
+                if ($waitInfo['attempts'] >= 3) {
+                    $message .= " ({$waitInfo['attempts']} tentatives.)";
+                }
+
                 // If unsuccessful: redirect to homepage with error message
                 $_SESSION['flash_message'] = [
                     'success' => false,
-                    'message' => $result['message']
+                    'message' => $message
                 ];
                 header('Location: ?controller=homepage&action=index');
                 exit;
@@ -191,6 +212,101 @@ final class userController
                 'success' => false,
                 'message' => 'Une erreur est survenue lors de la connexion.'
             ];
+        }
+    }
+
+    /**
+     * Records a failed login attempt in session
+     *
+     * @param string $identifier Username or email used in the login attempt
+     * @return void
+     */
+    private function recordLoginAttempt(string $identifier): void
+    {
+        $key = strtolower(trim($identifier));
+
+        if (!isset($_SESSION['login_attempts'])) {
+            $_SESSION['login_attempts'] = [];
+        }
+
+        if (!isset($_SESSION['login_attempts'][$key])) {
+            $_SESSION['login_attempts'][$key] = [];
+        }
+
+        $_SESSION['login_attempts'][$key][] = time();
+
+        // Nettoyer les tentatives de plus d'une heure
+        $_SESSION['login_attempts'][$key] = array_filter(
+            $_SESSION['login_attempts'][$key],
+            function($timestamp) {
+                return $timestamp > (time() - 3600);
+            }
+        );
+    }
+
+    /**
+     * Checks login attempts and calculates wait time
+     * After 3 attempts, user must wait 3 seconds before each new attempt
+     *
+     * @param string $identifier Username or email to check
+     * @return array{must_wait: bool, wait_seconds: int, attempts: int}
+     */
+    private function checkLoginAttempts(string $identifier): array
+    {
+        $key = strtolower(trim($identifier));
+
+        if (!isset($_SESSION['login_attempts']) || !isset($_SESSION['login_attempts'][$key])) {
+            return [
+                'must_wait' => false,
+                'wait_seconds' => 0,
+                'attempts' => 0
+            ];
+        }
+
+        // Nettoyer les tentatives anciennes
+        $_SESSION['login_attempts'][$key] = array_filter(
+            $_SESSION['login_attempts'][$key],
+            function($timestamp) {
+                return $timestamp > (time() - 3600);
+            }
+        );
+
+        $attempts = count($_SESSION['login_attempts'][$key]);
+
+        // Premières 3 tentatives : pas d'attente
+        if ($attempts < 3) {
+            return [
+                'must_wait' => false,
+                'wait_seconds' => 0,
+                'attempts' => $attempts
+            ];
+        }
+
+        // Après 3 tentatives : toujours 3 secondes d'attente (fixe)
+        $lastAttemptTime = max($_SESSION['login_attempts'][$key]);
+        $requiredWaitSeconds = 3; // Délai fixe de 3 secondes
+        $elapsedSeconds = time() - $lastAttemptTime;
+        $remainingWait = max(0, $requiredWaitSeconds - $elapsedSeconds);
+
+        return [
+            'must_wait' => $remainingWait > 0,
+            'wait_seconds' => $remainingWait,
+            'attempts' => $attempts
+        ];
+    }
+
+    /**
+     * Clears all login attempts for a given identifier
+     *
+     * @param string $identifier Username or email
+     * @return void
+     */
+    private function clearLoginAttempts(string $identifier): void
+    {
+        $key = strtolower(trim($identifier));
+
+        if (isset($_SESSION['login_attempts'][$key])) {
+            unset($_SESSION['login_attempts'][$key]);
         }
     }
 
@@ -567,3 +683,4 @@ final class userController
         }
     }
 }
+
