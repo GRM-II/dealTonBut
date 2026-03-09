@@ -4,22 +4,25 @@ $dbMessage = $dbUnavailable ? ($A_view['db_status']['message'] . (isset($A_view[
 $disabledAttr = $dbUnavailable ? 'disabled' : '';
 ?>
 
+<div id="nav-menu" class="overlay">
+    <div class="overlay-content">
+        <span id="scroll-to-top-btn" class="button nav-icon scroll-to-top-btn" title="Remonter en haut">
+            <img id="scroll-icon" src="/public/assets/img/Arrow.svg" alt="Remonter">
+        </span>
+        <a href="?controller=marketpage&action=index" class="button nav-icon nav-btn-market" title="Marché">
+            <img src="/public/assets/img/Market.svg" alt="Marché">
+        </a>
+        <a href="?controller=tradeplace&action=index" class="button nav-icon nav-btn-trade" title="Deals">
+            <img src="/public/assets/img/Trade.svg" alt="Trading">
+        </a>
+        <a href="?controller=sitemap&action=index" class="button nav-icon nav-btn-maps" title="Plan du site">
+            <img src="/public/assets/img/Maps.svg" alt="Plan du site">
+        </a>
+    </div>
+</div>
+
 <div class="content">
     <div class="profile-wrapper">
-        <div class="nav-buttons default-nav-buttons">
-            <a href="?controller=marketpage&action=index" class="button nav nav-btn-market" title="Marché">
-                <img src="/public/assets/img/market.svg" alt="Marché" class="nav-icon">
-            </a>
-            <a href="?controller=tradeplace&action=index" class="button nav nav-btn-trade" title="Trading">
-                <img src="/public/assets/img/trading.svg" alt="Trading" class="nav-icon">
-            </a>
-            <a href="?controller=sitemap&action=index" class="button nav nav-btn-maps" title="Plan du site">
-                <img src="/public/assets/img/sitemap-icon.svg" alt="Plan du site" class="nav-icon">
-            </a>
-            <button id="scroll-to-top-btn" class="button nav scroll-to-top-btn" title="Remonter en haut">
-                <img id="scroll-icon" src="/public/assets/img/Blue_Arrow.svg" alt="Remonter" class="nav-icon">
-            </button>
-        </div>
 
         <div class="login-rectangle">
         <div class="login-grid">
@@ -152,8 +155,8 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         <h3>Confirmer la suppression</h3>
         <p>Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible et votre compte sera triste );</p>
         <form method="post" action="?controller=profilepage&action=deleteAccount">
-            <button type="submit" class="button delete">Oui, supprimer</button>
-            <button type="button" id="cancel-delete-btn" class="button cancel">Non, j'y tiens</button>
+            <button type="submit" class="button profile-admin-btn">Oui, supprimer</button>
+            <button type="button" id="cancel-delete-btn" class="button">Non, j'y tiens</button>
         </form>
     </div>
 </div>

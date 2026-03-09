@@ -12,16 +12,16 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
 <div class="content">
         <div class="nav-buttons trade-nav-buttons">
             <a href="?controller=marketpage&action=index" class="button nav nav-btn-market" title="Marché">
-                <img src="/public/assets/img/market.svg" alt="Marché" class="nav-icon">
+                <img src="/public/assets/img/market.svg" alt="Marché">
             </a>
             <a href="?controller=profilepage&action=index" class="button nav nav-btn-profile" title="Accueil">
-                <img src="/public/assets/img/home.svg" alt="Accueil" class="nav-icon">
+                <img src="/public/assets/img/home.svg" alt="Accueil">
             </a>
             <a href="?controller=sitemap&action=index" class="button nav nav-btn-maps" title="Plan du site">
-                <img src="/public/assets/img/sitemap-icon.svg" alt="Plan du site" class="nav-icon">
+                <img src="/public/assets/img/sitemap-icon.svg" alt="Plan du site">
             </a>
             <button id="scroll-to-top-btn" class="button nav scroll-to-top-btn" title="Remonter en haut">
-                <img id="scroll-icon" src="/public/assets/img/Blue_Arrow.svg" alt="Remonter" class="nav-icon">
+                <img id="scroll-icon" src="/public/assets/img/Blue_Arrow.svg" alt="Remonter">
             </button>
         </div>
     <div class="tradeplace-title-container">

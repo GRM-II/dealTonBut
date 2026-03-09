@@ -110,18 +110,52 @@ header.dark-theme {
     align-items: center;
 }
 
-.header-logo {
+.nav-icon {
     width: 40px;
     height: 40px;
     object-fit: contain;
     background: var(--bg-light);
     box-shadow: var(--shadow-default);
-    border-radius: var(--radius-default);
+    border-radius: var(--radius-button);
     transition: transform var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
 
-.header-logo:hover {
+.nav-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: relative;
+    z-index: 2;
+}
+
+.nav-icon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 100%;
+    background: var(--primary-light);
+    transition: width 0.5s ease-in-out;
+    z-index: 1;
+    border-radius: var(--radius-button);
+}
+
+.nav-icon:hover {
     transform: scale(1.05);
+}
+
+.nav-icon:hover::before {
+    width: 100%;
+    left: auto;
+    right: 0;
 }
 
 #theme-toggle {
@@ -134,7 +168,6 @@ header.dark-theme {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5em;
     box-shadow: var(--shadow-default);
     position: relative;
     overflow: hidden;
@@ -142,7 +175,15 @@ header.dark-theme {
     transition: transform var(--transition-fast);
 }
 
-#theme-toggle::before {
+.header-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: relative;
+    z-index: 2;
+}
+
+.header-btn::before {
     content: '';
     position: absolute;
     top: 0;
@@ -150,33 +191,98 @@ header.dark-theme {
     width: 0;
     height: 100%;
     background: var(--bg-light);
-    transition: width 0.2s ease-in-out;
-    z-index: -1;
+    transition: width 0.5s ease-in-out;
+    z-index: 1;
     border-radius: var(--radius-button);
 }
 
-
-#theme-toggle:hover {
+.header-btn:hover {
     transform: scale(1.05);
 }
 
-#theme-toggle:hover::before {
+.header-btn:hover::before {
     width: 100%;
     left: auto;
     right: 0;
 }
 
-#theme-toggle:focus {
+.header-btn:focus {
     outline: none;
 }
 
-body.dark-theme #theme-toggle {
+/* Style spécifique pour le bouton de changement de thème */
+#theme-toggle {
+    font-size: 1.5em;
+}
+
+body.dark-theme .header-btn {
     background: var(--primary-dark);
     color: var(--text-dark);
 }
 
-body.dark-theme #theme-toggle::before {
+body.dark-theme .header-btn::before {
     background: var(--bg-dark);
+}
+
+.overlay {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    background: linear-gradient(69deg, rgba(255, 0, 255, 0.5) 20%, rgba(0, 224, 224, 0.5) 80%);
+    border-right: var(--third-light) solid 2px;
+    box-shadow: var(--shadow-default);
+    overflow: visible;
+    transition: width 0.5s ease-in-out;
+}
+
+body.dark-theme .overlay {
+    background: linear-gradient(69deg, rgba(176, 11, 105, 0.5) 20%, rgba(105, 11, 176, 0.5) 80%);
+    border-right: var(--third-dark) solid 2px;
+    box-shadow: var(--shadow-default);
+}
+
+.overlay-content {
+    position: fixed;
+    top: 90px;
+    left: 0;
+    width: 10%;
+    text-align: center;
+    margin-top: 0;
+    padding-top: 168px;
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+}
+
+.overlay-content,
+.overlay-content .scroll-to-top-btn {
+    position: fixed;
+}
+
+.overlay-content .scroll-to-top-btn {
+    top: 174px;
+}
+
+.overlay:not(.menu-open) .nav-btn-market,
+.overlay:not(.menu-open) .nav-btn-trade,
+.overlay:not(.menu-open) .nav-btn-maps {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.overlay.menu-open .nav-btn-market,
+.overlay.menu-open .nav-btn-trade,
+.overlay.menu-open .nav-btn-maps {
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.3s ease-in-out 0.2s;
 }
 
 .content {
@@ -204,14 +310,6 @@ h1 {
 
 body.dark-theme h1 {
     color: var(--text-dark-secondary);
-}
-
-h2 {
-    font-size: 1.5em;
-}
-
-h3 {
-    font-size: 1.3em;
 }
 
 body.dark-theme h2,
@@ -243,6 +341,7 @@ footer {
     justify-content: flex-start;
     font-size: 1em;
     margin-top: auto;
+    z-index: 1000;
     box-shadow: var(--shadow-default);
 }
 
@@ -275,7 +374,8 @@ footer.dark-theme {
 .button,
 .button.footer,
 .footer-legal-btn,
-.footer-instagram-btn {
+.footer-instagram-btn,
+.overlay a {
     cursor: pointer;
     width: auto;
     align-self: center;
@@ -297,14 +397,16 @@ footer.dark-theme {
 .button:hover,
 .button.footer:hover,
 .footer-legal-btn:hover,
-.footer-instagram-btn:hover {
+.footer-instagram-btn:hover,
+.overlay a:hover {
     transform: scale(1.05);
 }
 
 .button::before,
 .button.footer::before,
 .footer-legal-btn::before,
-.footer-instagram-btn::before {
+.footer-instagram-btn::before,
+.overlay a ::before {
     content: '';
     position: absolute;
     top: 0;
@@ -320,7 +422,8 @@ footer.dark-theme {
 .button:hover::before,
 .button.footer:hover::before,
 .footer-legal-btn:hover::before,
-.footer-instagram-btn:hover::before {
+.footer-instagram-btn:hover::before,
+.overlay a:hover::before {
     width: 100%;
     left: auto;
     right: 0;
@@ -329,7 +432,8 @@ footer.dark-theme {
 body.dark-theme .button,
 body.dark-theme .button.footer,
 body.dark-theme .footer-legal-btn,
-body.dark-theme .footer-instagram-btn {
+body.dark-theme .footer-instagram-btn,
+body.dark-theme .overlay a {
     background: var(--primary-dark);
     color: var(--text-dark);
 }
@@ -337,14 +441,16 @@ body.dark-theme .footer-instagram-btn {
 body.dark-theme .button::before,
 body.dark-theme .button.footer::before,
 body.dark-theme .footer-legal-btn::before,
-body.dark-theme .footer-instagram-btn::before {
+body.dark-theme .footer-instagram-btn::before,
+body.dark-theme .overlay a::before {
     background: var(--bg-dark);
 }
 
 body.dark-theme .button:hover::before,
 body.dark-theme .button.footer:hover::before,
 body.dark-theme .footer-legal-btn:hover::before,
-body.dark-theme .footer-instagram-btn:hover::before {
+body.dark-theme .footer-instagram-btn:hover::before,
+body.dark-theme .overlay a:hover::before {
     width: 100%;
     left: auto;
     right: 0;
@@ -545,7 +651,6 @@ body.dark-theme .login-right {
         border-top-color: var(--text-dark);
     }
 
-    /* Responsive pour la page de profil */
     .profile-forms-container,
     .profile-logout-container,
     .profile-danger-zone {
@@ -572,6 +677,10 @@ body.dark-theme .login-right {
     .profile-info-item .button {
         width: 100%;
         align-self: stretch;
+    }
+
+    .default-nav-buttons {
+        top: 90px;
     }
 
     .grade-item {
@@ -944,7 +1053,6 @@ body.dark-theme .error-message {
     margin: 6px 0 0 18px;
 }
 
-/* Messages flash */
 .flash-success {
     margin: 10px 0;
     padding: 10px;
@@ -1004,7 +1112,7 @@ body.dark-theme .flash-error {
 
 .button.delete {
     background: var(--warning-color);
-    color: var(--bg-light);
+    color: var(--white-color);
     position: relative;
     overflow: hidden;
     z-index: 1;
@@ -1017,7 +1125,7 @@ body.dark-theme .flash-error {
     right: 0;
     width: 0;
     height: 100%;
-    background: var(--dark-warning-color);
+    background: var(--primary-dark);
     transition: width 0.5s ease-in-out;
     z-index: -1;
     border-radius: var(--radius-button);
@@ -1035,8 +1143,30 @@ body.dark-theme .button.submit {
 }
 
 body.dark-theme .button.delete {
-    background: var(--warning-color);
+    background: var(--primary-light);
     color: var(--bg-light);
+}
+
+.button.cancel {
+    background: var(--warning-color);
+    color: var(--white-color);
+    transition: transform var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.button.cancel:hover {
+    transform: scale(1.05);
+}
+
+.button.cancel::before {
+    background: 0 0;
+}
+
+body.dark-theme .button.cancel {
+    background: var(--warning-color);
+    color: var(--white-color);
 }
 
 .btn-submit {
@@ -1170,7 +1300,7 @@ body.dark-theme .text-link-btn:hover::before {
         padding: 0 20px;
     }
 
-    .header-logo {
+    .nav-icon {
         width: 32px;
         height: 32px;
     }
@@ -1296,7 +1426,7 @@ body.dark-theme .text-link-btn:hover::before {
         padding: 0 15px;
     }
 
-    .header-logo {
+    .nav-icon {
         width: 28px;
         height: 28px;
         object-fit: contain;
@@ -1380,7 +1510,7 @@ body.dark-theme .text-link-btn:hover::before {
 }
 
 #delete-modal .modal-content {
-    background: var(--bg-light);
+    background: var(--surface-light);
     padding: 30px;
     border-radius: 8px;
     max-width: 400px;
@@ -1391,7 +1521,7 @@ body.dark-theme .text-link-btn:hover::before {
 }
 
 body.dark-theme #delete-modal .modal-content {
-    background: var(--bg-dark);
+    background: var(--surface-dark);
     color: var(--white-color);
 }
 
@@ -1421,53 +1551,6 @@ body.dark-theme #delete-modal p {
     width: auto;
 }
 
-#delete-modal .btn-delete {
-    background: var(--warning-color);
-    color: var(--white-color);
-}
-
-.button.cancel,
-#delete-modal .btn-cancel {
-    background: var(--warning-color);
-    color: var(--white-color);
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-    transition: transform var(--transition-fast);
-}
-
-.button.cancel:hover,
-#delete-modal .btn-cancel:hover {
-    transform: scale(1.05);
-}
-
-.button.cancel::before,
-#delete-modal .btn-cancel::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 0;
-    height: 100%;
-    background: var(--primary-light);
-    transition: width 0.5s ease-in-out;
-    z-index: -1;
-    border-radius: var(--radius-button);
-}
-
-.button.cancel:hover::before,
-#delete-modal .btn-cancel:hover::before {
-    width: 100%;
-    right: auto;
-    left: 0;
-}
-
-body.dark-theme .button.cancel,
-body.dark-theme #delete-modal .btn-cancel {
-    background: var(--warning-color);
-    color: var(--white-color);
-}
-
 #offer-delete-modal {
     display: none;
     position: fixed;
@@ -1484,7 +1567,7 @@ body.dark-theme #delete-modal .btn-cancel {
 }
 
 #offer-delete-modal .modal-content {
-    background: var(--bg-light);
+    background: var(--surface-light);
     padding: 30px;
     border-radius: 8px;
     max-width: 400px;
@@ -1495,8 +1578,8 @@ body.dark-theme #delete-modal .btn-cancel {
 }
 
 body.dark-theme #offer-delete-modal .modal-content {
-    background: var(--bg-dark);
-    color: var(--white-color);
+    background: var(--surface-dark);
+    color: var(--text-dark);
 }
 
 #offer-delete-modal h3 {
@@ -1505,12 +1588,11 @@ body.dark-theme #offer-delete-modal .modal-content {
 }
 
 #offer-delete-modal p {
-    color: #333;
     margin-bottom: 20px;
 }
 
 body.dark-theme #offer-delete-modal p {
-    color: var(--white-color);
+    color: var(--surface-dark);
 }
 
 #offer-delete-modal form {
@@ -1567,9 +1649,11 @@ body.dark-theme #offer-delete-modal .btn-cancel {
 
 .default-nav-buttons {
     position: fixed;
-    left: calc((100vw - 80%) / 4 - 32px);
+    left: 2.5%;
     top: 90px;
+    display: flex;
     flex-direction: column;
+    gap: 20px;
     z-index: 999;
 }
 
@@ -1744,16 +1828,8 @@ body.dark-theme .profile-danger-zone {
 }
 
 .profile-delete-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 0;
-    height: 100%;
-    background: var(--primary-light);
-    transition: width 0.5s ease-in-out;
-    z-index: -1;
-    border-radius: var(--radius-button);
+    background: 0 0;
+    transition: transform var(--transition-fast);
 }
 
 .profile-delete-btn:hover::before {
@@ -1762,7 +1838,6 @@ body.dark-theme .profile-danger-zone {
     left: 0;
 }
 
-/* Styles pour la section des moyennes */
 .grades-section {
     margin-top: 20px;
     text-align: center;
@@ -1915,19 +1990,6 @@ body.dark-theme .grade-help-text {
 
 body.dark-theme .account-info-section {
     border-top-color: var(--text-dark);
-}
-
-.section-subtitle {
-    font-size: 1.3em;
-    color: var(--primary-light);
-    text-align: center;
-    margin-top: 30px;
-    margin-bottom: 20px;
-    font-weight: bold;
-}
-
-body.dark-theme .section-subtitle {
-    color: var(--primary-light);
 }
 
 /* Conteneur du graphique */
@@ -2181,7 +2243,7 @@ body.dark-theme .grade-modal-item label {
 }
 
 .profile-modal .modal-content {
-    background: var(--bg-light);
+    background: var(--surface-light);
     padding: 30px;
     border-radius: var(--radius-default);
     box-shadow: var(--shadow-default);
@@ -2193,7 +2255,7 @@ body.dark-theme .grade-modal-item label {
 }
 
 body.dark-theme .profile-modal .modal-content {
-    background: var(--bg-dark);
+    background: var(--surface-dark);
     color: var(--text-dark);
 }
 
@@ -2333,7 +2395,7 @@ body.dark-theme .tradeplace-title {
 }
 
 #purchase-modal .modal-content {
-    background: var(--bg-light);
+    background: var(--surface-light);
     padding: 30px;
     border-radius: 8px;
     max-width: 400px;
@@ -2344,8 +2406,8 @@ body.dark-theme .tradeplace-title {
 }
 
 body.dark-theme #purchase-modal .modal-content {
-    background: var(--bg-dark);
-    color: var(--white-color);
+    background: var(--surface-dark);
+    color: var(--text-dark);
 }
 
 #purchase-modal h3 {
@@ -2368,25 +2430,7 @@ body.dark-theme #purchase-modal p {
     margin-top: 20px;
 }
 
-#purchase-modal .input-rectangle {
-    padding: 10px 20px;
-    height: auto;
-    width: auto;
-}
-
 #purchase-modal .btn-purchase {
-    background: var(--primary-light);
-    color: var(--white-color);
-}
-
-#purchase-modal .button.cancel,
-#purchase-modal .btn-cancel {
-    background: var(--primary-light);
-    color: var(--white-color);
-}
-
-body.dark-theme #purchase-modal .button.cancel,
-body.dark-theme #purchase-modal .btn-cancel {
     background: var(--primary-light);
     color: var(--white-color);
 }
@@ -2725,6 +2769,13 @@ body.dark-theme .legal-comment-actions button:hover::before {
     transition: all var(--transition-fast);
 }
 
+.button.nav img,
+.nav-btn img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+}
+
 body.dark-theme .button.nav,
 body.dark-theme .nav-btn {
     background: #343434;
@@ -2733,12 +2784,6 @@ body.dark-theme .nav-btn {
 .button.nav:hover,
 .nav-btn:hover {
     transform: scale(1.1);
-}
-
-.nav-icon {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
 }
 
 h1.page-title,
@@ -4339,7 +4384,6 @@ body.dark-theme .close-modal:hover {
     text-align: center;
     transition: all var(--transition-fast);
     cursor: pointer;
-    position: relative;
 }
 
 .offer-card:hover {
@@ -4538,218 +4582,4 @@ body.dark-theme .empty-offers {
     color: var(--grey-light);
 }
 
-@media (max-width: 1400px) {
-    .trade-place-title {
-        padding: 1rem;
-        font-size: 1.8rem;
-    }
-
-    .trade-place-sidebar {
-        width: 40%;
-    }
-
-    .trade-place-main {
-        width: 55%;
-        padding: 25px;
-    }
-}
-
-@media (max-width: 1024px) {
-    .trade-content {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto;
-        gap: 15px;
-    }
-
-    .trade-section.your-offerings {
-        grid-column: 1;
-        grid-row: 1;
-    }
-
-    .trade-separator {
-        grid-column: 1;
-        grid-row: 2;
-        flex-direction: row;
-        padding: 10px 0;
-    }
-
-    .separator-line {
-        width: auto;
-        height: 2px;
-        flex: 1;
-    }
-
-    .separator-icon {
-        margin: 0 10px;
-        transform: rotate(90deg);
-    }
-
-    .trade-section.their-offerings {
-        grid-column: 1;
-        grid-row: 3;
-    }
-
-    .inventory-grid,
-    .offerings-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-    .trade-window {
-        font-size: 0.95rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .trade-place-main {
-        max-width: 100%;
-        padding: 15px;
-    }
-
-    .trade-window {
-        font-size: 0.9rem;
-    }
-
-    .trade-header h2 {
-        font-size: 1.1rem;
-    }
-
-    .trade-content {
-        padding: 15px;
-        gap: 10px;
-    }
-
-    .trade-section {
-        padding: 12px;
-    }
-
-    .trade-section h3 {
-        font-size: 1rem;
-    }
-
-    .inventory-grid,
-    .offerings-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 6px;
-    }
-
-    .inventory-item,
-    .offering-slot {
-        font-size: 0.7rem;
-        min-height: 50px;
-    }
-
-    .trade-actions {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .btn-add-points,
-    .btn-add-custom {
-        font-size: 0.85rem;
-        padding: 8px;
-    }
-
-    .trade-footer {
-        padding: 15px;
-    }
-
-    .btn-make-trade,
-    .btn-cancel-trade {
-        font-size: 0.9rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .trade-header {
-        padding: 12px 15px;
-    }
-
-    .trade-header h2 {
-        font-size: 1rem;
-    }
-
-    .trade-content {
-        padding: 10px;
-    }
-
-    .trade-section {
-        padding: 10px;
-    }
-
-    .trade-section h3 {
-        font-size: 0.95rem;
-        margin-bottom: 8px;
-    }
-
-    .offerings-subtitle {
-        font-size: 0.75rem;
-    }
-
-    .inventory-grid,
-    .offerings-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 5px;
-    }
-
-    .inventory-item,
-    .offering-slot {
-        font-size: 0.65rem;
-        min-height: 45px;
-    }
-
-    .filter-dropdown {
-        font-size: 0.85rem;
-        padding: 6px;
-    }
-
-    .inventory-info {
-        font-size: 0.75rem;
-    }
-
-    .trade-ready label {
-        font-size: 0.8rem;
-    }
-
-    .trade-status {
-        font-size: 0.8rem;
-        padding: 8px;
-    }
-
-    .trade-footer {
-        padding: 12px;
-    }
-
-    .btn-make-trade {
-        padding: 10px 30px;
-        font-size: 0.85rem;
-    }
-
-    .btn-cancel-trade {
-        padding: 6px 15px;
-        font-size: 0.8rem;
-    }
-
-    .trade-wait-text {
-        font-size: 0.75rem;
-    }
-
-    #custom-message-modal .modal-content {
-        padding: 20px;
-        width: 95%;
-    }
-
-    #custom-message-modal h3 {
-        font-size: 1.1rem;
-    }
-
-    #custom-message-modal p {
-        font-size: 0.9rem;
-    }
-
-    .modal-buttons .button {
-        min-width: 80px;
-        font-size: 0.85rem;
-        padding: 8px 15px;
-    }
-}
 
