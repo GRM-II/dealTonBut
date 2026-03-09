@@ -39,10 +39,19 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                         <input type="email" id="email" name="email" placeholder="Email" class="input-rectangle" required <?php echo $disabledAttr; ?> title="<?php echo $dbUnavailable ? htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8') : ''; ?>">
 
                         <label class="login-text" for="password">Mot de passe</label>
-                        <input type="password" id="password" name="password" placeholder="Mot de passe" class="input-rectangle" required <?php echo $disabledAttr; ?> title="<?php echo $dbUnavailable ? htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8') : ''; ?>">
+                        <input type="password" id="password" name="password" placeholder="Mot de passe" class="input-rectangle" minlength="12" required <?php echo $disabledAttr; ?> title="<?php echo $dbUnavailable ? htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8') : ''; ?>">
+                        <div class="password-requirements">
+                            <small>Le mot de passe doit contenir :</small>
+                            <ul>
+                                <li id="req-length">Au moins 12 caractères</li>
+                                <li id="req-digit">Au moins 1 chiffre</li>
+                                <li id="req-uppercase">Au moins 1 majuscule</li>
+                                <li id="req-special">Au moins 1 caractère spécial (!@#$%^&*...)</li>
+                            </ul>
+                        </div>
 
                         <label class="login-text" for="confirm-password">Confirmer le mot de passe</label>
-                        <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirmer" class="input-rectangle" required <?php echo $disabledAttr; ?> title="<?php echo $dbUnavailable ? htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8') : ''; ?>">
+                        <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirmer" class="input-rectangle" minlength="12" required <?php echo $disabledAttr; ?> title="<?php echo $dbUnavailable ? htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8') : ''; ?>">
 
                         <button type="submit" class="button register-submit-btn" <?php echo $disabledAttr; ?>>Créer le compte</button>
                     </form>

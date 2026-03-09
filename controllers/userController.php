@@ -302,6 +302,59 @@ final class userController
     }
 
     /**
+     * Validates password requirements
+     *
+     * Checks that password meets security requirements:
+     * - Minimum 12 characters
+     * - At least 1 digit
+     * - At least 1 uppercase letter
+     * - At least 1 special character
+     *
+     * @param string $password Password to validate
+     * @return array{valid: bool, message: string} Validation result
+     */
+    private function validatePassword(string $password): array
+    {
+        $errors = [];
+
+        // Vérifier la longueur minimale
+        if (strlen($password) < 12) {
+            $errors[] = 'au moins 12 caractères';
+        }
+
+        // Vérifier la présence d\'un chiffre
+        if (!preg_match('/[0-9]/', $password)) {
+            $errors[] = 'au moins 1 chiffre';
+        }
+
+        // Vérifier la présence d'une majuscule
+        if (!preg_match('/[A-Z]/', $password)) {
+            $errors[] = 'au moins 1 lettre majuscule';
+        }
+
+        // Vérifier la présence d'un caractère spécial
+        if (!preg_match('/[!@#$%^&*()\-_=+\[\]{};:\'",.<>?\/\\|`~]/', $password)) {
+            $errors[] = 'au moins 1 caractère spécial (!@#$%^&*...)';
+        }
+
+        // Si des erreurs ont été trouvées
+        if (!empty($errors)) {
+            $missingCount = count($errors);
+            $errorList = implode(', ', $errors);
+
+            return [
+                'valid' => false,
+                'message' => "Le mot de passe doit contenir : {$errorList}."
+            ];
+        }
+
+        return [
+            'valid' => true,
+            'message' => 'Le mot de passe est valide.'
+        ];
+    }
+
+    /**
      * Creates a new user account
      *
      * Validates email format and password length requirements before delegating
@@ -321,10 +374,13 @@ final class userController
                 'message' => "L'adresse email n'est pas valide."
             ];
         }
-        if (strlen($password) < 6) {
+
+        // Validate password requirements
+        $passwordValidation = $this->validatePassword($password);
+        if (!$passwordValidation['valid']) {
             return [
                 'success' => false,
-                'message' => 'Le mot de passe doit contenir au moins 6 caractères.'
+                'message' => $passwordValidation['message']
             ];
         }
 
@@ -477,9 +533,11 @@ final class userController
             return;
         }
 
-        if (strlen($password) < 6) {
+        // Validate password requirements
+        $passwordValidation = $this->validatePassword($password);
+        if (!$passwordValidation['valid']) {
             view::show('user/resetPasswordView', [
-                'error' => 'Le mot de passe doit contenir au moins 6 caractères.'
+                'error' => $passwordValidation['message']
             ]);
             return;
         }

@@ -17,5 +17,6 @@
     <?php view::show('standard/footer'); ?>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="/public/assets/includes/scripts/script.js"></script>
+    <script src="/public/assets/includes/scripts/passwordValidator.js"></script>
 </body>
 </html>

@@ -362,6 +362,90 @@ body.dark-theme .login-success-message {
     border-color: #2d5a4a;
 }
 
+.password-requirements {
+    margin: 10px 0 15px 0;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: var(--radius-button);
+    border-left: 3px solid var(--primary-color);
+}
+
+body.dark-theme .password-requirements {
+    background: #2d2d2d;
+    border-left-color: var(--primary-light);
+}
+
+.password-requirements small {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: var(--text-light-secondary);
+}
+
+body.dark-theme .password-requirements small {
+    color: var(--text-dark-secondary);
+}
+
+.password-requirements ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.password-requirements ul li {
+    padding: 4px 0 4px 24px;
+    position: relative;
+    font-size: 0.9em;
+    color: var(--text-light-secondary);
+    transition: var(--transition-fast);
+}
+
+body.dark-theme .password-requirements ul li {
+    color: var(--text-dark-secondary);
+}
+
+.password-requirements ul li::before {
+    content: "○";
+    position: absolute;
+    left: 0;
+    font-size: 1.2em;
+    transition: var(--transition-fast);
+}
+
+.password-requirements ul li.valid {
+    color: #03543f;
+}
+
+body.dark-theme .password-requirements ul li.valid {
+    color: #84e1bc;
+}
+
+.password-requirements ul li.valid::before {
+    content: "✓";
+    color: #03543f;
+}
+
+body.dark-theme .password-requirements ul li.valid::before {
+    color: #84e1bc;
+}
+
+.password-requirements ul li.invalid {
+    color: var(--red-color);
+}
+
+body.dark-theme .password-requirements ul li.invalid {
+    color: #ff6b6b;
+}
+
+.password-requirements ul li.invalid::before {
+    content: "✗";
+    color: var(--red-color);
+}
+
+body.dark-theme .password-requirements ul li.invalid::before {
+    color: #ff6b6b;
+}
+
 .login-right {
     display: flex;
     flex-direction: column;
@@ -878,6 +962,37 @@ body.dark-theme .flash-error {
     background: var(--surface-dark);
     color: var(--red-color);
     border: 1px solid #9b1c1c;
+}
+
+.password-error-detail {
+    margin: 10px 0;
+    padding: 12px 15px;
+    border-radius: 8px;
+    background: #fff5f5;
+    color: #9b1c1c;
+    border-left: 4px solid var(--red-color);
+    line-height: 1.6;
+}
+
+body.dark-theme .password-error-detail {
+    background: #2d1a1a;
+    color: #ff6b6b;
+    border-left-color: #ff6b6b;
+}
+
+.password-error-detail strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.05em;
+}
+
+.password-error-detail ul {
+    margin: 5px 0 0 20px;
+    padding: 0;
+}
+
+.password-error-detail li {
+    margin: 3px 0;
 }
 
 .btn-submit {

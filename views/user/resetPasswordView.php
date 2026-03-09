@@ -25,8 +25,17 @@
                                    name="password"
                                    placeholder="Nouveau mot de passe"
                                    class="input-rectangle"
-                                   minlength="6"
+                                   minlength="12"
                                    required>
+                            <div class="password-requirements">
+                                <small>Le mot de passe doit contenir :</small>
+                                <ul>
+                                    <li id="req-length">Au moins 12 caractères</li>
+                                    <li id="req-digit">Au moins 1 chiffre</li>
+                                    <li id="req-uppercase">Au moins 1 majuscule</li>
+                                    <li id="req-special">Au moins 1 caractère spécial (!@#$%^&*...)</li>
+                                </ul>
+                            </div>
 
                             <label class="login-text" for="confirm_password">Confirmer le mot de passe</label>
                             <input type="password"
@@ -34,7 +43,7 @@
                                    name="confirm_password"
                                    placeholder="Confirmer le mot de passe"
                                    class="input-rectangle"
-                                   minlength="6"
+                                   minlength="12"
                                    required>
 
                             <button type="submit" class="button">

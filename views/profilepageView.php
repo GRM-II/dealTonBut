@@ -190,7 +190,23 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         <h3>Modifier le mot de passe</h3>
         <form method="post" action="?controller=profilepage&action=updateProfile">
             <label for="modal_new_password">Nouveau mot de passe :</label>
-            <input type="password" id="modal_new_password" name="new_password" placeholder="Nouveau mot de passe" class="input-rectangle" required <?php echo $disabledAttr; ?>>
+            <input type="password"
+                   id="modal_new_password"
+                   name="new_password"
+                   placeholder="Nouveau mot de passe"
+                   class="input-rectangle"
+                   minlength="12"
+                   required
+                   <?php echo $disabledAttr; ?>>
+            <div class="password-requirements">
+                <small>Le mot de passe doit contenir :</small>
+                <ul>
+                    <li id="req-length">Au moins 12 caractères</li>
+                    <li id="req-digit">Au moins 1 chiffre</li>
+                    <li id="req-uppercase">Au moins 1 majuscule</li>
+                    <li id="req-special">Au moins 1 caractère spécial (!@#$%^&*...)</li>
+                </ul>
+            </div>
             <div class="modal-buttons">
                 <button type="submit" class="button btn-save">Enregistrer</button>
                 <button type="button" class="button btn-cancel cancel-modal" data-modal="password-modal">Annuler</button>

@@ -34,6 +34,7 @@
                                placeholder="********"
                                name="password"
                                class="input-rectangle"
+                               minlength="12"
                                required>
 
                         <button type="submit"

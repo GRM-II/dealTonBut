@@ -29,6 +29,58 @@ final class profilepageController
     }
 
     /**
+     * Validates password requirements
+     *
+     * Checks that password meets security requirements:
+     * - Minimum 12 characters
+     * - At least 1 digit
+     * - At least 1 uppercase letter
+     * - At least 1 special character
+     *
+     * @param string $password Password to validate
+     * @return array{valid: bool, message: string} Validation result
+     */
+    private function validatePassword(string $password): array
+    {
+        $errors = [];
+
+        // Vérifier la longueur minimale
+        if (strlen($password) < 12) {
+            $errors[] = 'au moins 12 caractères';
+        }
+
+        // Vérifier la présence d'un chiffre
+        if (!preg_match('/[0-9]/', $password)) {
+            $errors[] = 'au moins 1 chiffre';
+        }
+
+        // Vérifier la présence d'une majuscule
+        if (!preg_match('/[A-Z]/', $password)) {
+            $errors[] = 'au moins 1 lettre majuscule';
+        }
+
+        // Vérifier la présence d'un caractère spécial
+        if (!preg_match('/[!@#$%^&*()\-_=+\[\]{};:\'",.<>?\/\\|`~]/', $password)) {
+            $errors[] = 'au moins 1 caractère spécial (!@#$%^&*...)';
+        }
+
+        // Si des erreurs ont été trouvées
+        if (!empty($errors)) {
+            $errorList = implode(', ', $errors);
+
+            return [
+                'valid' => false,
+                'message' => "Le mot de passe doit contenir : {$errorList}."
+            ];
+        }
+
+        return [
+            'valid' => true,
+            'message' => 'Le mot de passe est valide.'
+        ];
+    }
+
+    /**
      * Displays the user profile page
      *
      * Validates user authentication and verifies that the user still exists
@@ -126,7 +178,20 @@ final class profilepageController
 
         // Updates the password
         if (isset($_POST['new_password']) && !empty($_POST['new_password'])) {
-            $hashedPassword = password_hash($_POST['new_password'], PASSWORD_DEFAULT);
+            $newPassword = $_POST['new_password'];
+
+            // Validate password requirements
+            $passwordValidation = $this->validatePassword($newPassword);
+            if (!$passwordValidation['valid']) {
+                $_SESSION['flash'] = [
+                    'success' => false,
+                    'message' => $passwordValidation['message']
+                ];
+                header('Location: ?controller=profilepage&action=index');
+                exit;
+            }
+
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
             $result = $this->userModel->updatePassword($_SESSION['user']['id'], $hashedPassword);
 
             if ($result) {
