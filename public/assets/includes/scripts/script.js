@@ -488,24 +488,10 @@ function initProfilePage() {
         }
     }
 
-    const editUsernameBtn = document.getElementById('edit-username-btn');
-    if (editUsernameBtn) {
-        editUsernameBtn.addEventListener('click', function() {
-            openModal('username-modal');
-        });
-    }
-
-    const editEmailBtn = document.getElementById('edit-email-btn');
-    if (editEmailBtn) {
-        editEmailBtn.addEventListener('click', function() {
-            openModal('email-modal');
-        });
-    }
-
-    const editPasswordBtn = document.getElementById('edit-password-btn');
-    if (editPasswordBtn) {
-        editPasswordBtn.addEventListener('click', function() {
-            openModal('password-modal');
+    const editAccountInfoBtn = document.getElementById('edit-account-info-btn');
+    if (editAccountInfoBtn) {
+        editAccountInfoBtn.addEventListener('click', function() {
+            openModal('account-info-modal');
         });
     }
 
