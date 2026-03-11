@@ -1,0 +1,45 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1001" width="1000" height="1001">
+	<defs>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp1">
+			<path d="m47 1.33h906c25.96 0 47 21.04 47 47v906c0 25.96-21.04 47-47 47h-906c-25.96 0-47-21.04-47-47v-906c0-25.96 21.04-47 47-47z"/>
+		</clipPath>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp2">
+			<path d="m0 1.33h1000v1000h-1000z"/>
+		</clipPath>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp3">
+			<path d="m0 1.33h1000v1000h-1000z"/>
+		</clipPath>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp4">
+			<path d="m47 1.33h906c25.96 0 47 21.04 47 47v906c0 25.96-21.04 47-47 47h-906c-25.96 0-47-21.04-47-47v-906c0-25.96 21.04-47 47-47z"/>
+		</clipPath>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp5">
+			<path d="m106.67 135.52h782.66v732h-782.66z"/>
+		</clipPath>
+	</defs>
+	<style>
+		.s0 { fill: #ffffff } 
+	</style>
+	<g id="Clip-Path" clip-path="url(#cp1)">
+		<g>
+			<g>
+				<g id="Clip-Path" clip-path="url(#cp2)">
+					<g>
+						<g id="Clip-Path" clip-path="url(#cp3)">
+							<g>
+								<g id="Clip-Path" clip-path="url(#cp4)">
+									<g>
+									</g>
+								</g>
+							</g>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+	<g id="Clip-Path" clip-path="url(#cp5)">
+		<g>
+			<path class="s0" d="m859.71 802.47h-62.52v-129.35h-0.07v-164.04c9.82-0.9 19.24-3.15 28.09-6.58 51.16-19.82 74.82-78.98 52.96-129.31l-81.52-187.67c-13.11-30.19-42.89-49.71-75.8-49.71h-442.13c-32.91 0-62.68 19.52-75.79 49.7l-81.57 187.72c-21.37 49.19 0.64 107.18 50.03 128.07 9.66 4.09 20.07 6.75 30.96 7.76v293.41h-65.91c-16.08 0-29.11 14.4-29.11 32.15 0 17.76 13.03 32.16 29.11 32.16h723.27c16.08 0 29.12-14.4 29.12-32.16 0-17.75-13.04-32.15-29.12-32.15zm-551.68-355.82c16.11 37 52.98 62.88 95.92 62.88 42.89 0 79.73-25.83 95.87-62.78 16.13 36.95 52.98 62.78 95.87 62.78 42.89 0 79.74-25.83 95.87-62.78 9.45 21.64 26.02 39.46 46.73 50.52v146.44c0 16.24-13.17 29.41-29.41 29.41h-418.28c-16.25 0-29.42-13.17-29.42-29.41v-146.4c20.78-11.08 37.39-28.95 46.85-50.66z"/>
+		</g>
+	</g>
+</svg>

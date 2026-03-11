@@ -2,7 +2,7 @@
 <div class="content">
     <div class="login-rectangle">
         <img src="/public/assets/img/placeholder-meme.jpeg" alt="Image de connexion" class="log-img">
-        <div class="rectangle-title">Connexion</div>
+        <h1 class="title">Connexion</h1>
 
         <?php if (isset($A_view['success'])): ?>
             <div class="flash-message flash-success">
@@ -21,7 +21,7 @@
             <input type="text"
                    id="username"
                    name="login"
-                   placeholder="Nom d'utilisateur ou email"
+                   placeholder="Pseudo ou email"
                    class="input-rectangle"
                    required>
 

@@ -4,7 +4,7 @@
             <div class="login-grid">
                 <div class="login-left">
                     <img src="/public/assets/img/placeholder-meme.jpeg" alt="Réinitialisation" class="log-img">
-                    <div class="rectangle-title">Nouveau mot de passe</div>
+                    <h1 class="title">Nouveau mot de passe</h1>
 
                     <?php if (isset($A_view['error'])): ?>
                         <div class="login-error-message">
@@ -19,7 +19,7 @@
                         <a href="?controller=user&action=login" class="text-link">Retour à la connexion</a>
                     <?php else: ?>
                         <form class="input-rectangles" method="POST" action="?controller=user&action=resetPassword&token=<?= htmlspecialchars($_GET['token'] ?? '') ?>">
-                            <label class="login-text" for="password">Nouveau mot de passe</label>
+                            <label for="password">Nouveau mot de passe</label>
                             <input type="password"
                                    id="password"
                                    name="password"
@@ -37,7 +37,7 @@
                                 </ul>
                             </div>
 
-                            <label class="login-text" for="confirm_password">Confirmer le mot de passe</label>
+                            <label for="confirm_password">Confirmer le mot de passe</label>
                             <input type="password"
                                    id="confirm_password"
                                    name="confirm_password"

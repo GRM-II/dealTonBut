@@ -9,27 +9,6 @@ function setThemeIcon() {
     }
 }
 
-function updateNavigationIcons() {
-    const isDark = document.body.classList.contains('dark-theme');
-    const tradeIcon = document.getElementById('trade-nav-icon');
-    const marketIcon = document.getElementById('market-nav-icon');
-    const homeIcon = document.getElementById('home-nav-icon');
-    const scrollIcon = document.getElementById('scroll-icon');
-
-    if (tradeIcon) {
-        tradeIcon.src = isDark ? '/public/assets/img/Trade_Night.svg' : '/public/assets/img/Trade_Day.svg';
-    }
-    if (marketIcon) {
-        marketIcon.src = isDark ? '/public/assets/img/Market_Night.svg' : '/public/assets/img/Market_Day.svg';
-    }
-    if (homeIcon) {
-        homeIcon.src = isDark ? '/public/assets/img/Home_Night.svg' : '/public/assets/img/Home_Day.svg';
-    }
-    if (scrollIcon) {
-        scrollIcon.src = isDark ? '/public/assets/img/Black_Arrow.svg' : '/public/assets/img/Blue_Arrow.svg';
-    }
-}
-
 function applySavedTheme() {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
@@ -38,14 +17,12 @@ function applySavedTheme() {
         document.body.classList.remove('dark-theme');
     }
     setThemeIcon();
-    updateNavigationIcons();
 }
 
 function toggleTheme() {
     document.body.classList.toggle('dark-theme');
     localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
     setThemeIcon();
-    updateNavigationIcons();
 
     // Redessiner le graphique de la page de profil, sinon le texte ne change pas de couleur avec le thème
     const chartElement = document.getElementById('barchart_values');
@@ -92,7 +69,7 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     } else if (document.getElementById('open-modal-btn')) {
         initMarketplace();
-    } else if (document.getElementById('purchase-offer-btn')) {
+    } else if (document.getElementById('btn-add-points') || document.getElementById('btn-make-trade')) {
         initTradeplace();
     } else if (document.getElementById('register-form')) {
         const dbUnavailableElem = document.querySelector('.db-unavailable-message');
@@ -292,26 +269,194 @@ function initTradeplace() {
         }
     }
 
-    const purchaseOfferBtn = document.getElementById('purchase-offer-btn');
-    const purchaseModal = document.getElementById('purchase-modal');
-    const cancelPurchaseBtn = document.getElementById('cancel-purchase-btn');
+    let currentSlotIndex = 0;
+    const maxSlots = 8;
 
-    if (purchaseOfferBtn && purchaseModal) {
-        purchaseOfferBtn.addEventListener('click', function() {
-            openModal('purchase-modal');
+    const btnAddPoints = document.getElementById('btn-add-points');
+    const btnAddCustom = document.getElementById('btn-add-custom');
+    const btnAddPointsTheir = document.getElementById('btn-add-points-their');
+    const btnAddCustomTheir = document.getElementById('btn-add-custom-their');
+    const pointsModal = document.getElementById('points-modal');
+    const cancelPointsBtn = document.getElementById('cancel-points-btn');
+    const customMessageModal = document.getElementById('custom-message-modal');
+    const customMessageForm = document.getElementById('custom-message-form');
+    const customMessageInput = document.getElementById('custom-message-input');
+    const cancelCustomMessageBtn = document.getElementById('cancel-custom-message-btn');
+    const btnConfirmTrade = document.getElementById('btn-confirm-trade');
+    const yourOfferingsGrid = document.getElementById('your-offerings-grid');
+    const theirOfferingsGrid = document.getElementById('their-offerings-grid');
+
+    let currentTargetGrid = null;
+
+    function findNextEmptySlot(grid) {
+        if (!grid) return null;
+        const slots = grid.querySelectorAll('.offering-slot');
+        for (let i = 0; i < slots.length; i++) {
+            if (!slots[i].classList.contains('filled')) {
+                return slots[i];
+            }
+        }
+        return null;
+    }
+
+    function addItemToSlot(slot, content) {
+        if (!slot) return;
+
+        slot.classList.add('filled');
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'slot-content';
+        contentDiv.textContent = content;
+
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'remove-btn';
+        removeBtn.innerHTML = '×';
+        removeBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            removeItemFromSlot(slot);
         });
 
-        if (cancelPurchaseBtn) {
-            cancelPurchaseBtn.addEventListener('click', function() {
-                closeModal('purchase-modal');
+        slot.innerHTML = '';
+        slot.appendChild(contentDiv);
+        slot.appendChild(removeBtn);
+    }
+
+    function removeItemFromSlot(slot) {
+        slot.classList.remove('filled');
+        slot.innerHTML = '';
+    }
+
+    if (btnAddPoints) {
+        btnAddPoints.addEventListener('click', function() {
+            currentTargetGrid = yourOfferingsGrid;
+            openModal('points-modal');
+        });
+    }
+
+    if (btnAddPointsTheir) {
+        btnAddPointsTheir.addEventListener('click', function() {
+            currentTargetGrid = theirOfferingsGrid;
+            openModal('points-modal');
+        });
+    }
+
+    if (pointsModal) {
+        const pointsSlider = document.getElementById('points-slider');
+        const sliderValueText = document.getElementById('slider-value-text');
+        const pluralS = document.getElementById('plural-s');
+        const confirmPointsBtn = document.getElementById('confirm-points-btn');
+
+        if (pointsSlider && sliderValueText) {
+            pointsSlider.addEventListener('input', function() {
+                const value = parseFloat(this.value).toFixed(1);
+                sliderValueText.textContent = value;
+                if (pluralS) {
+                    pluralS.textContent = (value === '1.0') ? '' : 's';
+                }
             });
         }
 
-        purchaseModal.addEventListener('click', function(e) {
-            if (e.target === purchaseModal) {
-                closeModal('purchase-modal');
+        if (confirmPointsBtn) {
+            confirmPointsBtn.addEventListener('click', function() {
+                const value = parseFloat(pointsSlider.value).toFixed(1);
+                const targetGrid = currentTargetGrid || yourOfferingsGrid;
+                const emptySlot = findNextEmptySlot(targetGrid);
+                if (emptySlot) {
+                    addItemToSlot(emptySlot, value + ' point' + ((value === '1.0') ? '' : 's'));
+                    closeModal('points-modal');
+                    currentTargetGrid = null;
+                    pointsSlider.value = 0.5;
+                    sliderValueText.textContent = '0.5';
+                    if (pluralS) pluralS.textContent = 's';
+                } else {
+                    alert('All slots are full!');
+                }
+            });
+        }
+    }
+
+    if (cancelPointsBtn) {
+        cancelPointsBtn.addEventListener('click', function() {
+            currentTargetGrid = null;
+            closeModal('points-modal');
+        });
+    }
+
+    if (pointsModal) {
+        pointsModal.addEventListener('click', function(e) {
+            if (e.target === pointsModal) {
+                currentTargetGrid = null;
+                closeModal('points-modal');
             }
         });
+    }
+
+    if (btnAddCustom) {
+        btnAddCustom.addEventListener('click', function() {
+            currentTargetGrid = yourOfferingsGrid;
+            openModal('custom-message-modal');
+        });
+    }
+
+    if (btnAddCustomTheir) {
+        btnAddCustomTheir.addEventListener('click', function() {
+            currentTargetGrid = theirOfferingsGrid;
+            openModal('custom-message-modal');
+        });
+    }
+
+    if (customMessageForm) {
+        customMessageForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const message = customMessageInput.value.trim();
+            if (message) {
+                const targetGrid = currentTargetGrid || yourOfferingsGrid;
+                const emptySlot = findNextEmptySlot(targetGrid);
+                if (emptySlot) {
+                    addItemToSlot(emptySlot, message);
+                    customMessageInput.value = '';
+                    closeModal('custom-message-modal');
+                    currentTargetGrid = null;
+                } else {
+                    alert('All slots are full!');
+                }
+            }
+        });
+    }
+
+    if (cancelCustomMessageBtn) {
+        cancelCustomMessageBtn.addEventListener('click', function() {
+            customMessageInput.value = '';
+            currentTargetGrid = null;
+            closeModal('custom-message-modal');
+        });
+    }
+
+    if (customMessageModal) {
+        customMessageModal.addEventListener('click', function(e) {
+            if (e.target === customMessageModal) {
+                customMessageInput.value = '';
+                currentTargetGrid = null;
+                closeModal('custom-message-modal');
+            }
+        });
+    }
+
+    if (btnConfirmTrade) {
+        btnConfirmTrade.addEventListener('click', function() {
+            if (confirm('Are you sure you want to confirm this trade?')) {
+                alert('Trade confirmed! The transaction will be processed.');
+            }
+        });
+    }
+
+    if (theirOfferingsGrid) {
+        const firstSlot = theirOfferingsGrid.querySelector('.offering-slot[data-slot="0"]');
+        if (firstSlot) {
+            const initialOffer = firstSlot.getAttribute('data-initial-offer');
+            if (initialOffer && initialOffer.trim()) {
+                addItemToSlot(firstSlot, initialOffer);
+            }
+        }
     }
 }
 
@@ -343,24 +488,10 @@ function initProfilePage() {
         }
     }
 
-    const editUsernameBtn = document.getElementById('edit-username-btn');
-    if (editUsernameBtn) {
-        editUsernameBtn.addEventListener('click', function() {
-            openModal('username-modal');
-        });
-    }
-
-    const editEmailBtn = document.getElementById('edit-email-btn');
-    if (editEmailBtn) {
-        editEmailBtn.addEventListener('click', function() {
-            openModal('email-modal');
-        });
-    }
-
-    const editPasswordBtn = document.getElementById('edit-password-btn');
-    if (editPasswordBtn) {
-        editPasswordBtn.addEventListener('click', function() {
-            openModal('password-modal');
+    const editAccountInfoBtn = document.getElementById('edit-account-info-btn');
+    if (editAccountInfoBtn) {
+        editAccountInfoBtn.addEventListener('click', function() {
+            openModal('account-info-modal');
         });
     }
 
@@ -471,7 +602,7 @@ function drawChart(gradesData) {
     const isDark = document.body.classList.contains('dark-theme');
 
     // Récupération des couleurs depuis les variables CSS
-    const primaryColor = getCSSVariable('--primary-color');
+    const primaryColor = isDark ? getCSSVariable('--primary-dark') : getCSSVariable('--primary-light');
     const textColor = isDark ? getCSSVariable('--text-dark') : getCSSVariable('--text-light');
     const gridColor = isDark ? getCSSVariable('--chart-grid-dark') : getCSSVariable('--chart-grid-light');
 
@@ -689,5 +820,66 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+});
+
+function toggleNavMenu() {
+    const navMenu = document.getElementById("nav-menu");
+    const menuButton = document.querySelector('[onclick*="toggleNavMenu"]');
+
+    if (!navMenu) {
+        console.error('POV le menu de navigation : NUH UH');
+        return;
+    }
+
+    const inlineWidth = navMenu.style.width;
+    const computedWidth = window.getComputedStyle(navMenu).width;
+    const computedWidthValue = parseFloat(computedWidth);
+    const isOpen = inlineWidth === "10%" || computedWidthValue > 50;
+
+    if (isOpen) {
+        navMenu.style.width = "0";
+        navMenu.classList.remove('menu-open');
+        if (menuButton) {
+            menuButton.setAttribute('title', 'Afficher le menu de navigation');
+        }
+    } else {
+        navMenu.style.width = "10%";
+        navMenu.classList.add('menu-open');
+        if (menuButton) {
+            menuButton.setAttribute('title', 'Fermer le menu de navigation');
+        }
+    }
+}
+
+function displayRandomMeme() {
+    const container = document.getElementById('homepage-meme-container');
+
+    if (!container) {
+        return;
+    }
+
+    if (!window.homepageMemes || window.homepageMemes.length === 0) {
+        container.innerHTML = '<p>Aucun meme n\'est disponible pour le moment, problème de chez nous ça</p>';
+        return;
+    }
+
+    const randomIndex = Math.floor(Math.random() * window.homepageMemes.length);
+    const media = window.homepageMemes[randomIndex];
+
+    if (media.type === 'video') {
+        container.innerHTML = `
+            <video loop autoplay controls muted>
+                <source src="${media.path}" type="video/${media.filename.split('.').pop()}">
+                Votre navigateur ne supporte pas la lecture de vidéos. Seems like a skill issue 👽
+            </video>
+        `;
+    } else {
+        container.innerHTML = `
+            <img src="${media.path}" alt="Meme aléatoire">
+        `;
+    }
+}
+document.addEventListener('DOMContentLoaded', function() {
+    displayRandomMeme();
 });
 
