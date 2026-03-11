@@ -105,7 +105,7 @@ if (!empty($A_view['offers'])) {
                             </div>
                         <?php else: ?>
                             <?php foreach ($offers as $offer): ?>
-                                <div class="offer-card" data-offer-id="<?php echo $offer['id']; ?>" onclick="if(!event.target.closest('.product-delete-form')) window.location.href='?controller=tradeplace&action=index&offer_id=<?php echo $offer['id']; ?>'">
+                                <div class="offer-card" data-offer-id="<?php echo $offer['id']; ?>" onclick="if(!event.target.closest('.product-delete-form')) openOfferDetailModal(<?php echo htmlspecialchars(json_encode($offer), ENT_QUOTES, 'UTF-8'); ?>)">
                                     <div class="offer-card-content">
                                         <h3 class="offer-title"><?php echo htmlspecialchars($offer['title'], ENT_QUOTES, 'UTF-8'); ?></h3>
                                         <p class="offer-price"><?php echo number_format($offer['price'], 0, ',', ' '); ?> points</p>
@@ -131,6 +131,20 @@ if (!empty($A_view['offers'])) {
         <?php if ($isLoggedIn): ?>
             <button class="add-offer-btn" id="open-modal-btn" <?php echo $disabledAttr; ?>>+</button>
         <?php endif; ?>
+        <div id="offer-detail-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" id="close-detail-modal">&times;</span>
+                <h2 class="title" id="detail-title"></h2>
+                <p id="detail-category"></p>
+                <p id="detail-description"></p>
+                <p id="detail-price"></p>
+                <p id="detail-seller"></p>
+                <form method="post" action="?controller=marketpage&action=purchaseOffer" id="purchase-form">
+                    <input type="hidden" name="offer_id" id="detail-offer-id">
+                    <button type="submit" class="button submit" id="purchase-btn">Acheter</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 

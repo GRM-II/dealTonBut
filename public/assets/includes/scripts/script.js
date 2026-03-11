@@ -260,6 +260,29 @@ function initMarketplace() {
                 });
             });
         });
+        window.openOfferDetailModal = function(offer) {
+            const modal = document.getElementById('offer-detail-modal');
+            if (!modal) return;
+
+            document.getElementById('detail-title').textContent = offer.title;
+            document.getElementById('detail-category').textContent = 'Catégorie : ' + offer.category;
+            document.getElementById('detail-description').textContent = offer.description;
+            document.getElementById('detail-price').textContent = 'Prix : ' + offer.price + ' point(s)';
+            document.getElementById('detail-seller').textContent = 'Vendeur : ' + offer.username;
+            document.getElementById('detail-offer-id').value = offer.id;
+
+            modal.style.display = 'flex';
+        };
+
+        const closeDetailBtn = document.getElementById('close-detail-modal');
+        const detailModal = document.getElementById('offer-detail-modal');
+
+        if (closeDetailBtn && detailModal) {
+            closeDetailBtn.addEventListener('click', () => detailModal.style.display = 'none');
+            detailModal.addEventListener('click', e => {
+                if (e.target === detailModal) detailModal.style.display = 'none';
+            });
+        }
     }
 }
 

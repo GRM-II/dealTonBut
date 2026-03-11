@@ -129,6 +129,35 @@ final class marketpageController
         header('Location: ?controller=marketpage&action=index');
         exit;
     }
+    public function purchaseOffer(): void
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ?controller=marketpage&action=index');
+            exit;
+        }
+        if (!class_exists('offerModel', false)) {
+            require_once constants::modelsRepository() . 'offerModel.php';
+        }
+        try {
+            $result = offerModel::purchaseOffer(offerModel::getOfferById(intval($_POST['offer_id'])), $_SESSION['user_id']);
+            if ($result['success']) {
+                $_SESSION['flash'] = ['success' => true, 'message' => $result['message']];
+            } else {
+                $_SESSION['flash'] = ['success' => false, 'message' => $result['message']];
+            }
+        } catch (Exception $e) {
+            error_log("Erreur purchaseOffer: " . $e->getMessage());
+            $_SESSION['flash'] = [
+                'success' => false,
+                'message' => "Une erreur est survenue lors de l'achat de l'offre."
+            ];
+        }
+        header('Location: ?controller=marketpage&action=index');
+        exit;
+    }
 
     /**
      * Fetches all the offers from the database

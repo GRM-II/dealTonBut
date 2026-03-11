@@ -158,7 +158,7 @@ final class userModel
             $pdo = self::getConnection();
             $stmt = $pdo->prepare("SELECT maths_points, programmation_points, network_points, 
                                DB_points, other_points 
-                               FROM points 
+                               FROM Points 
                                WHERE id = :user_id");
             $stmt->execute(['user_id' => $userId]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -191,7 +191,7 @@ final class userModel
     {
         try {
             $pdo = self::getConnection();
-            $stmt = $pdo->prepare("INSERT INTO points (id, maths_points, programmation_points, 
+            $stmt = $pdo->prepare("INSERT INTO Points (id, maths_points, programmation_points, 
                               network_points, DB_points, other_points) 
                               VALUES (:user_id, 0, 0, 0, 0, 0)");
             return $stmt->execute(['user_id' => $userId]);
@@ -578,8 +578,7 @@ final class userModel
                 return ['success' => false, 'message' => 'Aucune moyenne valide à mettre à jour.'];
             }
 
-            // CHANGEMENT ICI : UPDATE points au lieu de UPDATE Users
-            $sql = "UPDATE points SET " . implode(', ', $fields) . " WHERE id = :userId";
+            $sql = "UPDATE Points SET " . implode(', ', $fields) . " WHERE id = :userId";
             $stmt = $pdo->prepare($sql);
 
             $result = $stmt->execute($params);
