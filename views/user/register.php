@@ -8,7 +8,7 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         <div class="login-rectangle">
             <div class="login-grid">
                 <div class="login-left">
-                    <h1 class="title">Créer un compte</h1>
+                    <div class="rectangle-title">Créer un compte</div>
 
                     <?php if ($dbUnavailable): ?>
                         <div class="db-unavailable-message register-db-warning">
@@ -32,19 +32,28 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                     <?php endif; ?>
 
                     <form class="input-rectangles" id="register-form" method="post" action="?controller=user&action=register">
-                        <label for="username">Nom d'utilisateur</label>
+                        <label class="login-text" for="username">Nom d'utilisateur</label>
                         <input type="text" id="username" name="username" placeholder="Nom d'utilisateur" class="input-rectangle" required <?php echo $disabledAttr; ?> title="<?php echo $dbUnavailable ? htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8') : ''; ?>">
 
-                        <label for="email">Email</label>
+                        <label class="login-text" for="email">Email</label>
                         <input type="email" id="email" name="email" placeholder="Email" class="input-rectangle" required <?php echo $disabledAttr; ?> title="<?php echo $dbUnavailable ? htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8') : ''; ?>">
 
-                        <label for="password">Mot de passe</label>
-                        <input type="password" id="password" name="password" placeholder="Mot de passe" class="input-rectangle" required <?php echo $disabledAttr; ?> title="<?php echo $dbUnavailable ? htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8') : ''; ?>">
+                        <label class="login-text" for="password">Mot de passe</label>
+                        <input type="password" id="password" name="password" placeholder="Mot de passe" class="input-rectangle" minlength="12" required <?php echo $disabledAttr; ?> title="<?php echo $dbUnavailable ? htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8') : ''; ?>">
+                        <div class="password-requirements">
+                            <small>Le mot de passe doit contenir :</small>
+                            <ul>
+                                <li id="req-length">Au moins 12 caractères</li>
+                                <li id="req-digit">Au moins 1 chiffre</li>
+                                <li id="req-uppercase">Au moins 1 majuscule</li>
+                                <li id="req-special">Au moins 1 caractère spécial (!@#$%^&*...)</li>
+                            </ul>
+                        </div>
 
-                        <label for="confirm-password">Confirmer le mot de passe</label>
-                        <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirmer" class="input-rectangle" required <?php echo $disabledAttr; ?> title="<?php echo $dbUnavailable ? htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8') : ''; ?>">
+                        <label class="login-text" for="confirm-password">Confirmer le mot de passe</label>
+                        <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirmer" class="input-rectangle" minlength="12" required <?php echo $disabledAttr; ?> title="<?php echo $dbUnavailable ? htmlspecialchars($dbMessage, ENT_QUOTES, 'UTF-8') : ''; ?>">
 
-                        <button type="submit" class="button submit" <?php echo $disabledAttr; ?>>Créer le compte</button>
+                        <button type="submit" class="button register-submit-btn" <?php echo $disabledAttr; ?>>Créer le compte</button>
                     </form>
 
                     <a href="?controller=homepage&action=index" class="text-link">Vous possédez déjà un compte ?</a>
