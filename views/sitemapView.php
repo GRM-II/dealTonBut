@@ -1,3 +1,31 @@
+<div id="nav-menu" class="overlay">
+    <div class="overlay-content">
+        <span id="scroll-to-top-btn" class="button nav scroll-to-top-btn" title="Remonter en haut">
+            <img id="scroll-icon" src="/public/assets/img/Arrow.svg" alt="Remonter">
+        </span>
+        <a href="?controller=profilepage&action=index" class="button nav nav-btn-profile" title="Profil">
+            <img src="/public/assets/img/Profile.svg" alt="Profil">
+        </a>
+        <a href="?controller=marketpage&action=index" class="button nav nav-btn-market" title="Marché">
+            <img src="/public/assets/img/Market.svg" alt="Marché">
+        </a>
+        <a href="?controller=tradeplace&action=index" class="button nav nav-btn-trade" title="Deals">
+            <img src="/public/assets/img/Trade.svg" alt="Trading">
+        </a>
+        <a href="?controller=user&action=logout" class="button nav nav-btn-logout" title="Se déconnecter">
+            <img src="/public/assets/img/Disconnect.svg" alt="Déconnexion">
+        </a>
+
+        <!-- Le bouton admin apparaît seulement si l'utilisateur est un admin -->
+        <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
+        <a href="?controller=admin&action=index" class="button nav nav-btn-admin" title="Panel administrateur">
+            <img src="/public/assets/img/Admin.svg" alt="Admin">
+        </a>
+        <?php endif; ?>
+
+    </div>
+</div>
+
 <div class="content">
     <div class="sitemap-container">
         <h1 class="sitemap">Plan du site</h1>

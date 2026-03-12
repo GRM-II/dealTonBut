@@ -4,28 +4,42 @@ $dbMessage = $dbUnavailable ? ($A_view['db_status']['message'] . (isset($A_view[
 $disabledAttr = $dbUnavailable ? 'disabled' : '';
 ?>
 
+<div id="nav-menu" class="overlay">
+    <div class="overlay-content">
+        <span id="scroll-to-top-btn" class="button nav scroll-to-top-btn" title="Remonter en haut">
+            <img id="scroll-icon" src="/public/assets/img/Arrow.svg" alt="Remonter">
+        </span>
+        <a href="?controller=marketpage&action=index" class="button nav nav-btn-market" title="Marché">
+            <img src="/public/assets/img/Market.svg" alt="Marché">
+        </a>
+        <a href="?controller=tradeplace&action=index" class="button nav nav-btn-trade" title="Deals">
+            <img src="/public/assets/img/Trade.svg" alt="Trading">
+        </a>
+        <a href="?controller=sitemap&action=index" class="button nav nav-btn-maps" title="Plan du site">
+            <img src="/public/assets/img/Maps.svg" alt="Plan du site">
+        </a>
+        <a href="?controller=user&action=logout" class="button nav nav-btn-logout" title="Se déconnecter">
+            <img src="/public/assets/img/Disconnect.svg" alt="Déconnexion">
+        </a>
+
+        <!-- Le bouton admin apparaît seulement si l'utilisateur est un admin -->
+        <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
+        <a href="?controller=admin&action=index" class="button nav nav-btn-admin" title="Panel administrateur">
+            <img src="/public/assets/img/Admin.svg" alt="Admin">
+        </a>
+        <?php endif; ?>
+
+    </div>
+</div>
+
 <div class="content">
     <div class="profile-wrapper">
-        <div class="nav-buttons default-nav-buttons">
-            <a href="?controller=marketpage&action=index" class="button nav nav-btn-market" title="Marché">
-                <img src="/public/assets/img/market.svg" alt="Marché" class="nav-icon">
-            </a>
-            <a href="?controller=tradeplace&action=index" class="button nav nav-btn-trade" title="Trading">
-                <img src="/public/assets/img/trading.svg" alt="Trading" class="nav-icon">
-            </a>
-            <a href="?controller=sitemap&action=index" class="button nav nav-btn-maps" title="Plan du site">
-                <img src="/public/assets/img/sitemap-icon.svg" alt="Plan du site" class="nav-icon">
-            </a>
-            <button id="scroll-to-top-btn" class="button nav scroll-to-top-btn" title="Remonter en haut">
-                <img id="scroll-icon" src="/public/assets/img/Blue_Arrow.svg" alt="Remonter" class="nav-icon">
-            </button>
-        </div>
 
         <div class="login-rectangle">
         <div class="login-grid">
             <div class="login-left">
                 <!-- Image de profil -->
-                <img src="/public/assets/img/placeholder-meme.jpeg" alt="Image de profil" class="log-img">
+                <img src="/public/assets/img/LogoDealTomBIOUT.png" alt="Image de profil" class="log-img">
 
                 <h1 class="title">Profil utilisateur</h1>
 
@@ -48,39 +62,24 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
                     <div class="profile-info-item">
                         <strong>Nom d'utilisateur :</strong>
                         <span id="username-display"><?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
-                        <button type="button" id="edit-username-btn" class="button profile-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
                     </div>
 
                     <div class="profile-info-item">
                         <strong>Email :</strong>
                         <span id="email-display"><?php echo htmlspecialchars($A_view['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
-                        <button type="button" id="edit-email-btn" class="button profile-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
                     </div>
 
                     <div class="profile-info-item">
                         <strong>Mot de passe :</strong>
                         <span id="password-display">••••••••</span>
-                        <button type="button" id="edit-password-btn" class="button profile-edit-btn" <?php echo $disabledAttr; ?>>Modifier</button>
                     </div>
                 </div>
 
-                <!-- Bouton de déconnexion -->
-                <div class="profile-logout-container">
-                    <form method="post" action="?controller=user&action=logout">
-                        <button type="submit" class="button profile-logout-btn">
-                            Se déconnecter
-                        </button>
-                    </form>
+                <div class="profile-edit-all-container">
+                    <button type="button" id="edit-account-info-btn" class="button profile-edit-all-btn" <?php echo $disabledAttr; ?>>
+                        Modifier mes informations
+                    </button>
                 </div>
-
-                <!-- Bouton Admin (visible uniquement pour les admins) -->
-                <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
-                    <div class="profile-logout-container">
-                        <a href="?controller=admin&action=index" class="button profile-logout-btn" style="background-color: #e74c3c; text-decoration: none; display: block; text-align: center;">
-                            Panel Administrateur
-                        </a>
-                    </div>
-                <?php endif; ?>
 
                 <!-- Zone de danger -->
                 <div class="profile-danger-zone">
@@ -151,65 +150,36 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
         <h3>Confirmer la suppression</h3>
         <p>Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible et votre compte sera triste );</p>
         <form method="post" action="?controller=profilepage&action=deleteAccount">
-            <button type="submit" class="button delete">Oui, supprimer</button>
-            <button type="button" id="cancel-delete-btn" class="button cancel">Non, j'y tiens</button>
+            <button type="submit" class="button profile-admin-btn">Oui, supprimer</button>
+            <button type="button" id="cancel-delete-btn" class="button">Non, j'y tiens</button>
         </form>
     </div>
 </div>
 
-<div id="username-modal" class="profile-modal">
-    <div class="modal-content">
-        <h3>Modifier le nom d'utilisateur</h3>
+<div id="account-info-modal" class="profile-modal">
+    <div class="modal-content modal-content-large">
+        <h3>Modifier mes informations</h3>
         <form method="post" action="?controller=profilepage&action=updateProfile">
-            <label for="modal_new_username">Nouveau nom d'utilisateur :</label>
-            <input type="text" id="modal_new_username" name="new_username" value="<?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle" required <?php echo $disabledAttr; ?>>
-            <div class="modal-buttons">
-                <button type="submit" class="button save">Enregistrer</button>
-                <button type="button" class="button cancel cancel-modal" data-modal="username-modal">Annuler</button>
-            </div>
-        </form>
-    </div>
-</div>
+            <div class="account-info-modal-grid">
+                <div class="account-info-modal-item">
+                    <label for="modal_new_username">Nom d'utilisateur :</label>
+                    <input type="text" id="modal_new_username" name="new_username" value="<?php echo htmlspecialchars($A_view['username'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle" required <?php echo $disabledAttr; ?>>
+                </div>
 
-<div id="email-modal" class="profile-modal">
-    <div class="modal-content">
-        <h3>Modifier l'email</h3>
-        <form method="post" action="?controller=profilepage&action=updateProfile">
-            <label for="modal_new_email">Nouvel email :</label>
-            <input type="email" id="modal_new_email" name="new_email" value="<?php echo htmlspecialchars($A_view['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle" required <?php echo $disabledAttr; ?>>
-            <div class="modal-buttons">
-                <button type="submit" class="button save">Enregistrer</button>
-                <button type="button" class="button cancel cancel-modal" data-modal="email-modal">Annuler</button>
-            </div>
-        </form>
-    </div>
-</div>
+                <div class="account-info-modal-item">
+                    <label for="modal_new_email">Email :</label>
+                    <input type="email" id="modal_new_email" name="new_email" value="<?php echo htmlspecialchars($A_view['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" class="input-rectangle" required <?php echo $disabledAttr; ?>>
+                </div>
 
-<div id="password-modal" class="profile-modal">
-    <div class="modal-content">
-        <h3>Modifier le mot de passe</h3>
-        <form method="post" action="?controller=profilepage&action=updateProfile">
-            <label for="modal_new_password">Nouveau mot de passe :</label>
-            <input type="password"
-                   id="modal_new_password"
-                   name="new_password"
-                   placeholder="Nouveau mot de passe"
-                   class="input-rectangle"
-                   minlength="12"
-                   required
-                   <?php echo $disabledAttr; ?>>
-            <div class="password-requirements">
-                <small>Le mot de passe doit contenir :</small>
-                <ul>
-                    <li id="req-length">Au moins 12 caractères</li>
-                    <li id="req-digit">Au moins 1 chiffre</li>
-                    <li id="req-uppercase">Au moins 1 majuscule</li>
-                    <li id="req-special">Au moins 1 caractère spécial (!@#$%^&*...)</li>
-                </ul>
+                <div class="account-info-modal-item">
+                    <label for="modal_new_password">Nouveau mot de passe :</label>
+                    <input type="password" id="modal_new_password" name="new_password" placeholder="Laisser vide pour ne pas modifier" class="input-rectangle" <?php echo $disabledAttr; ?>>
+                </div>
             </div>
+
             <div class="modal-buttons">
-                <button type="submit" class="button save">Enregistrer</button>
-                <button type="button" class="button cancel cancel-modal" data-modal="password-modal">Annuler</button>
+                <button type="submit" class="button save">Enregistrer les modifications</button>
+                <button type="button" class="button cancel cancel-modal" data-modal="account-info-modal">Annuler</button>
             </div>
         </form>
     </div>

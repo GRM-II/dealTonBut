@@ -22,19 +22,32 @@ if (!empty($A_view['offers'])) {
 ?>
 
 <div class="content">
-    <div class="nav-buttons market-nav-buttons">
-        <a href="?controller=tradeplace&action=index" class="button nav nav-btn-trade" title="Trade Place">
-            <img src="/public/assets/img/trading.svg" alt="Trade Place" class="nav-icon">
-        </a>
-        <a href="?controller=profilepage&action=index" class="button nav nav-btn-profile" title="Profil">
-            <img src="/public/assets/img/home.svg" alt="Profil" class="nav-icon">
-        </a>
-        <a href="?controller=sitemap&action=index" class="button nav nav-btn-maps" title="Plan du site">
-            <img src="/public/assets/img/sitemap-icon.svg" alt="Plan du site" class="nav-icon">
-        </a>
-        <button id="scroll-to-top-btn" class="button nav scroll-to-top-btn" title="Remonter en haut">
-            <img id="scroll-icon" src="/public/assets/img/Blue_Arrow.svg" alt="Remonter" class="nav-icon">
-        </button>
+    <div id="nav-menu" class="overlay">
+        <div class="overlay-content">
+        <span id="scroll-to-top-btn" class="button nav scroll-to-top-btn" title="Remonter en haut">
+            <img id="scroll-icon" src="/public/assets/img/Arrow.svg" alt="Remonter">
+        </span>
+            <a href="?controller=profilepage&action=index" class="button nav nav-btn-profile" title="Profil">
+                <img src="/public/assets/img/Profile.svg" alt="Profil">
+            </a>
+            <a href="?controller=tradeplace&action=index" class="button nav nav-btn-trade" title="Deals">
+                <img src="/public/assets/img/Trade.svg" alt="Trading">
+            </a>
+            <a href="?controller=sitemap&action=index" class="button nav nav-btn-maps" title="Plan du site">
+                <img src="/public/assets/img/Maps.svg" alt="Plan du site">
+            </a>
+            <a href="?controller=user&action=logout" class="button nav nav-btn-logout" title="Se déconnecter">
+                <img src="/public/assets/img/Disconnect.svg" alt="Déconnexion">
+            </a>
+
+            <!-- Le bouton admin apparaît seulement si l'utilisateur est un admin -->
+            <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
+                <a href="?controller=admin&action=index" class="button nav nav-btn-admin" title="Panel administrateur">
+                    <img src="/public/assets/img/Admin.svg" alt="Admin">
+                </a>
+            <?php endif; ?>
+
+        </div>
     </div>
 
     <div class="marketplace-wrapper">

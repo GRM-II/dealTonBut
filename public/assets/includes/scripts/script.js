@@ -9,27 +9,6 @@ function setThemeIcon() {
     }
 }
 
-function updateNavigationIcons() {
-    const isDark = document.body.classList.contains('dark-theme');
-    const tradeIcon = document.getElementById('trade-nav-icon');
-    const marketIcon = document.getElementById('market-nav-icon');
-    const homeIcon = document.getElementById('home-nav-icon');
-    const scrollIcon = document.getElementById('scroll-icon');
-
-    if (tradeIcon) {
-        tradeIcon.src = isDark ? '/public/assets/img/Trade_Night.svg' : '/public/assets/img/Trade_Day.svg';
-    }
-    if (marketIcon) {
-        marketIcon.src = isDark ? '/public/assets/img/Market_Night.svg' : '/public/assets/img/Market_Day.svg';
-    }
-    if (homeIcon) {
-        homeIcon.src = isDark ? '/public/assets/img/Home_Night.svg' : '/public/assets/img/Home_Day.svg';
-    }
-    if (scrollIcon) {
-        scrollIcon.src = isDark ? '/public/assets/img/Black_Arrow.svg' : '/public/assets/img/Blue_Arrow.svg';
-    }
-}
-
 function applySavedTheme() {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
@@ -38,14 +17,12 @@ function applySavedTheme() {
         document.body.classList.remove('dark-theme');
     }
     setThemeIcon();
-    updateNavigationIcons();
 }
 
 function toggleTheme() {
     document.body.classList.toggle('dark-theme');
     localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
     setThemeIcon();
-    updateNavigationIcons();
 
     // Redessiner le graphique de la page de profil, sinon le texte ne change pas de couleur avec le thème
     const chartElement = document.getElementById('barchart_values');
@@ -616,24 +593,10 @@ function initProfilePage() {
         }
     }
 
-    const editUsernameBtn = document.getElementById('edit-username-btn');
-    if (editUsernameBtn) {
-        editUsernameBtn.addEventListener('click', function() {
-            openModal('username-modal');
-        });
-    }
-
-    const editEmailBtn = document.getElementById('edit-email-btn');
-    if (editEmailBtn) {
-        editEmailBtn.addEventListener('click', function() {
-            openModal('email-modal');
-        });
-    }
-
-    const editPasswordBtn = document.getElementById('edit-password-btn');
-    if (editPasswordBtn) {
-        editPasswordBtn.addEventListener('click', function() {
-            openModal('password-modal');
+    const editAccountInfoBtn = document.getElementById('edit-account-info-btn');
+    if (editAccountInfoBtn) {
+        editAccountInfoBtn.addEventListener('click', function() {
+            openModal('account-info-modal');
         });
     }
 
@@ -744,7 +707,7 @@ function drawChart(gradesData) {
     const isDark = document.body.classList.contains('dark-theme');
 
     // Récupération des couleurs depuis les variables CSS
-    const primaryColor = getCSSVariable('--primary-color');
+    const primaryColor = isDark ? getCSSVariable('--primary-dark') : getCSSVariable('--primary-light');
     const textColor = isDark ? getCSSVariable('--text-dark') : getCSSVariable('--text-light');
     const gridColor = isDark ? getCSSVariable('--chart-grid-dark') : getCSSVariable('--chart-grid-light');
 
@@ -963,6 +926,35 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+function toggleNavMenu() {
+    const navMenu = document.getElementById("nav-menu");
+    const menuButton = document.querySelector('[onclick*="toggleNavMenu"]');
+
+    if (!navMenu) {
+        console.error('POV le menu de navigation : NUH UH');
+        return;
+    }
+
+    const inlineWidth = navMenu.style.width;
+    const computedWidth = window.getComputedStyle(navMenu).width;
+    const computedWidthValue = parseFloat(computedWidth);
+    const isOpen = inlineWidth === "10%" || computedWidthValue > 50;
+
+    if (isOpen) {
+        navMenu.style.width = "0";
+        navMenu.classList.remove('menu-open');
+        if (menuButton) {
+            menuButton.setAttribute('title', 'Afficher le menu de navigation');
+        }
+    } else {
+        navMenu.style.width = "10%";
+        navMenu.classList.add('menu-open');
+        if (menuButton) {
+            menuButton.setAttribute('title', 'Fermer le menu de navigation');
+        }
+    }
+}
 
 function displayRandomMeme() {
     const container = document.getElementById('homepage-meme-container');

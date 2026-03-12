@@ -1,0 +1,60 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+	<defs>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp1">
+			<path d="m47.28 0h905.83c26.12 0 47.29 21.04 47.29 47v906c0 25.96-21.17 47-47.29 47h-905.83c-26.11 0-47.28-21.04-47.28-47v-906c0-25.96 21.17-47 47.28-47z"/>
+		</clipPath>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp2">
+			<path d="m47.28 0h905.83c26.12 0 47.29 21.04 47.29 47v906c0 25.96-21.17 47-47.29 47h-905.83c-26.11 0-47.28-21.04-47.28-47v-906c0-25.96 21.17-47 47.28-47z"/>
+		</clipPath>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp3">
+			<path d="m503.01 100l319.2 400h-201.21v400h-235.99v-400h-201.2z"/>
+		</clipPath>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp4">
+			<path d="m503.01 100l319.2 400h-201.21v400h-235.99v-400h-201.2z"/>
+		</clipPath>
+	</defs>
+	<style>
+		.s0 { fill: #ffffff } 
+	</style>
+	<g>
+		<g>
+			<g id="Clip-Path" clip-path="url(#cp1)">
+				<g>
+					<g>
+						<g>
+							<g>
+								<g>
+									<g id="Clip-Path" clip-path="url(#cp2)">
+										<g>
+										</g>
+									</g>
+								</g>
+							</g>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+	<g>
+		<g>
+			<g id="Clip-Path" clip-path="url(#cp3)">
+				<g>
+					<g>
+						<g>
+							<g>
+								<g>
+									<g id="Clip-Path" clip-path="url(#cp4)">
+										<g>
+											<path fill-rule="evenodd" class="s0" d="m183.81 99.35h638.4v800.65h-638.4z"/>
+										</g>
+									</g>
+								</g>
+							</g>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>

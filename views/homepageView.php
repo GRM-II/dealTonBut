@@ -1,4 +1,4 @@
-<main>
+<main class="homepage-main">
     <div class="content">
         <div class="login-rectangle">
             <div class="login-grid">
@@ -111,3 +111,6 @@
     </div>
 </main>
 
+<script>
+    document.body.classList.add('homepage');
+</script>

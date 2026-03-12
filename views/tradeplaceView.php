@@ -10,24 +10,35 @@ $userPoints = $A_view['userPoints'] ?? [];
 
 // Le pas de 0.05 pour le slider des points ne marche pas, je sais pas pourquoi
 
-<div class="content">
-    <div class="nav-buttons trade-nav-buttons">
-        <a href="?controller=marketpage&action=index" class="button nav nav-btn-market" title="Marché">
-            <img src="/public/assets/img/market.svg" alt="Marché" class="nav-icon">
+<div id="nav-menu" class="overlay">
+    <div class="overlay-content">
+        <span id="scroll-to-top-btn" class="button nav scroll-to-top-btn" title="Remonter en haut">
+            <img id="scroll-icon" src="/public/assets/img/Arrow.svg" alt="Remonter">
+        </span>
+        <a href="?controller=profilepage&action=index" class="button nav nav-btn-profile" title="Profil">
+            <img src="/public/assets/img/Profile.svg" alt="Profil">
         </a>
-        <a href="?controller=profilepage&action=index" class="button nav nav-btn-profile" title="Accueil">
-            <img src="/public/assets/img/home.svg" alt="Accueil" class="nav-icon">
+        <a href="?controller=marketpage&action=index" class="button nav nav-btn-market" title="Marché">
+            <img src="/public/assets/img/Market.svg" alt="Marché">
         </a>
         <a href="?controller=sitemap&action=index" class="button nav nav-btn-maps" title="Plan du site">
-            <img src="/public/assets/img/sitemap-icon.svg" alt="Plan du site" class="nav-icon">
+            <img src="/public/assets/img/Maps.svg" alt="Plan du site">
         </a>
-        <button id="scroll-to-top-btn" class="button nav scroll-to-top-btn" title="Remonter en haut">
-            <img id="scroll-icon" src="/public/assets/img/Blue_Arrow.svg" alt="Remonter" class="nav-icon">
-        </button>
+        <a href="?controller=user&action=logout" class="button nav nav-btn-logout" title="Se déconnecter">
+            <img src="/public/assets/img/Disconnect.svg" alt="Déconnexion">
+        </a>
+
+        <!-- Le bouton admin apparaît seulement si l'utilisateur est un admin -->
+        <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
+            <a href="?controller=admin&action=index" class="button nav nav-btn-admin" title="Panel administrateur">
+                <img src="/public/assets/img/Admin.svg" alt="Admin">
+            </a>
+        <?php endif; ?>
+
     </div>
-    <div class="tradeplace-title-container">
-        <h1 class="tradeplace">Trade place</h1>
-    </div>
+</div>
+
+<div class="content">
 
     <?php if ($dbUnavailable): ?>
         <div class="flash-message flash-warning">
