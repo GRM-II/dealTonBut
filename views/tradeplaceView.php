@@ -176,8 +176,8 @@ $userPoints = $A_view['userPoints'] ?? [];
             <label for="custom-message-input">Custom message</label>
             <input id="custom-message-input" class="input-rectangle" placeholder="Aucun remboursement possible.">
             <div class="modal-buttons">
-                <button type="submit" class="button btn-confirm">Add</button>
-                <button type="button" id="cancel-custom-message-btn" class="button cancel">Cancel</button>
+                <button type="submit" class="button btn-confirm">Ajouter</button>
+                <button type="button" id="cancel-custom-message-btn" class="button cancel">Annuler</button>
             </div>
         </form>
     </div>
