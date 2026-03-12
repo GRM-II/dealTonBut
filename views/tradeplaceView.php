@@ -27,6 +27,14 @@ $selectedOffer = $A_view['selectedOffer'] ?? null;
         <a href="?controller=user&action=logout" class="button nav nav-btn-logout" title="Se déconnecter">
             <img src="/public/assets/img/Disconnect.svg" alt="Déconnexion">
         </a>
+
+        <!-- Le bouton admin apparaît seulement si l'utilisateur est un admin -->
+        <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
+        <a href="?controller=admin&action=index" class="button nav nav-btn-admin" title="Panel administrateur">
+            <img src="/public/assets/img/Admin.svg" alt="Admin">
+        </a>
+        <?php endif; ?>
+
     </div>
 </div>
 
