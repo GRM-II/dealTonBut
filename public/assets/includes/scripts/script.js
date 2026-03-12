@@ -260,6 +260,72 @@ function initMarketplace() {
                 });
             });
         });
+
+        const minSelector = document.querySelector('.price-range input[id="Min"]');
+        const maxSelector = document.querySelector('.price-range input[id="Max"]');
+
+        function applyFilters() {
+            const min = Number(minSelector.value);
+            const max = Number(maxSelector.value);
+            const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+            const selectedCategories = Array.from(categoryCheckboxes)
+                .filter(cb => cb.checked && cb.value !== 'all')
+                .map(cb => cb.value);
+
+            document.querySelectorAll('.offer-card').forEach(card => {
+                const priceEl = card.querySelector('.offer-price');
+                const titleEl = card.querySelector('.offer-title');
+                if (!priceEl || !titleEl) return;
+
+                const cardPrice = Number(priceEl.textContent.replace(/\s*points?/i, '').trim());
+                const cardTitle = titleEl.textContent.toLowerCase();
+
+                const priceOk = min <= cardPrice && cardPrice <= max;
+                const searchOk = cardTitle.includes(searchTerm);
+
+                card.style.display = (priceOk && searchOk) ? 'flex' : 'none';
+            });
+
+            // Filtrage des sections catégories
+            document.querySelectorAll('.category-section').forEach(section => {
+                const categoryName = section.querySelector('.category-name').textContent;
+                if (!allCheckbox || allCheckbox.checked || selectedCategories.length === 0) {
+                    section.style.display = 'block';
+                } else if (selectedCategories.includes(categoryName)) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        }
+
+        function applyPriceFilter() {
+            document.querySelectorAll('.offer-card').forEach(card => {
+                const priceEl = card.querySelector('.offer-price');
+                if (!priceEl) return;
+                const cardPrice = Number(priceEl.textContent.replace(' point(s)', '').trim());
+                const min = Number(minSelector.value);
+                const max = Number(maxSelector.value);
+                card.style.display = (min <= cardPrice && cardPrice <= max) ? 'flex' : 'none';
+            });
+        }
+
+        minSelector.addEventListener('input', function() {
+            if (Number(minSelector.value) > Number(maxSelector.value)) {
+                minSelector.value = maxSelector.value;
+            }
+            applyFilters(); // ← ajout
+        });
+
+        maxSelector.addEventListener('input', function() {
+            if (Number(minSelector.value) > Number(maxSelector.value)) {
+                maxSelector.value = minSelector.value;
+            }
+            applyFilters(); // ← ajout
+        });
+
+        applyFilters(); // appel initial
+
         window.openOfferDetailModal = function(offer) {
             const modal = document.getElementById('offer-detail-modal');
             if (!modal) return;

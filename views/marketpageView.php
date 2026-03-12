@@ -79,9 +79,9 @@ if (!empty($A_view['offers'])) {
                 <div class="sidebar-section">
                     <h4>Prix</h4>
                     <div class="price-range">
-                        <input type="number" placeholder="Min" class="price-input">
+                        <input id="Min" type="number" placeholder="Min" class="price-input" value="0" min="0" max="20">
                         <span>-</span>
-                        <input type="number" placeholder="Max" class="price-input">
+                        <input id="Max" type="number" placeholder="Max" class="price-input" value="20" min="0" max="20">
                     </div>
                 </div>
             </aside>
