@@ -91,10 +91,12 @@ if (!empty($A_view['offers'])) {
             <div class="category-section">
                 <div class="category-header-row">
                     <h2 class="category-name"><?php echo htmlspecialchars($category, ENT_QUOTES, 'UTF-8'); ?></h2>
+                    <?php if(sizeof($offers) > 4): ?>
                     <div class="category-arrows">
                         <button class="arrow-btn arrow-left" data-category="<?php echo htmlspecialchars($category, ENT_QUOTES, 'UTF-8'); ?>">◀</button>
                         <button class="arrow-btn arrow-right" data-category="<?php echo htmlspecialchars($category, ENT_QUOTES, 'UTF-8'); ?>">▶</button>
                     </div>
+                    <?php endif; ?>
                 </div>
 
                 <div class="products-carousel-wrapper">

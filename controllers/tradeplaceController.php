@@ -37,7 +37,7 @@ class tradeplaceController
                 require_once 'models/offerModel.php';
             }
             $pdo = offerModel::getConnection();
-            $stmt = $pdo->prepare("SELECT maths_points, programmation_points, network_points, DB_points, other_points FROM points WHERE id = :id");
+            $stmt = $pdo->prepare("SELECT maths_points, programmation_points, network_points, DB_points, other_points FROM Points WHERE id = :id");
             $stmt->execute(['id' => (int)$userId]);
             $userPoints = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
         }
