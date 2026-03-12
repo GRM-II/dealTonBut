@@ -1,20 +1,29 @@
 <?php if (session_status() === PHP_SESSION_NONE) session_start(); ?>
 <main>
-    <div class="content legal-notice-content">
-        <div class="nav-buttons default-nav-buttons">
-            <a href="?controller=marketpage&action=index" class="button nav nav-btn-market" title="Marché">
-                <img src="/public/assets/img/market.svg" alt="Marché">
+    <div id="nav-menu" class="overlay">
+        <div class="overlay-content">
+            <span id="scroll-to-top-btn" class="button nav scroll-to-top-btn" title="Remonter en haut">
+                <img id="scroll-icon" src="/public/assets/img/Arrow.svg" alt="Remonter">
+            </span>
+            <a href="?controller=profilepage&action=index" class="button nav nav-btn-profile" title="Profil">
+                <img src="/public/assets/img/Profile.svg" alt="Profil">
             </a>
-            <a href="?controller=tradeplace&action=index" class="button nav nav-btn-trade" title="Trading">
-                <img src="/public/assets/img/trading.svg" alt="Trading">
+            <a href="?controller=marketpage&action=index" class="button nav nav-btn-market" title="Marché">
+                <img src="/public/assets/img/Market.svg" alt="Marché">
+            </a>
+            <a href="?controller=tradeplace&action=index" class="button nav nav-btn-trade" title="Deals">
+                <img src="/public/assets/img/Trade.svg" alt="Trading">
             </a>
             <a href="?controller=sitemap&action=index" class="button nav nav-btn-maps" title="Plan du site">
-                <img src="/public/assets/img/sitemap-icon.svg" alt="Plan du site">
+                <img src="/public/assets/img/Maps.svg" alt="Plan du site">
             </a>
-            <button id="scroll-to-top-btn" class="button nav scroll-to-top-btn" title="Remonter en haut">
-                <img id="scroll-icon" src="/public/assets/img/Blue_Arrow.svg" alt="Remonter">
-            </button>
+            <a href="?controller=user&action=logout" class="button nav nav-btn-logout" title="Se déconnecter">
+                <img src="/public/assets/img/Disconnect.svg" alt="Déconnexion">
+            </a>
         </div>
+    </div>
+
+    <div class="content legal-notice-content">
 
         <div class="legal-notice-wrapper">
             <div class="login-rectangle">

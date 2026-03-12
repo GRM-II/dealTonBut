@@ -166,6 +166,11 @@ body.dark-theme .nav-icon::before {
     background: var(--bg-dark);
 }
 
+body.homepage .nav-icon,
+body.homepage #nav-menu {
+    display: none !important;
+}
+
 #theme-toggle {
     width: 40px;
     height: 40px;
@@ -284,6 +289,7 @@ body.dark-theme .overlay {
     display: flex;
 }
 
+.overlay:not(.menu-open) .nav-btn-profile,
 .overlay:not(.menu-open) .nav-btn-market,
 .overlay:not(.menu-open) .nav-btn-trade,
 .overlay:not(.menu-open) .nav-btn-maps,
@@ -294,6 +300,7 @@ body.dark-theme .overlay {
     transition: opacity 0.3s ease-in-out;
 }
 
+.overlay.menu-open .nav-btn-profile,
 .overlay.menu-open .nav-btn-market,
 .overlay.menu-open .nav-btn-trade,
 .overlay.menu-open .nav-btn-maps,

@@ -6,7 +6,6 @@ $disabledAttr = $dbUnavailable ? 'disabled' : '';
 
 <div id="nav-menu" class="overlay">
     <div class="overlay-content">
-
         <span id="scroll-to-top-btn" class="button nav scroll-to-top-btn" title="Remonter en haut">
             <img id="scroll-icon" src="/public/assets/img/Arrow.svg" alt="Remonter">
         </span>
